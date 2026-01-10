@@ -30,7 +30,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .logo {
@@ -209,6 +209,11 @@
             border-color: #111;
         }
 
+        .btn-small {
+            padding: 10px 16px;
+            font-size: 11px;
+        }
+
         .output-section {
             display: none;
         }
@@ -227,6 +232,7 @@
         .output-actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .output-content {
@@ -333,6 +339,137 @@
             background: #16a34a;
         }
 
+        /* Templates Section */
+        .templates-section {
+            margin-bottom: 30px;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .template-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-card:hover {
+            border-color: #111;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .template-card h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .template-card p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Saved Drafts */
+        .drafts-section {
+            margin-bottom: 30px;
+        }
+
+        .drafts-list {
+            margin-top: 15px;
+        }
+
+        .draft-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .draft-item:hover {
+            border-color: #111;
+        }
+
+        .draft-info h4 {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .draft-info p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .draft-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .draft-actions button {
+            padding: 6px 12px;
+            font-size: 11px;
+        }
+
+        .no-drafts {
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .modal input {
+            margin-bottom: 15px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+        }
+
         footer {
             text-align: center;
             padding: 30px;
@@ -354,6 +491,10 @@
                 gap: 15px;
                 align-items: flex-start;
             }
+
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -363,6 +504,45 @@
             <div class="logo">Jones Road</div>
             <p>Job Description Generator</p>
         </header>
+
+        <!-- Saved Drafts Section -->
+        <div class="card drafts-section" id="draftsSection">
+            <h2>Saved Drafts</h2>
+            <div class="drafts-list" id="draftsList">
+                <p class="no-drafts">No saved drafts yet</p>
+            </div>
+        </div>
+
+        <!-- Templates Section -->
+        <div class="card templates-section">
+            <h2>Start from a Template</h2>
+            <div class="templates-grid">
+                <div class="template-card" onclick="loadTemplate('cro')">
+                    <h4>CRO Specialist</h4>
+                    <p>Conversion rate optimization</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('ux')">
+                    <h4>UX Designer</h4>
+                    <p>User experience design</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('retention')">
+                    <h4>Retention Manager</h4>
+                    <p>Email, SMS, lifecycle</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('growth')">
+                    <h4>Growth Marketing</h4>
+                    <p>Paid media & acquisition</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('finance')">
+                    <h4>Finance Manager</h4>
+                    <p>FP&A and accounting</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('blank')">
+                    <h4>Start Blank</h4>
+                    <p>Create from scratch</p>
+                </div>
+            </div>
+        </div>
 
         <div class="step-indicator">
             <div class="step-dot active" data-step="1"></div>
@@ -375,13 +555,20 @@
         <div class="card step-card" data-step="1">
             <h2><span class="step">1</span> Role Basics</h2>
 
-            <div class="api-key-section">
+            <div class="api-key-section" id="apiKeySection">
                 <p><strong>API Key Required:</strong> Enter your Anthropic API key to enable AI-powered JD generation. Your key is stored locally in your browser and only sent to Anthropic's API.</p>
                 <div class="api-key-input">
                     <input type="password" id="apiKey" placeholder="sk-ant-...">
-                    <button class="btn btn-secondary" onclick="saveApiKey()">Save</button>
+                    <button class="btn btn-secondary btn-small" onclick="saveApiKey()">Save</button>
                 </div>
                 <div id="apiStatus" class="api-status"></div>
+            </div>
+
+            <div class="api-key-saved" id="apiKeySaved" style="display: none; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 16px; margin-bottom: 25px;">
+                <p style="color: #166534; margin: 0; display: flex; align-items: center; justify-content: space-between;">
+                    <span><strong>✓ API Key Saved</strong> - Your key is stored securely in your browser</span>
+                    <button class="btn btn-secondary btn-small" onclick="showApiKeyInput()" style="margin-left: 10px;">Change Key</button>
+                </p>
             </div>
 
             <div class="row">
@@ -584,7 +771,8 @@
 
             <div class="nav-buttons">
                 <button class="btn btn-secondary" onclick="prevStep(3)">Back</button>
-                <button class="btn btn-primary" onclick="generateJD()" id="generateBtn">Generate Job Description</button>
+                <button class="btn btn-secondary" onclick="saveDraft()">Save Draft</button>
+                <button class="btn btn-primary" onclick="generateJD()" id="generateBtn">Generate JD</button>
             </div>
         </div>
 
@@ -599,66 +787,405 @@
             <div class="output-header">
                 <h2><span class="step">✓</span> Your Job Description</h2>
                 <div class="output-actions">
-                    <button class="btn btn-secondary" onclick="copyToClipboard()">Copy</button>
-                    <button class="btn btn-secondary" onclick="downloadAsDoc()">Download</button>
-                    <button class="btn btn-secondary" onclick="startOver()">Start Over</button>
+                    <button class="btn btn-secondary btn-small" onclick="copyToClipboard()">Copy</button>
+                    <button class="btn btn-secondary btn-small" onclick="downloadAsTxt()">Download TXT</button>
+                    <button class="btn btn-secondary btn-small" onclick="downloadAsWord()">Download Word</button>
+                    <button class="btn btn-secondary btn-small" onclick="downloadAsHTML()">Download HTML</button>
+                    <button class="btn btn-secondary btn-small" onclick="startOver()">Start Over</button>
                 </div>
             </div>
             <div class="output-content" id="outputContent"></div>
         </div>
 
         <footer>
-            Jones Road Beauty &middot; JD Generator v1.0
+            Jones Road Beauty &middot; JD Generator v2.0
         </footer>
     </div>
 
+    <!-- Save Draft Modal -->
+    <div class="modal-overlay" id="saveModal">
+        <div class="modal">
+            <h3>Save Draft</h3>
+            <div class="form-group">
+                <label>Draft Name</label>
+                <input type="text" id="draftName" placeholder="e.g., CRO Specialist Draft">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeSaveModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmSaveDraft()">Save</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Check for saved API key on load
+        // Templates data
+        const templates = {
+            cro: {
+                jobTitle: 'CRO Specialist',
+                department: 'Marketing',
+                level: 'Individual Contributor',
+                reportsTo: 'Director of Growth & Ecom',
+                experience: '4-5 years',
+                location: 'Remote',
+                manages: 'IC now, may manage later',
+                rolePurpose: 'Own conversion rate optimization across the Jones Road digital experience, driving measurable improvements in site conversion, average order value, and overall customer experience through rigorous testing, research, and data-driven optimization.',
+                responsibilities: `- Own the end-to-end CRO strategy, including hypothesis development, test design, execution, and analysis
+- Plan, build, and run A/B and multivariate tests to optimize conversion rate and AOV
+- Conduct user research and site UX analysis using heatmaps, session recordings, and behavioral data
+- Optimize landing pages, product detail pages, and checkout flows
+- Analyze site performance data in GA4 and Shopify, delivering clear reporting and insights
+- Partner cross-functionally with Growth, Creative, and Product teams
+- Build and maintain a testing roadmap with a consistent pipeline of experiments`,
+                collaborators: 'Growth, Creative, Product, Development',
+                requiredSkills: `- A/B testing platforms (Intelligems, VWO, Optimizely)
+- Google Analytics 4
+- Shopify
+- UX analysis tools (Hotjar, Lucky Orange)`,
+                niceToHave: `- SQL knowledge
+- Basic HTML/CSS understanding
+- Experience with heatmapping tools`,
+                education: 'No specific requirement',
+                sponsorship: 'none',
+                successMetrics: `- Maintain a consistent pipeline of A/B experiments
+- Deliver measurable improvement in conversion rate and AOV
+- Provide clear reporting on test results and revenue impact
+- Serve as a trusted partner to cross-functional teams`,
+                otherNotes: '',
+                background: ['bg-dtc', 'bg-agency']
+            },
+            ux: {
+                jobTitle: 'UX Designer',
+                department: 'Creative',
+                level: 'Individual Contributor',
+                reportsTo: 'Director of Growth & Ecom',
+                experience: '4-5 years',
+                location: 'Remote',
+                manages: 'No direct reports',
+                rolePurpose: 'Own the user experience across Jones Road\'s digital touchpoints, designing intuitive, conversion-focused experiences across our website including site navigation, product detail pages, landing pages, and checkout flows.',
+                responsibilities: `- Design and optimize user experiences across the Jones Road website
+- Partner with CRO Specialist to support A/B testing and create design variations
+- Translate user research and behavioral data into design improvements
+- Create wireframes, prototypes, and high-fidelity UI designs in Figma
+- Ensure design consistency and brand alignment across all digital touchpoints
+- Collaborate with Growth, Creative, Product, and Development teams
+- Conduct UX audits and identify opportunities to improve usability`,
+                collaborators: 'Growth, CRO, Creative, Product, Development',
+                requiredSkills: `- Figma (expert proficiency)
+- Shopify
+- UX analysis tools (GA4, Hotjar)
+- Prototyping and wireframing`,
+                niceToHave: `- Basic HTML/CSS understanding
+- Motion design
+- Illustration skills`,
+                education: 'No specific requirement',
+                sponsorship: 'none',
+                successMetrics: `- Deliver high-quality, on-brand design work
+- Enable successful A/B testing through rapid design iteration
+- Contribute to measurable improvements in conversion and engagement
+- Serve as a trusted design partner to cross-functional teams`,
+                otherNotes: 'Portfolio required',
+                background: ['bg-dtc', 'bg-agency']
+            },
+            retention: {
+                jobTitle: 'Retention Manager',
+                department: 'Marketing',
+                level: 'Manager',
+                reportsTo: 'Director of Growth & Ecom',
+                experience: '4-5 years',
+                location: 'Montclair, NJ (Hybrid: 3x/week in office)',
+                manages: 'No direct reports',
+                rolePurpose: 'Oversee the daily operations and execution of Jones Road Beauty\'s lifecycle marketing program across Email, SMS, and Direct Mail channels, driving conversions and customer lifetime value.',
+                responsibilities: `- Oversee daily operations of lifecycle marketing across Email, SMS, and Direct Mail
+- Develop and optimize automated lifecycle journeys and standalone campaigns
+- Manage content planning, briefing, creation, and deployment
+- Design and refine segmentation strategies and content personalization
+- Conduct thorough testing and quality assurance of all outbound messages
+- Track and analyze campaign performance with detailed reporting
+- Define and implement A/B testing strategies`,
+                collaborators: 'Growth, Creative, Ecommerce',
+                requiredSkills: `- Klaviyo or similar ESP
+- Postscript or similar SMS platform
+- Google Analytics
+- Data analysis and reporting tools (Looker, Tableau)`,
+                niceToHave: `- Direct mail experience
+- HTML/CSS for email
+- SQL knowledge`,
+                education: 'No specific requirement',
+                sponsorship: 'none',
+                successMetrics: `- Drive measurable improvement in repeat purchase rate and LTV
+- Maintain high deliverability and engagement rates
+- Build a consistent testing and optimization cadence
+- Partner effectively with Creative on campaign execution`,
+                otherNotes: '',
+                background: ['bg-dtc']
+            },
+            growth: {
+                jobTitle: 'Growth Marketing Manager',
+                department: 'Marketing',
+                level: 'Manager',
+                reportsTo: 'Director of Growth & Ecom',
+                experience: '4-5 years',
+                location: 'Remote',
+                manages: 'No direct reports',
+                rolePurpose: 'Drive customer acquisition and revenue growth through paid media channels, optimizing performance across Meta, Google, TikTok, and emerging platforms.',
+                responsibilities: `- Manage and optimize paid media campaigns across Meta, Google, and TikTok
+- Develop and execute customer acquisition strategies
+- Analyze campaign performance and provide actionable insights
+- Collaborate with Creative on ad development and testing
+- Manage agency relationships and hold partners accountable
+- Track and report on CAC, ROAS, and other key metrics
+- Identify and test emerging channels and opportunities`,
+                collaborators: 'Creative, Retention, Ecommerce, Analytics',
+                requiredSkills: `- Meta Ads Manager (expert)
+- Google Ads
+- TikTok Ads
+- Google Analytics 4
+- Excel/Google Sheets`,
+                niceToHave: `- Shopify
+- Triple Whale or similar attribution tools
+- Creative strategy experience`,
+                education: 'No specific requirement',
+                sponsorship: 'none',
+                successMetrics: `- Hit monthly and quarterly revenue targets
+- Maintain or improve blended CAC and ROAS
+- Drive efficient new customer acquisition
+- Build a robust creative testing program`,
+                otherNotes: '',
+                background: ['bg-dtc', 'bg-beauty', 'bg-agency']
+            },
+            finance: {
+                jobTitle: 'Finance Manager',
+                department: 'Finance',
+                level: 'Manager',
+                reportsTo: 'VP of Finance',
+                experience: '5-7 years',
+                location: 'Montclair, NJ (Hybrid: 3x/week in office)',
+                manages: 'IC now, may manage later',
+                rolePurpose: 'Support the finance team in financial planning, analysis, and reporting, ensuring accurate forecasting and providing insights to drive business decisions.',
+                responsibilities: `- Support monthly close process and financial reporting
+- Build and maintain financial models and forecasts
+- Prepare variance analysis and management reporting
+- Partner with department heads on budgeting and planning
+- Analyze business performance and identify opportunities
+- Support annual budgeting and quarterly forecast updates
+- Develop dashboards and KPI tracking`,
+                collaborators: 'Executive team, Operations, Marketing',
+                requiredSkills: `- Excel (expert proficiency)
+- Financial modeling
+- NetSuite or similar ERP
+- Google Sheets`,
+                niceToHave: `- Shopify analytics
+- BI tools (Looker, Tableau)
+- eCommerce experience`,
+                education: "Bachelor's degree in relevant field",
+                sponsorship: 'not-eligible',
+                successMetrics: `- Deliver accurate and timely financial reporting
+- Provide actionable insights to leadership
+- Improve forecasting accuracy over time
+- Build scalable financial processes`,
+                otherNotes: '',
+                background: ['bg-dtc']
+            },
+            blank: {
+                jobTitle: '',
+                department: '',
+                level: '',
+                reportsTo: '',
+                experience: '',
+                location: '',
+                manages: '',
+                rolePurpose: '',
+                responsibilities: '',
+                collaborators: '',
+                requiredSkills: '',
+                niceToHave: '',
+                education: '',
+                sponsorship: '',
+                successMetrics: '',
+                otherNotes: '',
+                background: []
+            }
+        };
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             const savedKey = localStorage.getItem('anthropic_api_key');
             if (savedKey) {
                 document.getElementById('apiKey').value = savedKey;
-                document.getElementById('apiStatus').textContent = '✓ API key saved';
-                document.getElementById('apiStatus').className = 'api-status success';
+                // Hide the input section, show the "saved" confirmation
+                document.getElementById('apiKeySection').style.display = 'none';
+                document.getElementById('apiKeySaved').style.display = 'block';
             }
+            loadDraftsList();
         });
+
+        function showApiKeyInput() {
+            document.getElementById('apiKeySection').style.display = 'block';
+            document.getElementById('apiKeySaved').style.display = 'none';
+            document.getElementById('apiKey').focus();
+        }
 
         function saveApiKey() {
             const key = document.getElementById('apiKey').value.trim();
             if (key) {
                 localStorage.setItem('anthropic_api_key', key);
-                document.getElementById('apiStatus').textContent = '✓ API key saved';
-                document.getElementById('apiStatus').className = 'api-status success';
+                // Hide input, show saved confirmation
+                document.getElementById('apiKeySection').style.display = 'none';
+                document.getElementById('apiKeySaved').style.display = 'block';
             }
         }
 
-        function nextStep(step) {
-            // Hide all steps
+        function loadTemplate(templateName) {
+            const template = templates[templateName];
+            if (!template) return;
+
+            document.getElementById('jobTitle').value = template.jobTitle;
+            document.getElementById('department').value = template.department;
+            document.getElementById('level').value = template.level;
+            document.getElementById('reportsTo').value = template.reportsTo;
+            document.getElementById('experience').value = template.experience;
+            document.getElementById('location').value = template.location;
+            document.getElementById('manages').value = template.manages;
+            document.getElementById('rolePurpose').value = template.rolePurpose;
+            document.getElementById('responsibilities').value = template.responsibilities;
+            document.getElementById('collaborators').value = template.collaborators;
+            document.getElementById('requiredSkills').value = template.requiredSkills;
+            document.getElementById('niceToHave').value = template.niceToHave;
+            document.getElementById('education').value = template.education;
+            document.getElementById('sponsorship').value = template.sponsorship;
+            document.getElementById('successMetrics').value = template.successMetrics;
+            document.getElementById('otherNotes').value = template.otherNotes;
+
+            // Reset checkboxes
+            document.querySelectorAll('.checkbox-item input').forEach(cb => cb.checked = false);
+            // Set checkboxes from template
+            template.background.forEach(id => {
+                const cb = document.getElementById(id);
+                if (cb) cb.checked = true;
+            });
+
+            // Show step 1 without scrolling
             document.querySelectorAll('.step-card').forEach(card => card.style.display = 'none');
-            // Show target step
-            document.querySelector(`.step-card[data-step="${step}"]`).style.display = 'block';
-            // Update indicators
+            document.querySelector('.step-card[data-step="1"]').style.display = 'block';
+            document.querySelectorAll('.step-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'completed');
+                if (i === 0) dot.classList.add('active');
+            });
+            // Scroll to the form (not all the way to top)
+            document.querySelector('.step-card[data-step="1"]').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.step-card').forEach(card => card.style.display = 'none');
+            const currentCard = document.querySelector(`.step-card[data-step="${step}"]`);
+            currentCard.style.display = 'block';
             document.querySelectorAll('.step-dot').forEach((dot, i) => {
                 dot.classList.remove('active');
                 if (i + 1 < step) dot.classList.add('completed');
                 if (i + 1 === step) dot.classList.add('active');
             });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Scroll to the step indicator area (just above the form)
+            document.querySelector('.step-indicator').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function prevStep(step) {
             nextStep(step);
         }
 
-        async function generateJD() {
-            const apiKey = localStorage.getItem('anthropic_api_key');
-            if (!apiKey) {
-                alert('Please enter your Anthropic API key in Step 1');
-                nextStep(1);
+        // Draft functions
+        function saveDraft() {
+            document.getElementById('draftName').value = document.getElementById('jobTitle').value || 'Untitled Draft';
+            document.getElementById('saveModal').classList.add('active');
+        }
+
+        function closeSaveModal() {
+            document.getElementById('saveModal').classList.remove('active');
+        }
+
+        function confirmSaveDraft() {
+            const draftName = document.getElementById('draftName').value || 'Untitled Draft';
+            const drafts = JSON.parse(localStorage.getItem('jd_drafts') || '[]');
+
+            const draftData = {
+                id: Date.now(),
+                name: draftName,
+                date: new Date().toLocaleDateString(),
+                data: gatherFormData()
+            };
+
+            drafts.unshift(draftData);
+            localStorage.setItem('jd_drafts', JSON.stringify(drafts.slice(0, 20))); // Keep max 20 drafts
+
+            closeSaveModal();
+            loadDraftsList();
+            alert('Draft saved!');
+        }
+
+        function loadDraftsList() {
+            const drafts = JSON.parse(localStorage.getItem('jd_drafts') || '[]');
+            const container = document.getElementById('draftsList');
+
+            if (drafts.length === 0) {
+                container.innerHTML = '<p class="no-drafts">No saved drafts yet</p>';
                 return;
             }
 
-            // Gather all form data
+            container.innerHTML = drafts.map(draft => `
+                <div class="draft-item">
+                    <div class="draft-info">
+                        <h4>${draft.name}</h4>
+                        <p>Saved ${draft.date}</p>
+                    </div>
+                    <div class="draft-actions">
+                        <button class="btn btn-secondary btn-small" onclick="loadDraft(${draft.id})">Load</button>
+                        <button class="btn btn-secondary btn-small" onclick="deleteDraft(${draft.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadDraft(id) {
+            const drafts = JSON.parse(localStorage.getItem('jd_drafts') || '[]');
+            const draft = drafts.find(d => d.id === id);
+            if (!draft) return;
+
+            const data = draft.data;
+            document.getElementById('jobTitle').value = data.jobTitle || '';
+            document.getElementById('department').value = data.department || '';
+            document.getElementById('level').value = data.level || '';
+            document.getElementById('reportsTo').value = data.reportsTo || '';
+            document.getElementById('experience').value = data.experience || '';
+            document.getElementById('location').value = data.location || '';
+            document.getElementById('manages').value = data.manages || '';
+            document.getElementById('rolePurpose').value = data.rolePurpose || '';
+            document.getElementById('responsibilities').value = data.responsibilities || '';
+            document.getElementById('collaborators').value = data.collaborators || '';
+            document.getElementById('requiredSkills').value = data.requiredSkills || '';
+            document.getElementById('niceToHave').value = data.niceToHave || '';
+            document.getElementById('education').value = data.education || '';
+            document.getElementById('sponsorship').value = data.sponsorship || '';
+            document.getElementById('successMetrics').value = data.successMetrics || '';
+            document.getElementById('otherNotes').value = data.otherNotes || '';
+
+            document.querySelectorAll('.checkbox-item input').forEach(cb => cb.checked = false);
+            (data.background || []).forEach(val => {
+                document.querySelectorAll('.checkbox-item input').forEach(cb => {
+                    if (cb.value === val) cb.checked = true;
+                });
+            });
+
+            nextStep(1);
+        }
+
+        function deleteDraft(id) {
+            if (!confirm('Delete this draft?')) return;
+            let drafts = JSON.parse(localStorage.getItem('jd_drafts') || '[]');
+            drafts = drafts.filter(d => d.id !== id);
+            localStorage.setItem('jd_drafts', JSON.stringify(drafts));
+            loadDraftsList();
+        }
+
+        function gatherFormData() {
             const data = {
                 jobTitle: document.getElementById('jobTitle').value,
                 department: document.getElementById('department').value,
@@ -679,12 +1206,23 @@
                 background: []
             };
 
-            // Gather checkboxes
             document.querySelectorAll('.checkbox-item input:checked').forEach(cb => {
                 data.background.push(cb.value);
             });
 
-            // Show loading
+            return data;
+        }
+
+        async function generateJD() {
+            const apiKey = localStorage.getItem('anthropic_api_key');
+            if (!apiKey) {
+                alert('Please enter your Anthropic API key in Step 1');
+                nextStep(1);
+                return;
+            }
+
+            const data = gatherFormData();
+
             document.querySelectorAll('.step-card').forEach(card => card.style.display = 'none');
             document.getElementById('loading').classList.add('active');
 
@@ -768,12 +1306,10 @@ Generate the complete job description now. Use clean formatting with clear secti
                 const result = await response.json();
                 const jdContent = result.content[0].text;
 
-                // Hide loading, show output
                 document.getElementById('loading').classList.remove('active');
                 document.getElementById('outputSection').classList.add('active');
                 document.getElementById('outputContent').textContent = jdContent;
 
-                // Update step indicators
                 document.querySelectorAll('.step-dot').forEach(dot => {
                     dot.classList.remove('active');
                     dot.classList.add('completed');
@@ -793,36 +1329,78 @@ Generate the complete job description now. Use clean formatting with clear secti
             });
         }
 
-        function downloadAsDoc() {
+        function downloadAsTxt() {
             const content = document.getElementById('outputContent').textContent;
             const blob = new Blob([content], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = document.getElementById('jobTitle').value.replace(/\s+/g, '-') + '-JD.txt';
+            a.download = (document.getElementById('jobTitle').value || 'JD').replace(/\s+/g, '-') + '.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadAsWord() {
+            const content = document.getElementById('outputContent').textContent;
+            const html = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'>
+                <head><meta charset='utf-8'><title>Job Description</title></head>
+                <body style="font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6;">
+                    <pre style="white-space: pre-wrap; font-family: Arial, sans-serif;">${content}</pre>
+                </body></html>
+            `;
+            const blob = new Blob([html], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (document.getElementById('jobTitle').value || 'JD').replace(/\s+/g, '-') + '.doc';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadAsHTML() {
+            const content = document.getElementById('outputContent').textContent;
+            const html = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>${document.getElementById('jobTitle').value || 'Job Description'}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+        h1, h2, h3 { color: #111; }
+        pre { white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <pre>${content}</pre>
+</body>
+</html>`;
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (document.getElementById('jobTitle').value || 'JD').replace(/\s+/g, '-') + '.html';
             a.click();
             URL.revokeObjectURL(url);
         }
 
         function startOver() {
-            // Reset form
             document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
             document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
             document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
 
-            // Keep API key
             const savedKey = localStorage.getItem('anthropic_api_key');
             if (savedKey) {
                 document.getElementById('apiKey').value = savedKey;
             }
 
-            // Reset UI
             document.getElementById('outputSection').classList.remove('active');
             document.querySelectorAll('.step-dot').forEach((dot, i) => {
                 dot.classList.remove('completed', 'active');
                 if (i === 0) dot.classList.add('active');
             });
             nextStep(1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
