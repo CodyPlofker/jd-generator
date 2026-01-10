@@ -3,166 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persona Funnel Validation & Scaling</title>
+    <title>Persona Funnel | Jones Road</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        :root {
+            --navy: #1a2744;
+            --navy-light: #2d3a52;
+            --cream: #f8f7f5;
+            --cream-dark: #f0efed;
+            --gold: #c9a227;
+            --green: #2d6a4f;
+            --amber: #b5651d;
+            --red: #9b2c2c;
+            --text: #1a1a1a;
+            --text-light: #666;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
             min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--navy);
             color: #fff;
-            padding: 40px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        header {
             text-align: center;
-            margin-bottom: 40px;
+            padding: 12px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
         }
 
-        header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        header p {
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
+        .logo {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
-        /* Main Flow */
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-title h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 42px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .page-title p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        /* Flow */
         .flow {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0;
         }
 
-        /* Phase Container */
+        /* Phase */
         .phase {
             width: 100%;
-            max-width: 900px;
-            position: relative;
+            max-width: 800px;
         }
 
-        .phase-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .phase-badge {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
+        .phase-label {
+            display: inline-block;
+            background: var(--navy);
+            color: #fff;
+            font-size: 11px;
             font-weight: 600;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            padding: 8px 20px;
+            border-radius: 2px;
+            margin-bottom: 16px;
         }
 
-        /* Connector Lines */
+        /* Connector */
         .connector {
-            width: 3px;
-            height: 40px;
-            background: linear-gradient(180deg, #667eea, #764ba2);
+            width: 2px;
+            height: 50px;
+            background: var(--navy);
             margin: 0 auto;
         }
 
-        .connector.short {
-            height: 24px;
-        }
+        .connector.short { height: 30px; }
 
-        .connector.dashed {
-            background: none;
-            border-left: 3px dashed rgba(255,255,255,0.3);
-        }
-
-        /* Node Styles */
+        /* Node */
         .node {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 16px;
-            padding: 20px 28px;
-            text-align: center;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 24px 32px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             position: relative;
         }
 
         .node:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+            border-color: var(--navy);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        .node.primary {
-            background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-            border: 2px solid #667eea;
-        }
-
-        .node.yellow {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+        .node.navy {
+            background: var(--navy);
+            color: #fff;
             border: none;
-            color: #000;
+        }
+
+        .node.gold {
+            background: var(--gold);
+            color: #fff;
+            border: none;
         }
 
         .node.green {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            border: none;
-        }
-
-        .node.red {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: var(--green);
+            color: #fff;
             border: none;
         }
 
         .node.amber {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: var(--amber);
+            color: #fff;
             border: none;
         }
 
-        .node.purple {
-            background: linear-gradient(135deg, #9333ea, #7c3aed);
+        .node.red {
+            background: var(--red);
+            color: #fff;
             border: none;
-        }
-
-        .node.output {
-            background: linear-gradient(135deg, #065f46, #047857);
-            border: 2px solid #22c55e;
         }
 
         .node-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 22px;
+            font-weight: 500;
             margin-bottom: 4px;
         }
 
         .node-subtitle {
-            font-size: 13px;
-            opacity: 0.8;
+            font-size: 14px;
+            opacity: 0.85;
         }
 
         .node .expand-icon {
             position: absolute;
-            right: 16px;
+            right: 24px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 18px;
-            opacity: 0.6;
+            font-size: 12px;
+            opacity: 0.5;
             transition: transform 0.3s;
         }
 
@@ -174,81 +195,131 @@
         .detail-panel {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.4s ease;
-            background: rgba(0,0,0,0.3);
-            border-radius: 0 0 16px 16px;
-            margin-top: -8px;
-            padding: 0 24px;
+            transition: max-height 0.4s ease;
+            background: var(--cream-dark);
+            border-radius: 0 0 4px 4px;
+            margin-top: -4px;
         }
 
         .detail-panel.open {
-            max-height: 600px;
-            padding: 24px;
+            max-height: 500px;
         }
 
-        .detail-panel h4 {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 12px;
-        }
-
-        .detail-panel ul {
-            list-style: none;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-
-        .detail-panel li {
-            padding: 4px 0;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .detail-panel li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: #667eea;
+        .detail-inner {
+            padding: 28px 32px;
         }
 
         .detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 32px;
         }
 
-        .detail-grid .detail-section h4 {
-            color: rgba(255,255,255,0.6);
+        .detail-section h4 {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 14px;
         }
 
-        /* Brief Items */
-        .brief-items {
+        .detail-section ul {
+            list-style: none;
+            font-size: 14px;
+        }
+
+        .detail-section li {
+            padding: 6px 0;
+            padding-left: 18px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .detail-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--navy);
+        }
+
+        /* Brief Tags */
+        .brief-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 12px;
         }
 
-        .brief-item {
-            background: rgba(255,255,255,0.1);
+        .brief-tag {
+            background: #fff;
+            border: 1px solid #ddd;
             padding: 8px 14px;
-            border-radius: 8px;
+            border-radius: 2px;
+            font-size: 13px;
+        }
+
+        .brief-tag.highlight {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        /* Persona Tracks */
+        .persona-tracks {
+            display: flex;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .persona-track {
+            flex: 1;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .persona-track .label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .persona-track .title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 18px;
+        }
+
+        .persona-track .platform {
             font-size: 12px;
+            color: var(--navy);
+            margin-top: 6px;
         }
 
-        .brief-item.highlight {
-            background: rgba(102, 126, 234, 0.3);
-            border: 1px solid rgba(102, 126, 234, 0.5);
+        /* Decision Section */
+        .decision-node {
+            background: #fff;
+            border: 2px solid var(--navy);
+            border-radius: 4px;
+            padding: 20px 32px;
+            text-align: center;
+            max-width: 320px;
+            margin: 0 auto;
         }
 
-        /* Branch Section */
+        .decision-node .node-title {
+            margin-bottom: 0;
+        }
+
+        /* Branches */
         .branch-section {
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 20px 0;
+            gap: 24px;
+            margin: 32px 0;
             position: relative;
         }
 
@@ -256,65 +327,63 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 3px;
-            background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444);
-            border-radius: 3px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--green), var(--amber), var(--red));
         }
 
         .branch {
             flex: 1;
-            max-width: 280px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 30px;
-        }
-
-        .branch .connector {
-            height: 30px;
+            padding-top: 32px;
         }
 
         .branch-label {
-            font-size: 11px;
+            font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             padding: 6px 14px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            border-radius: 2px;
+            margin-bottom: 16px;
         }
 
         .branch-label.green {
-            background: rgba(34, 197, 94, 0.2);
-            color: #22c55e;
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--green);
         }
 
-        .branch-label.yellow {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
+        .branch-label.amber {
+            background: rgba(181, 101, 29, 0.1);
+            color: var(--amber);
         }
 
         .branch-label.red {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
+            background: rgba(155, 44, 44, 0.1);
+            color: var(--red);
         }
 
         /* Threshold Card */
         .threshold-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: left;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 16px 20px;
             width: 100%;
-            margin-top: 12px;
+            text-align: left;
+            margin-bottom: 16px;
         }
 
         .threshold-card h5 {
-            font-size: 12px;
-            margin-bottom: 8px;
-            opacity: 0.8;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 10px;
         }
 
         .threshold-card ul {
@@ -323,104 +392,91 @@
         }
 
         .threshold-card li {
-            padding: 3px 0;
+            padding: 4px 0;
         }
 
-        /* Scale Flow (continues from green) */
-        .scale-flow {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .branch .connector {
+            height: 20px;
+        }
+
+        .branch .connector.green { background: var(--green); }
+        .branch .connector.amber { background: var(--amber); }
+        .branch .connector.red { background: var(--red); }
+
+        .branch .node {
             width: 100%;
-            margin-top: 20px;
         }
 
-        /* Loop Arrow */
-        .loop-arrow {
+        /* Loop indicator */
+        .loop-indicator {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #f59e0b;
-            font-size: 13px;
-            margin-top: 12px;
+            font-size: 12px;
+            color: var(--amber);
+            margin-top: 16px;
         }
 
-        .loop-arrow svg {
-            width: 20px;
-            height: 20px;
+        .loop-indicator svg {
+            width: 16px;
+            height: 16px;
         }
 
         /* End marker */
         .end-marker {
-            width: 16px;
-            height: 16px;
+            width: 12px;
+            height: 12px;
+            background: var(--red);
             border-radius: 50%;
-            background: #ef4444;
-            margin-top: 12px;
+            margin-top: 16px;
         }
 
-        /* Horizontal tracks for personas */
-        .persona-tracks {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin: 16px 0;
-        }
-
-        .persona-track {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            flex: 1;
-            max-width: 200px;
-        }
-
-        .persona-track .label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.6;
-            margin-bottom: 8px;
-        }
-
-        .persona-track .title {
-            font-size: 14px;
+        /* Continue badge */
+        .continue-badge {
+            background: var(--navy);
+            color: #fff;
+            font-size: 10px;
             font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 2px;
+            margin-top: 16px;
         }
 
-        .persona-track .platform {
-            font-size: 12px;
-            color: #667eea;
-            margin-top: 6px;
+        /* Phase 4 */
+        .phase-4 {
+            max-width: 600px;
+            margin-top: 40px;
         }
 
         /* Team Legend */
         .team-legend {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            bottom: 24px;
+            left: 24px;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
         .team-legend h4 {
-            font-size: 11px;
+            font-size: 10px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            opacity: 0.6;
+            color: var(--text-light);
             margin-bottom: 12px;
         }
 
         .team-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            margin: 6px 0;
+            gap: 10px;
+            font-size: 13px;
+            margin: 8px 0;
         }
 
         .team-dot {
@@ -429,74 +485,75 @@
             border-radius: 50%;
         }
 
-        .team-dot.research { background: #667eea; }
-        .team-dot.creative { background: #FFD700; }
+        .team-dot.research { background: var(--navy); }
+        .team-dot.creative { background: var(--gold); }
         .team-dot.paid { background: #4169E1; }
-        .team-dot.lifecycle { background: #9333ea; }
+        .team-dot.lifecycle { background: #7c3aed; }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .branch-section {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .branch-section::before {
-                display: none;
-            }
-
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
+            .container { padding: 40px 20px; }
+            .branch-section { flex-direction: column; gap: 40px; }
+            .branch-section::before { display: none; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .persona-tracks { flex-direction: column; }
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        Persona Funnel Validation & Scaling Framework
+    </div>
+
+    <nav class="nav">
+        <div class="logo">Jones Road</div>
+    </nav>
+
     <div class="container">
-        <header>
-            <h1>Persona Funnel Validation & Scaling</h1>
-            <p>Click any node to expand details</p>
-        </header>
+        <div class="page-title">
+            <h1>Persona Funnel Framework</h1>
+            <p>Click any section to expand details</p>
+        </div>
 
         <div class="flow">
 
-            <!-- PHASE 1: RESEARCH -->
+            <!-- PHASE 1 -->
             <div class="phase">
-                <div class="phase-header">
-                    <span class="phase-badge">Phase 1</span>
-                </div>
+                <span class="phase-label">Phase 1 — Research</span>
 
-                <div class="node primary" onclick="toggleDetail('research')">
-                    <div class="node-title">Research: Outersignal Personas</div>
-                    <div class="node-subtitle">Everyone starts here</div>
+                <div class="node navy" onclick="toggleDetail('research')">
+                    <div class="node-title">Outersignal Personas</div>
+                    <div class="node-subtitle">Everyone starts here — build the persona brief</div>
                     <span class="expand-icon">▼</span>
                 </div>
 
                 <div class="detail-panel" id="research-detail">
-                    <div class="detail-grid">
-                        <div class="detail-section">
-                            <h4>Research Activities</h4>
-                            <ul>
-                                <li>Push segments to Klaviyo → persona surveys</li>
-                                <li>Analyze reviews for "golden nugget" copy</li>
-                                <li>Reddit/FB group psychographics research</li>
-                                <li>Listenlabs survey</li>
-                                <li>Create IG account as persona</li>
-                                <li>Scan FB Ads Library (non-competitive)</li>
-                                <li>TikTok trends for key topics</li>
-                            </ul>
-                        </div>
-                        <div class="detail-section">
-                            <h4>Output: Persona Brief</h4>
-                            <div class="brief-items">
-                                <span class="brief-item">Who they are</span>
-                                <span class="brief-item">Demographics</span>
-                                <span class="brief-item highlight">Psychographics</span>
-                                <span class="brief-item">Motivations</span>
-                                <span class="brief-item highlight">4-6 value props to test</span>
-                                <span class="brief-item highlight">Creator profiles</span>
-                                <span class="brief-item highlight">Non-competitive ads</span>
-                                <span class="brief-item highlight">Golden nugget reviews</span>
+                    <div class="detail-inner">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>Research Activities</h4>
+                                <ul>
+                                    <li>Push segments to Klaviyo → persona surveys</li>
+                                    <li>Analyze reviews for "golden nugget" copy</li>
+                                    <li>Reddit/FB group research</li>
+                                    <li>Listenlabs survey</li>
+                                    <li>Create IG account as the persona</li>
+                                    <li>Scan FB Ads Library (non-competitive)</li>
+                                    <li>TikTok trends for key topics</li>
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Output: Persona Brief</h4>
+                                <div class="brief-tags">
+                                    <span class="brief-tag">Who they are</span>
+                                    <span class="brief-tag">Demographics</span>
+                                    <span class="brief-tag highlight">Psychographics</span>
+                                    <span class="brief-tag">Motivations</span>
+                                    <span class="brief-tag highlight">4-6 value props</span>
+                                    <span class="brief-tag highlight">Creator profiles</span>
+                                    <span class="brief-tag highlight">Non-competitive ads</span>
+                                    <span class="brief-tag highlight">Golden nugget reviews</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -505,35 +562,35 @@
 
             <div class="connector"></div>
 
-            <!-- PHASE 2: MVP TESTING -->
+            <!-- PHASE 2 -->
             <div class="phase">
-                <div class="phase-header">
-                    <span class="phase-badge">Phase 2</span>
-                </div>
+                <span class="phase-label">Phase 2 — MVP Testing</span>
 
-                <div class="node yellow" onclick="toggleDetail('mvp')">
-                    <div class="node-title">MVP Static Production & Testing</div>
+                <div class="node gold" onclick="toggleDetail('mvp')">
+                    <div class="node-title">Static Production & Testing</div>
                     <div class="node-subtitle">Launch 12-50 diversified statics</div>
-                    <span class="expand-icon" style="color: #000;">▼</span>
+                    <span class="expand-icon">▼</span>
                 </div>
 
                 <div class="detail-panel" id="mvp-detail">
-                    <div class="detail-grid">
-                        <div class="detail-section">
-                            <h4>Testing Parameters</h4>
-                            <ul>
-                                <li>4-5 unique angles or value props</li>
-                                <li>2-4 products per persona batch</li>
-                                <li>One ad set per persona + product</li>
-                                <li>Direct traffic to LP or PDP</li>
-                                <li>Diversified yet proven formats</li>
-                            </ul>
-                        </div>
-                        <div class="detail-section">
-                            <h4>Goal</h4>
-                            <p style="font-size: 14px; line-height: 1.6; opacity: 0.9;">
-                                Launch enough assets to rule out execution as barrier to success while keeping initial cost low enough to not create risk
-                            </p>
+                    <div class="detail-inner">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>Testing Parameters</h4>
+                                <ul>
+                                    <li>4-5 unique angles or value props</li>
+                                    <li>2-4 products per persona batch</li>
+                                    <li>One ad set per persona + product</li>
+                                    <li>Direct traffic to LP or PDP</li>
+                                    <li>Diversified yet proven formats</li>
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Goal</h4>
+                                <p style="font-size: 14px; line-height: 1.7;">
+                                    Launch enough assets to rule out execution as barrier to success while keeping initial cost low enough to not create risk.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -560,7 +617,7 @@
 
                 <div class="connector short"></div>
 
-                <div class="node primary">
+                <div class="node navy">
                     <div class="node-title">Analyze Results</div>
                     <div class="node-subtitle">Within 5-7 days</div>
                 </div>
@@ -568,15 +625,15 @@
 
             <div class="connector"></div>
 
-            <!-- DECISION POINT -->
-            <div class="node" style="background: rgba(255,255,255,0.15); border: 2px solid #fff; max-width: 300px;">
+            <!-- DECISION -->
+            <div class="decision-node">
                 <div class="node-title">Decision Point</div>
                 <div class="node-subtitle">Evaluate against thresholds</div>
             </div>
 
             <!-- BRANCHES -->
             <div class="branch-section">
-                <!-- GREEN: Scale -->
+                <!-- GREEN -->
                 <div class="branch">
                     <span class="branch-label green">Green Light</span>
 
@@ -589,33 +646,35 @@
                         </ul>
                     </div>
 
-                    <div class="connector short" style="background: #22c55e;"></div>
+                    <div class="connector short green"></div>
 
-                    <div class="node green" onclick="toggleDetail('scale')" style="width: 100%;">
+                    <div class="node green" onclick="toggleDetail('scale')">
                         <div class="node-title">Scale Winners</div>
                         <span class="expand-icon">▼</span>
                     </div>
 
                     <div class="detail-panel" id="scale-detail" style="width: 100%;">
-                        <h4>Scaling Actions</h4>
-                        <ul>
-                            <li>Scale within ad set & campaigns</li>
-                            <li>Produce 2nd batch of statics</li>
-                            <li>Create sub-persona batches</li>
-                            <li>Animate to GIFs/short videos</li>
-                            <li>Test awareness levels</li>
-                            <li>Test unique mechanisms</li>
-                        </ul>
+                        <div class="detail-inner">
+                            <div class="detail-section">
+                                <h4>Scaling Actions</h4>
+                                <ul>
+                                    <li>Scale within ad set & campaigns</li>
+                                    <li>Produce 2nd batch of statics</li>
+                                    <li>Create sub-persona batches</li>
+                                    <li>Animate to GIFs/short videos</li>
+                                    <li>Test awareness levels</li>
+                                    <li>Test unique mechanisms</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="connector short" style="background: #22c55e;"></div>
-
-                    <span class="phase-badge" style="font-size: 10px;">Phase 3 → 4</span>
+                    <div class="continue-badge">Continue to Phase 4</div>
                 </div>
 
-                <!-- YELLOW: Iterate -->
+                <!-- YELLOW -->
                 <div class="branch">
-                    <span class="branch-label yellow">Yellow Light</span>
+                    <span class="branch-label amber">Yellow Light</span>
 
                     <div class="threshold-card">
                         <h5>Thresholds</h5>
@@ -626,24 +685,28 @@
                         </ul>
                     </div>
 
-                    <div class="connector short" style="background: #f59e0b;"></div>
+                    <div class="connector short amber"></div>
 
-                    <div class="node amber" onclick="toggleDetail('iterate')" style="width: 100%;">
+                    <div class="node amber" onclick="toggleDetail('iterate')">
                         <div class="node-title">Iterate</div>
                         <span class="expand-icon">▼</span>
                     </div>
 
                     <div class="detail-panel" id="iterate-detail" style="width: 100%;">
-                        <h4>Iteration Actions</h4>
-                        <ul>
-                            <li>Refine angle/messaging</li>
-                            <li>Test new creative formats</li>
-                            <li>Adjust targeting</li>
-                            <li>Consider sub-segments</li>
-                        </ul>
+                        <div class="detail-inner">
+                            <div class="detail-section">
+                                <h4>Iteration Actions</h4>
+                                <ul>
+                                    <li>Refine angle/messaging</li>
+                                    <li>Test new creative formats</li>
+                                    <li>Adjust targeting</li>
+                                    <li>Consider sub-segments</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="loop-arrow">
+                    <div class="loop-indicator">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M1 4v6h6M23 20v-6h-6"/>
                             <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
@@ -652,7 +715,7 @@
                     </div>
                 </div>
 
-                <!-- RED: Cut -->
+                <!-- RED -->
                 <div class="branch">
                     <span class="branch-label red">Red Light</span>
 
@@ -665,41 +728,42 @@
                         </ul>
                     </div>
 
-                    <div class="connector short" style="background: #ef4444;"></div>
+                    <div class="connector short red"></div>
 
-                    <div class="node red" onclick="toggleDetail('cut')" style="width: 100%;">
+                    <div class="node red" onclick="toggleDetail('cut')">
                         <div class="node-title">Cut Losses</div>
                         <span class="expand-icon">▼</span>
                     </div>
 
                     <div class="detail-panel" id="cut-detail" style="width: 100%;">
-                        <h4>Cut Actions</h4>
-                        <ul>
-                            <li>Cut losses immediately</li>
-                            <li>Document learnings</li>
-                            <li>Apply insights elsewhere</li>
-                            <li>Move on from concept</li>
-                        </ul>
+                        <div class="detail-inner">
+                            <div class="detail-section">
+                                <h4>Cut Actions</h4>
+                                <ul>
+                                    <li>Cut losses immediately</li>
+                                    <li>Document learnings</li>
+                                    <li>Apply insights elsewhere</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="end-marker"></div>
                 </div>
             </div>
 
-            <!-- PHASE 3-4: SCALING PRODUCTION (continues from green) -->
-            <div class="scale-flow">
-                <div class="phase" style="max-width: 600px;">
-                    <div class="phase-header">
-                        <span class="phase-badge">Phase 4: Scaling Production</span>
-                    </div>
+            <!-- PHASE 4 -->
+            <div class="phase phase-4">
+                <span class="phase-label">Phase 4 — Scaling Production</span>
 
-                    <div class="node purple" onclick="toggleDetail('production')">
-                        <div class="node-title">Package Data → UGC Briefs</div>
-                        <div class="node-subtitle">Organic (1-3 creators) + Paid (5-10 creators)</div>
-                        <span class="expand-icon">▼</span>
-                    </div>
+                <div class="node navy" onclick="toggleDetail('production')">
+                    <div class="node-title">Package Data → UGC Briefs</div>
+                    <div class="node-subtitle">Organic (1-3 creators) + Paid (5-10 creators)</div>
+                    <span class="expand-icon">▼</span>
+                </div>
 
-                    <div class="detail-panel" id="production-detail">
+                <div class="detail-panel" id="production-detail">
+                    <div class="detail-inner">
                         <div class="detail-grid">
                             <div class="detail-section">
                                 <h4>Organic Path</h4>
@@ -717,13 +781,13 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="connector short"></div>
+                <div class="connector short"></div>
 
-                    <div class="node purple">
-                        <div class="node-title">Lifecycle Retargeting</div>
-                        <div class="node-subtitle">Based on expressed need states</div>
-                    </div>
+                <div class="node navy">
+                    <div class="node-title">Lifecycle Retargeting</div>
+                    <div class="node-subtitle">Based on expressed need states</div>
                 </div>
             </div>
 
@@ -744,7 +808,6 @@
             const panel = document.getElementById(id + '-detail');
             const node = panel.previousElementSibling;
 
-            // Close all other panels
             document.querySelectorAll('.detail-panel').forEach(p => {
                 if (p.id !== id + '-detail') {
                     p.classList.remove('open');
@@ -752,7 +815,6 @@
                 }
             });
 
-            // Toggle this panel
             panel.classList.toggle('open');
             node.classList.toggle('expanded');
         }
