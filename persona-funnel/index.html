@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persona Funnel | Jones Road</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --navy: #1a3a5c;
+            --navy-light: #2a4a6c;
+            --cream: #f8f6f3;
+            --cream-dark: #eae6df;
+            --gold: #b8975c;
+            --green: #2d6a4f;
+            --amber: #b5651d;
+            --red: #9b2c2c;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --text-muted: #999;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fff;
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Floating Controls */
+        .controls-float {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .control-group label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            min-width: 40px;
+        }
+
+        .control-btn {
+            background: var(--cream);
+            border: 1px solid #ddd;
+            color: var(--text);
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        .control-btn.active {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        .zoom-display {
+            font-size: 10px;
+            min-width: 30px;
+            text-align: center;
+            color: var(--text);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            overflow-x: auto;
+            transition: max-width 0.3s ease;
+        }
+
+        .container.full-width {
+            max-width: 100%;
+            padding: 20px 40px;
+        }
+
+        .flow-wrapper {
+            transform-origin: top center;
+            transition: transform 0.2s ease;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            color: var(--navy);
+        }
+
+        .page-title p {
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        /* Flow */
+        .flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Horizontal Layout */
+        .flow.horizontal {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .flow.horizontal .phase {
+            min-width: 300px;
+            max-width: 350px;
+            flex-shrink: 0;
+        }
+
+        .flow.horizontal .connector {
+            display: none;
+        }
+
+        .flow.horizontal .decision-flowchart {
+            flex-direction: column;
+            gap: 8px;
+            max-width: none;
+        }
+
+        .flow.horizontal .decision-path {
+            width: 100%;
+        }
+
+        .flow.horizontal .detail-panel.open {
+            max-height: 600px;
+        }
+
+        .flow.horizontal .decision-result {
+            font-size: 10px;
+        }
+
+        /* Phase */
+        .phase {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 6px;
+        }
+
+        .phase-label {
+            display: inline-block;
+            background: var(--navy);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 2px;
+            margin-bottom: 8px;
+        }
+
+        /* Connector */
+        .connector {
+            width: 2px;
+            height: 30px;
+            background: var(--navy);
+            margin: 8px auto;
+        }
+
+        .connector.short { height: 16px; margin: 6px auto; }
+
+        /* Node */
+        .node {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .node:hover {
+            border-color: var(--navy);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .node.navy { background: var(--navy); color: #fff; border: none; }
+        .node.gold { background: var(--gold); color: #fff; border: none; }
+        .node.green { background: var(--green); color: #fff; border: none; }
+        .node.amber { background: var(--amber); color: #fff; border: none; }
+        .node.red { background: var(--red); color: #fff; border: none; }
+
+        .node-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .node-subtitle {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .node .expand-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            opacity: 0.5;
+            transition: transform 0.3s;
+        }
+
+        .node.expanded .expand-icon {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        /* Detail Panel */
+        .detail-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: var(--cream);
+            border-radius: 0 0 4px 4px;
+            margin-top: -4px;
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+
+        .detail-panel.open {
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .detail-inner {
+            padding: 12px 16px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .detail-section h4 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            background: var(--navy);
+            padding: 6px 10px;
+            margin: 0 -10px 10px -10px;
+            border-radius: 2px;
+        }
+
+        .detail-section ul {
+            list-style: none;
+            font-size: 11px;
+        }
+
+        .detail-section li {
+            padding: 3px 0;
+            padding-left: 12px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .detail-section li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--navy);
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        /* Brief Tags */
+        .brief-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .brief-tag {
+            background: #fff;
+            border: 1px solid #ddd;
+            color: var(--text);
+            padding: 8px 14px;
+            border-radius: 2px;
+            font-size: 13px;
+        }
+
+        .brief-tag.highlight {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        /* Persona Tracks */
+        .persona-tracks {
+            display: flex;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .persona-track {
+            flex: 1;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .persona-track .label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .persona-track .title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 18px;
+            color: var(--text);
+        }
+
+        .persona-track .platform {
+            font-size: 12px;
+            color: var(--navy);
+            margin-top: 6px;
+        }
+
+        /* Analyze Badge */
+        .analyze-badge {
+            background: var(--navy);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 10px 24px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .analyze-badge span {
+            opacity: 0.7;
+            font-weight: 400;
+            margin-left: 4px;
+        }
+
+        /* Decision Flowchart */
+        .decision-flowchart {
+            display: none;
+            gap: 6px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .decision-flowchart.visible {
+            display: flex;
+        }
+
+        .decision-path {
+            flex: 1;
+            background: #fff;
+            border-radius: 4px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .decision-path:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Result Panel - appears below cards */
+        .decision-result {
+            display: none;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 4px;
+            animation: fadeSlideIn 0.2s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .decision-result.active { display: block; }
+        .decision-result.green { background: rgba(74, 159, 124, 0.15); border: 1px solid var(--green); }
+        .decision-result.amber { background: rgba(212, 145, 92, 0.15); border: 1px solid var(--amber); }
+        .decision-result.red { background: rgba(196, 92, 92, 0.15); border: 1px solid var(--red); }
+
+        .decision-result .result-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .decision-result .result-header h4 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .decision-result.green .result-header h4 { color: var(--green); }
+        .decision-result.amber .result-header h4 { color: var(--amber); }
+        .decision-result.red .result-header h4 { color: var(--red); }
+
+        .decision-result ul {
+            list-style: none;
+            font-size: 11px;
+            margin: 0 0 8px 0;
+            padding: 0;
+            color: var(--text);
+        }
+
+        .decision-result li {
+            padding: 2px 0;
+            padding-left: 12px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .decision-result li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            font-size: 10px;
+        }
+
+        .decision-result.green li::before { color: var(--green); }
+        .decision-result.amber li::before { color: var(--amber); }
+        .decision-result.red li::before { color: var(--red); }
+
+        .decision-result .result-outcome {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+        }
+
+        .decision-result.green .result-outcome { background: var(--green); }
+        .decision-result.amber .result-outcome { background: var(--amber); }
+        .decision-result.red .result-outcome { background: var(--red); }
+
+        .decision-path.selected {
+            box-shadow: 0 0 0 2px var(--navy);
+        }
+
+        /* Yellow Loop Callout */
+        .loop-callout {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(181, 101, 29, 0.1);
+            border-left: 2px solid var(--amber);
+            padding: 6px 10px;
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 8px;
+            font-size: 10px;
+            color: var(--text);
+        }
+
+        .loop-callout .loop-icon {
+            font-size: 14px;
+            color: var(--amber);
+        }
+
+        .path-header {
+            width: 100%;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+            position: relative;
+        }
+
+        .path-header .expand-hint {
+            margin-left: auto;
+            font-size: 10px;
+            opacity: 0.7;
+            transition: transform 0.3s ease;
+        }
+
+        .decision-path.open .path-header .expand-hint {
+            transform: rotate(180deg);
+        }
+
+        .path-header.green { background: var(--green); }
+        .path-header.amber { background: var(--amber); }
+        .path-header.red { background: var(--red); }
+
+        .path-header h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .path-icon {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .path-if, .path-then {
+            width: 100%;
+            padding: 6px 10px;
+        }
+
+        .if-label, .then-label {
+            display: inline-block;
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            background: var(--cream-dark);
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        .path-if ul, .path-then ul {
+            list-style: none;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+            color: var(--text);
+        }
+
+        .path-if li, .path-then li {
+            padding: 1px 0;
+            padding-left: 10px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .path-if li::before, .path-then li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--navy);
+            font-size: 10px;
+        }
+
+        .path-arrow {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 2px 0;
+        }
+
+        .path-arrow.green { color: var(--green); }
+        .path-arrow.amber { color: var(--amber); }
+        .path-arrow.red { color: var(--red); }
+
+        .path-outcome {
+            width: 100%;
+            padding: 10px 16px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .path-outcome.green { background: var(--green); }
+        .path-outcome.amber { background: var(--amber); }
+        .path-outcome.red { background: var(--red); }
+
+        /* Phase Subtitle */
+        .phase-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: -12px 0 16px 0;
+            text-align: left;
+        }
+
+        /* Phase Complete */
+        .phase-complete {
+            background: linear-gradient(135deg, var(--green), #3d8b6a);
+            color: #fff;
+            padding: 24px 32px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .phase-complete .complete-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .phase-complete h4 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 22px;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+        }
+
+        .phase-complete p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Notes Section */
+        .notes-section {
+            margin-top: 24px;
+            border-top: 1px solid #ddd;
+            padding-top: 16px;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 0;
+        }
+
+        .notes-header h4 {
+            margin-bottom: 0;
+            background: none;
+            color: var(--navy);
+            padding: 0;
+            margin: 0;
+            font-size: 11px;
+        }
+
+        .notes-toggle {
+            font-size: 18px;
+            color: var(--navy);
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+
+        .notes-section.open .notes-toggle {
+            transform: rotate(45deg);
+        }
+
+        .notes-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .notes-section.open .notes-content {
+            max-height: 300px;
+        }
+
+        .notes-content textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            margin-top: 12px;
+            background: #fff;
+            color: var(--text);
+        }
+
+        .notes-content textarea:focus {
+            outline: none;
+            border-color: var(--navy);
+        }
+
+        .notes-content textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 40px 20px; }
+            .branch-section { flex-direction: column; gap: 40px; }
+            .branch-section::before { display: none; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .persona-tracks { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-title">
+            <h1>Persona Funnel Framework</h1>
+            <p>Click any section to expand details</p>
+        </div>
+
+        <div class="flow-wrapper" id="flow-wrapper">
+        <div class="flow" id="main-flow">
+
+            <!-- PHASE 1 -->
+            <div class="phase">
+                <span class="phase-label">Phase 1 — Research</span>
+
+                <div class="node navy" onclick="toggleDetail('research')">
+                    <div class="node-title">Audience Research</div>
+                    <div class="node-subtitle">Begin with output of angles and insights</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="research-detail">
+                    <div class="detail-inner">
+                        <div class="detail-section" style="margin-bottom: 24px;">
+                            <h4>Research Activities</h4>
+                            <ul>
+                                <li>Push segments to Klaviyo and email specific "persona" surveys designed to enrich insights</li>
+                                <li>Analyze reviews from this cohort to find shared insider language, desires, and "golden nugget" reviews for copy</li>
+                                <li>Perform internet/Reddit, FB group research to understand desires, motivations, psychographics of persona</li>
+                                <li>Listenlabs survey to understand the persona more</li>
+                                <li>Create IG account and build it/interact as the persona</li>
+                                <li>Scan FB Ads Library for non-competitive brands who successfully market to this persona</li>
+                                <li>Use TikTok trends data to find top TikToks for key topics <em style="opacity: 0.7;">(Ex: this angle/topic is trending)</em></li>
+                            </ul>
+                        </div>
+                        <div class="detail-section">
+                            <h4>End Output: 1-Pager / Persona Brief</h4>
+                            <ul>
+                                <li>Who they are</li>
+                                <li>Professions</li>
+                                <li>Demographics</li>
+                                <li>Psychographics</li>
+                                <li>Key motivations and desires</li>
+                                <li>Why our brand appeals</li>
+                                <li>4-6 core value props/angles to test</li>
+                                <li>Creator profiles this persona follows</li>
+                                <li>Creators that fit this persona</li>
+                                <li>Successful non-competitive ads</li>
+                                <li>Golden nugget reviews</li>
+                                <li>Sample customer profiles</li>
+                            </ul>
+                        </div>
+
+                        <!-- Notes Section -->
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('research-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="research-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- PHASE 2 -->
+            <div class="phase">
+                <span class="phase-label">Phase 2 — MVP Testing</span>
+
+                <div class="node gold" onclick="toggleDetail('mvp')">
+                    <div class="node-title">Static Production & Testing</div>
+                    <div class="node-subtitle">Launch 12-50 diversified statics</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="mvp-detail">
+                    <div class="detail-inner">
+                        <div class="detail-section" style="margin-bottom: 24px;">
+                            <h4>Goals</h4>
+                            <ul>
+                                <li>Launch enough assets to rule out execution as barrier to success while keeping initial cost low enough to not create risk</li>
+                                <li>Test viability of persona with low risk</li>
+                                <li>Test value props and angles</li>
+                                <li>Generate learnings to be used for future phases</li>
+                            </ul>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Testing Parameters</h4>
+                            <ul>
+                                <li>Launch a toolkit of 12-50 diversified statics</li>
+                                <li>Test minimum 4-5 unique angles or value props across diversified yet proven formats</li>
+                                <li>Test 2-4 products per initial persona batch</li>
+                                <li>Direct traffic to generic landing page or PDP</li>
+                                <li>Launch one ad set per persona and product</li>
+                                <li>Analyze results within 5-7 days</li>
+                            </ul>
+                        </div>
+
+                        <!-- Notes Section -->
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('mvp-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="mvp-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- DECISION POINT (not a numbered phase) -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label" style="background: var(--gold);">Decision Point</span>
+
+                <div class="decision-flowchart visible always-visible" id="phase3-flowchart">
+                    <!-- GREEN PATH -->
+                    <div class="decision-path" onclick="selectPath('green')">
+                        <div class="path-header green">
+                            <span class="path-icon">✓</span>
+                            <h3>Green Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>$2k/day on concept</li>
+                                <li>≥ 0.8 ROAS</li>
+                                <li>≥ 60% New Visit Rate</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- YELLOW PATH -->
+                    <div class="decision-path" onclick="selectPath('amber')">
+                        <div class="path-header amber">
+                            <span class="path-icon">⟳</span>
+                            <h3>Yellow Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>$1k/day on concept</li>
+                                <li>≥ 0.6 ROAS</li>
+                                <li>≥ 50% New Visit Rate</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- RED PATH -->
+                    <div class="decision-path" onclick="selectPath('red')">
+                        <div class="path-header red">
+                            <span class="path-icon">✕</span>
+                            <h3>Red Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Minimal spend</li>
+                                <li>&lt; 0.5 ROAS</li>
+                                <li>&lt; 40% New Visit Rate</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result panels - appear below when path is selected -->
+                <div class="decision-result green" id="result-green">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Scale Winners</h4>
+                    </div>
+                    <ul>
+                        <li>Scale within ad set & campaigns</li>
+                        <li>Produce 2nd batch of statics</li>
+                        <li>Create sub-persona batches</li>
+                        <li>Animate to GIFs/short videos</li>
+                        <li>Test awareness levels</li>
+                    </ul>
+                    <span class="result-outcome">Continue to Phase 4 →</span>
+                </div>
+
+                <div class="decision-result amber" id="result-amber">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Analyze, Reset, and Iterate</h4>
+                    </div>
+
+                    <div class="loop-callout">
+                        <span class="loop-icon">↻</span>
+                        <span>This is a loop — repeat Phase 2 → 3 until you hit Green</span>
+                    </div>
+
+                    <ul>
+                        <li>Refine angle/messaging</li>
+                        <li>Test new creative formats</li>
+                        <li>Adjust targeting</li>
+                        <li>Consider sub-segments</li>
+                    </ul>
+                    <p style="font-size: 12px; font-weight: 600; color: var(--amber); margin: 16px 0 10px 0; text-transform: uppercase; letter-spacing: 1px;">Ask Yourself</p>
+                    <ul>
+                        <li>What are the core angles worth iterating on?</li>
+                        <li>What was resonating about those?</li>
+                        <li>What might have fallen short?</li>
+                        <li>What is our hypothesis for the next phase?</li>
+                    </ul>
+
+                    <span class="result-outcome">↻ Back to Phase 2</span>
+                </div>
+
+                <div class="decision-result red" id="result-red">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Cut Losses</h4>
+                    </div>
+                    <ul>
+                        <li>Cut losses immediately</li>
+                        <li>Document learnings</li>
+                        <li>Apply insights elsewhere</li>
+                    </ul>
+                    <span class="result-outcome">● End</span>
+                </div>
+            </div>
+
+            <!-- PHASE 3: UGC -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 3 — UGC</span>
+                <p class="phase-subtitle">Platform: Meta</p>
+
+                <div class="node navy" onclick="toggleDetail('ugc')">
+                    <div class="node-title">UGC Production & Testing</div>
+                    <div class="node-subtitle">Brief creators with winning angles</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="ugc-detail">
+                    <div class="detail-inner">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>Goals</h4>
+                                <ul>
+                                    <li>Validate winning static concepts with UGC format</li>
+                                    <li>Test creator-led content at scale</li>
+                                    <li>Achieve 20% hit rate on concepts</li>
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Execution</h4>
+                                <ul>
+                                    <li>Brief 5-10 creators per winning angle</li>
+                                    <li>Use winning copy/hooks from statics</li>
+                                    <li>Test multiple creator styles</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('ugc-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="ugc-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short"></div>
+
+                <div class="decision-flowchart">
+                    <div class="decision-path" onclick="selectPath('green', 3)">
+                        <div class="path-header green">
+                            <span class="path-icon">✓</span>
+                            <h3>Green Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Decision Point thresholds met</li>
+                                <li>+ 20% hit rate on UGC</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('amber', 3)">
+                        <div class="path-header amber">
+                            <span class="path-icon">⟳</span>
+                            <h3>Yellow Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Some traction but below threshold</li>
+                                <li>Promising signals</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('red', 3)">
+                        <div class="path-header red">
+                            <span class="path-icon">✕</span>
+                            <h3>Red Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>UGC underperforms statics</li>
+                                <li>No scalable winners</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision-result green" id="result-green-3">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Expand Platforms</h4>
+                    </div>
+                    <ul>
+                        <li>Launch on TikTok</li>
+                        <li>Launch on AppLovin</li>
+                        <li>Launch on Pinterest</li>
+                        <li>Launch on YouTube Shorts</li>
+                    </ul>
+                    <span class="result-outcome">Continue to Phase 4 →</span>
+                </div>
+
+                <div class="decision-result amber" id="result-amber-3">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Iterate UGC</h4>
+                    </div>
+                    <div class="loop-callout">
+                        <span class="loop-icon">↻</span>
+                        <span>Test new creators/styles until Green</span>
+                    </div>
+                    <ul>
+                        <li>Try different creator profiles</li>
+                        <li>Adjust briefs based on learnings</li>
+                        <li>Test new hooks/angles</li>
+                    </ul>
+                    <span class="result-outcome">↻ Iterate Phase 3</span>
+                </div>
+
+                <div class="decision-result red" id="result-red-3">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Stay at Statics</h4>
+                    </div>
+                    <ul>
+                        <li>This persona works best with statics</li>
+                        <li>Continue scaling Meta statics</li>
+                        <li>Document UGC learnings</li>
+                    </ul>
+                    <span class="result-outcome">● End at Meta Statics</span>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- PHASE 4: Partnership Ads -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 4 — Partnership Ads</span>
+                <p class="phase-subtitle">Platforms: Multi-platform</p>
+
+                <div class="node navy" onclick="toggleDetail('partnership')">
+                    <div class="node-title">Partner & Influencer Briefs</div>
+                    <div class="node-subtitle">Scale through partnerships</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="partnership-detail">
+                    <div class="detail-inner">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>Initial Cohort</h4>
+                                <ul>
+                                    <li>Brief 10 partners with winning learnings</li>
+                                    <li>Use top-performing UGC as reference</li>
+                                    <li>Test partnership ad formats</li>
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Expand To</h4>
+                                <ul>
+                                    <li>Influencer collaborations</li>
+                                    <li>Substacks</li>
+                                    <li>Podcasts</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('partnership-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="partnership-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short"></div>
+
+                <div class="decision-flowchart">
+                    <div class="decision-path" onclick="selectPath('green', 4)">
+                        <div class="path-header green">
+                            <span class="path-icon">✓</span>
+                            <h3>Green Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Partnerships driving scale</li>
+                                <li>Positive ROI on partner spend</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('amber', 4)">
+                        <div class="path-header amber">
+                            <span class="path-icon">⟳</span>
+                            <h3>Yellow Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Some partners working</li>
+                                <li>Need optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('red', 4)">
+                        <div class="path-header red">
+                            <span class="path-icon">✕</span>
+                            <h3>Red Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Partnerships not efficient</li>
+                                <li>UGC outperforms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision-result green" id="result-green-4">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Scale Partnerships</h4>
+                    </div>
+                    <ul>
+                        <li>Expand partner cohort</li>
+                        <li>Build influencer program</li>
+                        <li>Launch podcast/substack campaigns</li>
+                    </ul>
+                    <span class="result-outcome">Continue to Phase 5 →</span>
+                </div>
+
+                <div class="decision-result amber" id="result-amber-4">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Optimize Partnerships</h4>
+                    </div>
+                    <div class="loop-callout">
+                        <span class="loop-icon">↻</span>
+                        <span>Iterate on partner selection & briefs</span>
+                    </div>
+                    <ul>
+                        <li>Double down on working partners</li>
+                        <li>Cut underperformers</li>
+                        <li>Refine brief approach</li>
+                    </ul>
+                    <span class="result-outcome">↻ Iterate Phase 4</span>
+                </div>
+
+                <div class="decision-result red" id="result-red-4">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Stay at UGC</h4>
+                    </div>
+                    <ul>
+                        <li>This persona scales best with UGC</li>
+                        <li>Continue multi-platform UGC</li>
+                        <li>Document partnership learnings</li>
+                    </ul>
+                    <span class="result-outcome">● End at UGC Level</span>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- PHASE 5: Elevated Production -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 5 — Elevated Production</span>
+                <p class="phase-subtitle">Platforms: All digital</p>
+
+                <div class="node navy" onclick="toggleDetail('elevated')">
+                    <div class="node-title">Higher-Quality Creative</div>
+                    <div class="node-subtitle">Polished production with proven concepts</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="elevated-detail">
+                    <div class="detail-inner">
+                        <div class="detail-section">
+                            <h4>Production Styles</h4>
+                            <ul>
+                                <li>Studio shoots with top-performing creators</li>
+                                <li>Higher production value edits</li>
+                                <li>Brand-elevated UGC hybrid</li>
+                                <li>Testimonial compilations</li>
+                            </ul>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('elevated-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="elevated-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short"></div>
+
+                <div class="decision-flowchart">
+                    <div class="decision-path" onclick="selectPath('green', 5)">
+                        <div class="path-header green">
+                            <span class="path-icon">✓</span>
+                            <h3>Green Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Elevated content outperforms</li>
+                                <li>Ready for broadcast scale</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('amber', 5)">
+                        <div class="path-header amber">
+                            <span class="path-icon">⟳</span>
+                            <h3>Yellow Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Mixed results</li>
+                                <li>Some styles working</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('red', 5)">
+                        <div class="path-header red">
+                            <span class="path-icon">✕</span>
+                            <h3>Red Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Lo-fi outperforms polished</li>
+                                <li>ROI doesn't justify cost</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision-result green" id="result-green-5">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Go Broadcast</h4>
+                    </div>
+                    <ul>
+                        <li>Prepare TV-ready creative</li>
+                        <li>Build YouTube long-form strategy</li>
+                        <li>Scale elevated production</li>
+                    </ul>
+                    <span class="result-outcome">Continue to Phase 6 →</span>
+                </div>
+
+                <div class="decision-result amber" id="result-amber-5">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Refine Production</h4>
+                    </div>
+                    <div class="loop-callout">
+                        <span class="loop-icon">↻</span>
+                        <span>Test different production styles</span>
+                    </div>
+                    <ul>
+                        <li>Double down on working formats</li>
+                        <li>Test hybrid approaches</li>
+                        <li>Optimize production costs</li>
+                    </ul>
+                    <span class="result-outcome">↻ Iterate Phase 5</span>
+                </div>
+
+                <div class="decision-result red" id="result-red-5">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Stay Lo-Fi</h4>
+                    </div>
+                    <ul>
+                        <li>This persona responds to authenticity</li>
+                        <li>Continue UGC/partnership approach</li>
+                        <li>Save production budget</li>
+                    </ul>
+                    <span class="result-outcome">● End at Partnership Level</span>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- PHASE 6: TV & YouTube -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 6 — TV & YouTube</span>
+                <p class="phase-subtitle">Platforms: Broadcast + Long-form</p>
+
+                <div class="node navy" onclick="toggleDetail('broadcast')">
+                    <div class="node-title">Broadcast Scale</div>
+                    <div class="node-subtitle">TV, YouTube long-form, Connected TV</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="broadcast-detail">
+                    <div class="detail-inner">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>Channels</h4>
+                                <ul>
+                                    <li>Linear TV</li>
+                                    <li>Connected TV (CTV)</li>
+                                    <li>YouTube long-form</li>
+                                    <li>Demand Gen</li>
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Creative</h4>
+                                <ul>
+                                    <li>15/30/60 second spots</li>
+                                    <li>Adapted from winning elevated content</li>
+                                    <li>Brand moment integration</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('broadcast-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="broadcast-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short"></div>
+
+                <div class="phase-complete">
+                    <span class="complete-icon">🏆</span>
+                    <h4>Full Funnel Achieved</h4>
+                    <p>This persona has scaled from research to broadcast</p>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+    <!-- Floating Controls -->
+    <div class="controls-float">
+        <div class="control-group">
+            <label>Zoom</label>
+            <button class="control-btn" onclick="adjustZoom(-0.1)">−</button>
+            <span class="zoom-display" id="zoom-level">100%</span>
+            <button class="control-btn" onclick="adjustZoom(0.1)">+</button>
+        </div>
+        <div class="control-group">
+            <label>Layout</label>
+            <button class="control-btn active" id="btn-vertical" onclick="setLayout('vertical')">↕</button>
+            <button class="control-btn" id="btn-horizontal" onclick="setLayout('horizontal')">↔</button>
+        </div>
+    </div>
+
+    <script>
+        // Zoom and Layout Controls
+        let currentZoom = 1;
+
+        function adjustZoom(delta) {
+            currentZoom = Math.max(0.5, Math.min(1.5, currentZoom + delta));
+            applyZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const wrapper = document.getElementById('flow-wrapper');
+            wrapper.style.transform = `scale(${currentZoom})`;
+            document.getElementById('zoom-level').textContent = Math.round(currentZoom * 100) + '%';
+        }
+
+        function setLayout(layout) {
+            const flow = document.getElementById('main-flow');
+            const container = document.querySelector('.container');
+            const btnVertical = document.getElementById('btn-vertical');
+            const btnHorizontal = document.getElementById('btn-horizontal');
+
+            if (layout === 'horizontal') {
+                flow.classList.add('horizontal');
+                container.classList.add('full-width');
+                btnHorizontal.classList.add('active');
+                btnVertical.classList.remove('active');
+            } else {
+                flow.classList.remove('horizontal');
+                container.classList.remove('full-width');
+                btnVertical.classList.add('active');
+                btnHorizontal.classList.remove('active');
+            }
+        }
+
+        function toggleDetail(id) {
+            const panel = document.getElementById(id + '-detail');
+            const node = panel.previousElementSibling;
+            const phase = node.closest('.phase');
+            const flowchart = phase?.querySelector('.decision-flowchart');
+
+            // Close other panels
+            document.querySelectorAll('.detail-panel').forEach(p => {
+                if (p.id !== id + '-detail') {
+                    p.classList.remove('open');
+                    p.previousElementSibling?.classList.remove('expanded');
+                }
+            });
+
+            // Hide other flowcharts and their results (except always-visible ones)
+            document.querySelectorAll('.decision-flowchart').forEach(f => {
+                if (f !== flowchart && !f.classList.contains('always-visible')) {
+                    f.classList.remove('visible');
+                }
+            });
+            document.querySelectorAll('.decision-result').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('.decision-path').forEach(p => p.classList.remove('selected'));
+
+            panel.classList.toggle('open');
+            node.classList.toggle('expanded');
+
+            // Toggle flowchart visibility
+            if (flowchart) {
+                flowchart.classList.toggle('visible', panel.classList.contains('open'));
+            }
+        }
+
+        function toggleNotes(id) {
+            const notesContent = document.getElementById(id);
+            const notesSection = notesContent.parentElement;
+            notesSection.classList.toggle('open');
+        }
+
+        function togglePhase3() {
+            const flowchart = document.getElementById('phase3-flowchart');
+            const connector = document.querySelector('.phase3-connector');
+            const node = document.querySelector('.phase .node.navy[onclick="togglePhase3()"]');
+
+            // Close other detail panels and flowcharts
+            document.querySelectorAll('.detail-panel').forEach(p => {
+                p.classList.remove('open');
+                p.previousElementSibling?.classList.remove('expanded');
+            });
+            document.querySelectorAll('.decision-flowchart').forEach(f => {
+                if (f.id !== 'phase3-flowchart') {
+                    f.classList.remove('visible');
+                }
+            });
+            document.querySelectorAll('.decision-result').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('.decision-path').forEach(p => p.classList.remove('selected'));
+
+            // Toggle Phase 3
+            flowchart.classList.toggle('visible');
+            node.classList.toggle('expanded');
+            connector.style.display = flowchart.classList.contains('visible') ? 'block' : 'none';
+        }
+
+        function selectPath(color, phase) {
+            // Handle Phase 3 (original, no phase suffix)
+            const resultId = phase ? 'result-' + color + '-' + phase : 'result-' + color;
+            const result = document.getElementById(resultId);
+
+            // Get all decision flowcharts and find the right one
+            const flowcharts = document.querySelectorAll('.decision-flowchart');
+            const flowchartIndex = phase ? phase - 2 : 0; // Decision Point = index 0, Phase 3 = index 1, etc.
+            const paths = flowcharts[flowchartIndex]?.querySelectorAll('.decision-path') || [];
+            const colorIndex = color === 'green' ? 0 : color === 'amber' ? 1 : 2;
+            const clickedPath = paths[colorIndex];
+
+            if (!clickedPath || !result) return;
+
+            // If clicking the same one that's already open, close it
+            if (clickedPath.classList.contains('selected')) {
+                result.classList.remove('active');
+                clickedPath.classList.remove('selected');
+                return;
+            }
+
+            // Only hide results and selections within the same phase
+            const phaseResults = phase ?
+                document.querySelectorAll(`[id^="result-"][id$="-${phase}"]`) :
+                document.querySelectorAll('.decision-result:not([id*="-3"]):not([id*="-4"]):not([id*="-5"])');
+            phaseResults.forEach(r => r.classList.remove('active'));
+            paths.forEach(p => p.classList.remove('selected'));
+
+            // Show selected result
+            result.classList.add('active');
+            clickedPath.classList.add('selected');
+        }
+    </script>
+</body>
+</html>
