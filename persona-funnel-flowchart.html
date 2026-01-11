@@ -326,11 +326,15 @@
 
         /* Decision Flowchart */
         .decision-flowchart {
-            display: flex;
+            display: none;
             gap: 20px;
             width: 100%;
             max-width: 1000px;
             margin: 0 auto;
+        }
+
+        .decision-flowchart.visible {
+            display: flex;
         }
 
         .decision-path {
@@ -826,7 +830,15 @@
             <div class="phase" style="max-width: 100%;">
                 <span class="phase-label">Phase 3 — Scale, Iterate, or Cut</span>
 
-                <div class="decision-flowchart">
+                <div class="node navy" onclick="togglePhase3()">
+                    <div class="node-title">Decision Point</div>
+                    <div class="node-subtitle">Evaluate results against thresholds</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="connector short phase3-connector" style="display: none;"></div>
+
+                <div class="decision-flowchart" id="phase3-flowchart">
                     <!-- GREEN PATH -->
                     <div class="decision-path" onclick="selectPath('green')">
                         <div class="path-header green">
@@ -1394,7 +1406,10 @@
         function toggleDetail(id) {
             const panel = document.getElementById(id + '-detail');
             const node = panel.previousElementSibling;
+            const phase = node.closest('.phase');
+            const flowchart = phase?.querySelector('.decision-flowchart');
 
+            // Close other panels
             document.querySelectorAll('.detail-panel').forEach(p => {
                 if (p.id !== id + '-detail') {
                     p.classList.remove('open');
@@ -1402,14 +1417,52 @@
                 }
             });
 
+            // Hide other flowcharts and their results
+            document.querySelectorAll('.decision-flowchart').forEach(f => {
+                if (f !== flowchart) {
+                    f.classList.remove('visible');
+                }
+            });
+            document.querySelectorAll('.decision-result').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('.decision-path').forEach(p => p.classList.remove('selected'));
+
             panel.classList.toggle('open');
             node.classList.toggle('expanded');
+
+            // Toggle flowchart visibility
+            if (flowchart) {
+                flowchart.classList.toggle('visible', panel.classList.contains('open'));
+            }
         }
 
         function toggleNotes(id) {
             const notesContent = document.getElementById(id);
             const notesSection = notesContent.parentElement;
             notesSection.classList.toggle('open');
+        }
+
+        function togglePhase3() {
+            const flowchart = document.getElementById('phase3-flowchart');
+            const connector = document.querySelector('.phase3-connector');
+            const node = document.querySelector('.phase .node.navy[onclick="togglePhase3()"]');
+
+            // Close other detail panels and flowcharts
+            document.querySelectorAll('.detail-panel').forEach(p => {
+                p.classList.remove('open');
+                p.previousElementSibling?.classList.remove('expanded');
+            });
+            document.querySelectorAll('.decision-flowchart').forEach(f => {
+                if (f.id !== 'phase3-flowchart') {
+                    f.classList.remove('visible');
+                }
+            });
+            document.querySelectorAll('.decision-result').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('.decision-path').forEach(p => p.classList.remove('selected'));
+
+            // Toggle Phase 3
+            flowchart.classList.toggle('visible');
+            node.classList.toggle('expanded');
+            connector.style.display = flowchart.classList.contains('visible') ? 'block' : 'none';
         }
 
         function selectPath(color, phase) {
