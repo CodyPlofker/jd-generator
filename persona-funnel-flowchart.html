@@ -11,21 +11,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --dark: #0d0d0d;
-            --dark-lighter: #1a1a1a;
-            --cream: #f5f0e8;
-            --cream-dark: #e8e3db;
-            --gold: #c4a962;
-            --green: #4a9f7c;
-            --amber: #d4915c;
-            --red: #c45c5c;
-            --text: #f5f0e8;
-            --text-muted: #888;
+            --navy: #1a3a5c;
+            --navy-light: #2a4a6c;
+            --cream: #f8f6f3;
+            --cream-dark: #eae6df;
+            --gold: #b8975c;
+            --green: #2d6a4f;
+            --amber: #b5651d;
+            --red: #9b2c2c;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --text-muted: #999;
         }
 
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--dark);
+            background: #fff;
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
@@ -37,11 +38,11 @@
             bottom: 20px;
             left: 20px;
             z-index: 100;
-            background: var(--dark-lighter);
-            border: 1px solid #333;
+            background: #fff;
+            border: 1px solid #ddd;
             border-radius: 6px;
             padding: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -57,14 +58,14 @@
             font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-muted);
+            color: var(--text-light);
             min-width: 40px;
         }
 
         .control-btn {
-            background: #333;
-            border: 1px solid #444;
-            color: var(--cream);
+            background: var(--cream);
+            border: 1px solid #ddd;
+            color: var(--text);
             padding: 4px 8px;
             border-radius: 3px;
             cursor: pointer;
@@ -73,22 +74,22 @@
         }
 
         .control-btn:hover {
-            background: var(--gold);
-            color: var(--dark);
-            border-color: var(--gold);
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
         }
 
         .control-btn.active {
-            background: var(--gold);
-            color: var(--dark);
-            border-color: var(--gold);
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
         }
 
         .zoom-display {
             font-size: 10px;
             min-width: 30px;
             text-align: center;
-            color: var(--cream);
+            color: var(--text);
         }
 
         /* Main Container */
@@ -121,11 +122,11 @@
             font-weight: 400;
             margin-bottom: 6px;
             letter-spacing: 1px;
-            color: var(--cream);
+            color: var(--navy);
         }
 
         .page-title p {
-            color: var(--text-muted);
+            color: var(--text-light);
             font-size: 13px;
         }
 
@@ -182,8 +183,8 @@
 
         .phase-label {
             display: inline-block;
-            background: var(--gold);
-            color: var(--dark);
+            background: var(--navy);
+            color: #fff;
             font-size: 10px;
             font-weight: 600;
             letter-spacing: 1px;
@@ -197,7 +198,7 @@
         .connector {
             width: 2px;
             height: 30px;
-            background: var(--gold);
+            background: var(--navy);
             margin: 8px auto;
         }
 
@@ -205,8 +206,8 @@
 
         /* Node */
         .node {
-            background: var(--dark-lighter);
-            border: 1px solid #333;
+            background: #fff;
+            border: 1px solid #ddd;
             border-radius: 4px;
             padding: 12px 16px;
             cursor: pointer;
@@ -215,12 +216,12 @@
         }
 
         .node:hover {
-            border-color: var(--gold);
-            box-shadow: 0 2px 10px rgba(196,169,98,0.2);
+            border-color: var(--navy);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
 
-        .node.navy { background: var(--dark-lighter); border: 1px solid var(--gold); color: var(--cream); }
-        .node.gold { background: var(--gold); color: var(--dark); border: none; }
+        .node.navy { background: var(--navy); color: #fff; border: none; }
+        .node.gold { background: var(--gold); color: #fff; border: none; }
         .node.green { background: var(--green); color: #fff; border: none; }
         .node.amber { background: var(--amber); color: #fff; border: none; }
         .node.red { background: var(--red); color: #fff; border: none; }
@@ -256,10 +257,10 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
-            background: #1f1f1f;
+            background: var(--cream);
             border-radius: 0 0 4px 4px;
             margin-top: -4px;
-            border: 1px solid #333;
+            border: 1px solid #ddd;
             border-top: none;
         }
 
@@ -284,8 +285,8 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--dark);
-            background: var(--gold);
+            color: #fff;
+            background: var(--navy);
             padding: 6px 10px;
             margin: 0 -10px 10px -10px;
             border-radius: 2px;
@@ -300,14 +301,14 @@
             padding: 3px 0;
             padding-left: 12px;
             position: relative;
-            color: var(--cream);
+            color: var(--text);
         }
 
         .detail-section li::before {
             content: '•';
             position: absolute;
             left: 0;
-            color: var(--gold);
+            color: var(--navy);
             font-size: 14px;
             line-height: 1.2;
         }
@@ -320,18 +321,18 @@
         }
 
         .brief-tag {
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: var(--cream);
+            background: #fff;
+            border: 1px solid #ddd;
+            color: var(--text);
             padding: 8px 14px;
             border-radius: 2px;
             font-size: 13px;
         }
 
         .brief-tag.highlight {
-            background: var(--gold);
-            color: var(--dark);
-            border-color: var(--gold);
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
         }
 
         /* Persona Tracks */
@@ -343,8 +344,8 @@
 
         .persona-track {
             flex: 1;
-            background: var(--dark-lighter);
-            border: 1px solid #333;
+            background: #fff;
+            border: 1px solid #ddd;
             border-radius: 4px;
             padding: 20px;
             text-align: center;
@@ -355,26 +356,26 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--text-muted);
+            color: var(--text-light);
             margin-bottom: 6px;
         }
 
         .persona-track .title {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-size: 18px;
-            color: var(--cream);
+            color: var(--text);
         }
 
         .persona-track .platform {
             font-size: 12px;
-            color: var(--gold);
+            color: var(--navy);
             margin-top: 6px;
         }
 
         /* Analyze Badge */
         .analyze-badge {
-            background: var(--gold);
-            color: var(--dark);
+            background: var(--navy);
+            color: #fff;
             font-size: 13px;
             font-weight: 500;
             padding: 10px 24px;
@@ -403,20 +404,20 @@
 
         .decision-path {
             flex: 1;
-            background: var(--dark-lighter);
+            background: #fff;
             border-radius: 4px;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow: hidden;
-            border: 1px solid #333;
+            border: 1px solid #ddd;
             cursor: pointer;
             transition: box-shadow 0.2s ease;
         }
 
         .decision-path:hover {
-            box-shadow: 0 2px 8px rgba(196,169,98,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         /* Result Panel - appears below cards */
@@ -461,14 +462,14 @@
             font-size: 11px;
             margin: 0 0 8px 0;
             padding: 0;
-            color: var(--cream);
+            color: var(--text);
         }
 
         .decision-result li {
             padding: 2px 0;
             padding-left: 12px;
             position: relative;
-            color: var(--cream);
+            color: var(--text);
         }
 
         .decision-result li::before {
@@ -498,7 +499,7 @@
         .decision-result.red .result-outcome { background: var(--red); }
 
         .decision-path.selected {
-            box-shadow: 0 0 0 2px var(--gold);
+            box-shadow: 0 0 0 2px var(--navy);
         }
 
         /* Yellow Loop Callout */
@@ -506,13 +507,13 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(212, 145, 92, 0.2);
+            background: rgba(181, 101, 29, 0.1);
             border-left: 2px solid var(--amber);
             padding: 6px 10px;
             border-radius: 0 4px 4px 0;
             margin-bottom: 8px;
             font-size: 10px;
-            color: var(--cream);
+            color: var(--text);
         }
 
         .loop-callout .loop-icon {
@@ -568,9 +569,9 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--dark);
+            color: var(--text-light);
             margin-bottom: 4px;
-            background: var(--gold);
+            background: var(--cream-dark);
             padding: 2px 6px;
             border-radius: 2px;
         }
@@ -580,21 +581,21 @@
             font-size: 10px;
             margin: 0;
             padding: 0;
-            color: var(--cream);
+            color: var(--text);
         }
 
         .path-if li, .path-then li {
             padding: 1px 0;
             padding-left: 10px;
             position: relative;
-            color: var(--cream);
+            color: var(--text);
         }
 
         .path-if li::before, .path-then li::before {
             content: '•';
             position: absolute;
             left: 0;
-            color: var(--gold);
+            color: var(--navy);
             font-size: 10px;
         }
 
@@ -662,7 +663,7 @@
         /* Notes Section */
         .notes-section {
             margin-top: 24px;
-            border-top: 1px solid #333;
+            border-top: 1px solid #ddd;
             padding-top: 16px;
         }
 
@@ -677,7 +678,7 @@
         .notes-header h4 {
             margin-bottom: 0;
             background: none;
-            color: var(--gold);
+            color: var(--navy);
             padding: 0;
             margin: 0;
             font-size: 11px;
@@ -685,7 +686,7 @@
 
         .notes-toggle {
             font-size: 18px;
-            color: var(--gold);
+            color: var(--navy);
             font-weight: 600;
             transition: transform 0.3s;
         }
@@ -708,19 +709,19 @@
             width: 100%;
             min-height: 120px;
             padding: 12px;
-            border: 1px solid #444;
+            border: 1px solid #ddd;
             border-radius: 4px;
             font-family: inherit;
             font-size: 14px;
             resize: vertical;
             margin-top: 12px;
-            background: #2a2a2a;
-            color: var(--cream);
+            background: #fff;
+            color: var(--text);
         }
 
         .notes-content textarea:focus {
             outline: none;
-            border-color: var(--gold);
+            border-color: var(--navy);
         }
 
         .notes-content textarea::placeholder {
