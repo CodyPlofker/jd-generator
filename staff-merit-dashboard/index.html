@@ -468,6 +468,10 @@
             border-color: #f59e0b;
         }
 
+        .editable-input.bonus-input {
+            width: 85px;
+        }
+
         /* Export buttons */
         .export-section {
             display: flex;
@@ -635,8 +639,6 @@
                                 <th onclick="sortTable('meritPercent')" class="percent">Merit %</th>
                                 <th class="money">2026 Salary</th>
                                 <th onclick="sortTable('bonus2025')" class="money">2025 Bonus</th>
-                                <th onclick="sortTable('bonusPercent')" class="percent">Bonus %</th>
-                                <th class="money">2026 Bonus</th>
                                 <th class="money">Total Comp 2026</th>
                             </tr>
                         </thead>
@@ -757,9 +759,9 @@
             return Math.round(getProposedSalary(s) * (s.bonusPercent / 100));
         }
 
-        // Helper to get total comp
+        // Helper to get total comp (2026 salary + 2025 bonus paid in 2026)
         function getTotalComp(s) {
-            return getProposedSalary(s) + getProposedBonus(s);
+            return getProposedSalary(s) + s.bonus2025;
         }
 
         let filteredData = [...staffData];
@@ -844,10 +846,9 @@
             const totalHeadcount = filteredData.length;
             const totalCurrentSalary = filteredData.reduce((sum, s) => sum + s.currentSalary, 0);
             const totalProposedSalary = filteredData.reduce((sum, s) => sum + getProposedSalary(s), 0);
-            const totalProposedBonus = filteredData.reduce((sum, s) => sum + getProposedBonus(s), 0);
+            const totalBonus2025 = filteredData.reduce((sum, s) => sum + s.bonus2025, 0);
             const totalComp = filteredData.reduce((sum, s) => sum + getTotalComp(s), 0);
             const avgMerit = filteredData.length > 0 ? (filteredData.reduce((sum, s) => sum + s.meritPercent, 0) / filteredData.length) : 0;
-            const avgBonus = filteredData.length > 0 ? (filteredData.reduce((sum, s) => sum + s.bonusPercent, 0) / filteredData.length) : 0;
             const meritIncrease = totalProposedSalary - totalCurrentSalary;
 
             document.getElementById('summaryGrid').innerHTML = `
@@ -872,9 +873,9 @@
                     <div class="subvalue">Increase</div>
                 </div>
                 <div class="summary-card">
-                    <h3>2026 Bonus</h3>
-                    <div class="value">${formatMoney(totalProposedBonus)}</div>
-                    <div class="subvalue">Avg ${avgBonus.toFixed(1)}%</div>
+                    <h3>2025 Bonus</h3>
+                    <div class="value">${formatMoney(totalBonus2025)}</div>
+                    <div class="subvalue">Paid in 2026</div>
                 </div>
                 <div class="summary-card highlight">
                     <h3>Total Comp 2026</h3>
@@ -945,15 +946,13 @@
                                onchange="updateEmployee(this)">
                     </td>
                     <td class="money">${formatMoney(getProposedSalary(s))}</td>
-                    <td class="money">${formatMoney(s.bonus2025)}</td>
-                    <td class="percent">
-                        <input type="number" class="editable-input"
-                               value="${s.bonusPercent}"
-                               step="1" min="0" max="100"
-                               data-id="${s.id}" data-field="bonusPercent"
+                    <td class="money">
+                        <input type="number" class="editable-input bonus-input"
+                               value="${s.bonus2025}"
+                               step="100" min="0"
+                               data-id="${s.id}" data-field="bonus2025"
                                onchange="updateEmployee(this)">
                     </td>
-                    <td class="money">${formatMoney(getProposedBonus(s))}</td>
                     <td class="money"><strong>${formatMoney(getTotalComp(s))}</strong></td>
                 </tr>
             `).join('');
@@ -977,8 +976,7 @@
                 const row = input.closest('tr');
                 const cells = row.querySelectorAll('td');
                 cells[6].textContent = formatMoney(getProposedSalary(employee)); // 2026 Salary
-                cells[9].textContent = formatMoney(getProposedBonus(employee)); // 2026 Bonus
-                cells[10].innerHTML = '<strong>' + formatMoney(getTotalComp(employee)) + '</strong>'; // Total Comp
+                cells[8].innerHTML = '<strong>' + formatMoney(getTotalComp(employee)) + '</strong>'; // Total Comp
 
                 // Recalculate summaries and charts
                 updateSummary();
@@ -993,7 +991,7 @@
         function saveChanges() {
             const modifications = {};
             staffData.forEach(s => {
-                modifications[s.id] = { meritPercent: s.meritPercent, bonusPercent: s.bonusPercent };
+                modifications[s.id] = { meritPercent: s.meritPercent, bonus2025: s.bonus2025 };
             });
             localStorage.setItem('jr_merit_modifications', JSON.stringify(modifications));
         }
@@ -1006,7 +1004,9 @@
                 staffData.forEach(s => {
                     if (modifications[s.id]) {
                         s.meritPercent = modifications[s.id].meritPercent;
-                        s.bonusPercent = modifications[s.id].bonusPercent;
+                        if (modifications[s.id].bonus2025 !== undefined) {
+                            s.bonus2025 = modifications[s.id].bonus2025;
+                        }
                     }
                 });
                 filteredData = [...staffData];
@@ -1193,10 +1193,10 @@
         }
 
         function exportCSV() {
-            const headers = ['Name', 'Title', 'Manager', 'Category', '2025 Salary', 'Merit %', '2026 Salary', '2025 Bonus', 'Bonus %', '2026 Bonus', 'Total Comp 2026'];
+            const headers = ['Name', 'Title', 'Manager', 'Category', '2025 Salary', 'Merit %', '2026 Salary', '2025 Bonus', 'Total Comp 2026'];
             const rows = filteredData.map(s => [
                 s.name, s.title, s.manager, s.category, s.currentSalary,
-                s.meritPercent, getProposedSalary(s), s.bonus2025, s.bonusPercent, getProposedBonus(s), getTotalComp(s)
+                s.meritPercent, getProposedSalary(s), s.bonus2025, getTotalComp(s)
             ]);
 
             const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
