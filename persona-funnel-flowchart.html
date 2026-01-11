@@ -549,10 +549,40 @@
         .path-outcome.amber { background: var(--amber); }
         .path-outcome.red { background: var(--red); }
 
-        /* Phase 4 */
-        .phase-4 {
-            max-width: 600px;
-            margin-top: 40px;
+        /* Phase Subtitle */
+        .phase-subtitle {
+            font-size: 12px;
+            color: var(--text-light);
+            margin: -12px 0 16px 0;
+            text-align: left;
+        }
+
+        /* Phase Complete */
+        .phase-complete {
+            background: linear-gradient(135deg, var(--green), #3d8b6a);
+            color: #fff;
+            padding: 24px 32px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .phase-complete .complete-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .phase-complete h4 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 22px;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+        }
+
+        .phase-complete p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
         }
 
         /* Team Legend */
@@ -904,32 +934,44 @@
                 </div>
             </div>
 
-            <!-- PHASE 4 -->
-            <div class="phase phase-4">
-                <span class="phase-label">Phase 4 — Scaling Production</span>
+            <!-- PHASE 4: UGC -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 4 — UGC</span>
+                <p class="phase-subtitle">Platform: Meta</p>
 
-                <div class="node navy" onclick="toggleDetail('production')">
-                    <div class="node-title">Package Data → UGC Briefs</div>
-                    <div class="node-subtitle">Organic (1-3 creators) + Paid (5-10 creators)</div>
+                <div class="node navy" onclick="toggleDetail('ugc')">
+                    <div class="node-title">UGC Production & Testing</div>
+                    <div class="node-subtitle">Brief creators with winning angles from Phase 3</div>
                     <span class="expand-icon">▼</span>
                 </div>
 
-                <div class="detail-panel" id="production-detail">
+                <div class="detail-panel" id="ugc-detail">
                     <div class="detail-inner">
                         <div class="detail-grid">
                             <div class="detail-section">
-                                <h4>Organic Path</h4>
+                                <h4>Goals</h4>
                                 <ul>
-                                    <li>Find 1-3 creators in the persona</li>
-                                    <li>Run organic experiments on new pages</li>
+                                    <li>Validate winning static concepts with UGC format</li>
+                                    <li>Test creator-led content at scale</li>
+                                    <li>Achieve 20% hit rate on concepts</li>
                                 </ul>
                             </div>
                             <div class="detail-section">
-                                <h4>Paid Path</h4>
+                                <h4>Execution</h4>
                                 <ul>
-                                    <li>Brief 5-10 creators</li>
-                                    <li>Scale winning angles</li>
+                                    <li>Brief 5-10 creators per winning angle</li>
+                                    <li>Use winning copy/hooks from statics</li>
+                                    <li>Test multiple creator styles</li>
                                 </ul>
+                            </div>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('ugc-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="ugc-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -937,9 +979,402 @@
 
                 <div class="connector short"></div>
 
-                <div class="node navy">
-                    <div class="node-title">Lifecycle Retargeting</div>
-                    <div class="node-subtitle">Based on expressed need states</div>
+                <div class="decision-flowchart">
+                    <div class="decision-path" onclick="selectPath('green', 4)">
+                        <div class="path-header green">
+                            <span class="path-icon">✓</span>
+                            <h3>Green Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Phase 3 thresholds met</li>
+                                <li>+ 20% hit rate on UGC</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('amber', 4)">
+                        <div class="path-header amber">
+                            <span class="path-icon">⟳</span>
+                            <h3>Yellow Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Some traction but below threshold</li>
+                                <li>Promising signals</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('red', 4)">
+                        <div class="path-header red">
+                            <span class="path-icon">✕</span>
+                            <h3>Red Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>UGC underperforms statics</li>
+                                <li>No scalable winners</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision-result green" id="result-green-4">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Expand Platforms</h4>
+                    </div>
+                    <ul>
+                        <li>Launch on TikTok</li>
+                        <li>Launch on AppLovin</li>
+                        <li>Launch on Pinterest</li>
+                        <li>Launch on YouTube Shorts</li>
+                    </ul>
+                    <span class="result-outcome">Continue to Phase 5 →</span>
+                </div>
+
+                <div class="decision-result amber" id="result-amber-4">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Iterate UGC</h4>
+                    </div>
+                    <div class="loop-callout">
+                        <span class="loop-icon">↻</span>
+                        <span>Test new creators/styles until Green</span>
+                    </div>
+                    <ul>
+                        <li>Try different creator profiles</li>
+                        <li>Adjust briefs based on learnings</li>
+                        <li>Test new hooks/angles</li>
+                    </ul>
+                    <span class="result-outcome">↻ Iterate Phase 4</span>
+                </div>
+
+                <div class="decision-result red" id="result-red-4">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Stay at Statics</h4>
+                    </div>
+                    <ul>
+                        <li>This persona works best with statics</li>
+                        <li>Continue scaling Meta statics</li>
+                        <li>Document UGC learnings</li>
+                    </ul>
+                    <span class="result-outcome">● End at Meta Statics</span>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- PHASE 5: Partnership Ads -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 5 — Partnership Ads</span>
+                <p class="phase-subtitle">Platforms: Multi-platform</p>
+
+                <div class="node navy" onclick="toggleDetail('partnership')">
+                    <div class="node-title">Partner & Influencer Briefs</div>
+                    <div class="node-subtitle">Scale through partnerships</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="partnership-detail">
+                    <div class="detail-inner">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>Initial Cohort</h4>
+                                <ul>
+                                    <li>Brief 10 partners with winning learnings</li>
+                                    <li>Use top-performing UGC as reference</li>
+                                    <li>Test partnership ad formats</li>
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Expand To</h4>
+                                <ul>
+                                    <li>Influencer collaborations</li>
+                                    <li>Substacks</li>
+                                    <li>Podcasts</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('partnership-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="partnership-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short"></div>
+
+                <div class="decision-flowchart">
+                    <div class="decision-path" onclick="selectPath('green', 5)">
+                        <div class="path-header green">
+                            <span class="path-icon">✓</span>
+                            <h3>Green Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Partnerships driving scale</li>
+                                <li>Positive ROI on partner spend</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('amber', 5)">
+                        <div class="path-header amber">
+                            <span class="path-icon">⟳</span>
+                            <h3>Yellow Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Some partners working</li>
+                                <li>Need optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('red', 5)">
+                        <div class="path-header red">
+                            <span class="path-icon">✕</span>
+                            <h3>Red Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Partnerships not efficient</li>
+                                <li>UGC outperforms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision-result green" id="result-green-5">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Scale Partnerships</h4>
+                    </div>
+                    <ul>
+                        <li>Expand partner cohort</li>
+                        <li>Build influencer program</li>
+                        <li>Launch podcast/substack campaigns</li>
+                    </ul>
+                    <span class="result-outcome">Continue to Phase 6 →</span>
+                </div>
+
+                <div class="decision-result amber" id="result-amber-5">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Optimize Partnerships</h4>
+                    </div>
+                    <div class="loop-callout">
+                        <span class="loop-icon">↻</span>
+                        <span>Iterate on partner selection & briefs</span>
+                    </div>
+                    <ul>
+                        <li>Double down on working partners</li>
+                        <li>Cut underperformers</li>
+                        <li>Refine brief approach</li>
+                    </ul>
+                    <span class="result-outcome">↻ Iterate Phase 5</span>
+                </div>
+
+                <div class="decision-result red" id="result-red-5">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Stay at UGC</h4>
+                    </div>
+                    <ul>
+                        <li>This persona scales best with UGC</li>
+                        <li>Continue multi-platform UGC</li>
+                        <li>Document partnership learnings</li>
+                    </ul>
+                    <span class="result-outcome">● End at UGC Level</span>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- PHASE 6: Elevated Production -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 6 — Elevated Production</span>
+                <p class="phase-subtitle">Platforms: All digital</p>
+
+                <div class="node navy" onclick="toggleDetail('elevated')">
+                    <div class="node-title">Higher-Quality Creative</div>
+                    <div class="node-subtitle">Polished production with proven concepts</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="elevated-detail">
+                    <div class="detail-inner">
+                        <div class="detail-section">
+                            <h4>Production Styles</h4>
+                            <ul>
+                                <li>Studio shoots with top-performing creators</li>
+                                <li>Higher production value edits</li>
+                                <li>Brand-elevated UGC hybrid</li>
+                                <li>Testimonial compilations</li>
+                            </ul>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('elevated-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="elevated-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short"></div>
+
+                <div class="decision-flowchart">
+                    <div class="decision-path" onclick="selectPath('green', 6)">
+                        <div class="path-header green">
+                            <span class="path-icon">✓</span>
+                            <h3>Green Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Elevated content outperforms</li>
+                                <li>Ready for broadcast scale</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('amber', 6)">
+                        <div class="path-header amber">
+                            <span class="path-icon">⟳</span>
+                            <h3>Yellow Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Mixed results</li>
+                                <li>Some styles working</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="decision-path" onclick="selectPath('red', 6)">
+                        <div class="path-header red">
+                            <span class="path-icon">✕</span>
+                            <h3>Red Light</h3>
+                        </div>
+                        <div class="path-if">
+                            <span class="if-label">IF</span>
+                            <ul>
+                                <li>Lo-fi outperforms polished</li>
+                                <li>ROI doesn't justify cost</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decision-result green" id="result-green-6">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Go Broadcast</h4>
+                    </div>
+                    <ul>
+                        <li>Prepare TV-ready creative</li>
+                        <li>Build YouTube long-form strategy</li>
+                        <li>Scale elevated production</li>
+                    </ul>
+                    <span class="result-outcome">Continue to Phase 7 →</span>
+                </div>
+
+                <div class="decision-result amber" id="result-amber-6">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Refine Production</h4>
+                    </div>
+                    <div class="loop-callout">
+                        <span class="loop-icon">↻</span>
+                        <span>Test different production styles</span>
+                    </div>
+                    <ul>
+                        <li>Double down on working formats</li>
+                        <li>Test hybrid approaches</li>
+                        <li>Optimize production costs</li>
+                    </ul>
+                    <span class="result-outcome">↻ Iterate Phase 6</span>
+                </div>
+
+                <div class="decision-result red" id="result-red-6">
+                    <div class="result-header">
+                        <span>↓</span>
+                        <h4>Stay Lo-Fi</h4>
+                    </div>
+                    <ul>
+                        <li>This persona responds to authenticity</li>
+                        <li>Continue UGC/partnership approach</li>
+                        <li>Save production budget</li>
+                    </ul>
+                    <span class="result-outcome">● End at Partnership Level</span>
+                </div>
+            </div>
+
+            <div class="connector"></div>
+
+            <!-- PHASE 7: TV & YouTube -->
+            <div class="phase" style="max-width: 100%;">
+                <span class="phase-label">Phase 7 — TV & YouTube</span>
+                <p class="phase-subtitle">Platforms: Broadcast + Long-form</p>
+
+                <div class="node navy" onclick="toggleDetail('broadcast')">
+                    <div class="node-title">Broadcast Scale</div>
+                    <div class="node-subtitle">TV, YouTube long-form, Connected TV</div>
+                    <span class="expand-icon">▼</span>
+                </div>
+
+                <div class="detail-panel" id="broadcast-detail">
+                    <div class="detail-inner">
+                        <div class="detail-grid">
+                            <div class="detail-section">
+                                <h4>Channels</h4>
+                                <ul>
+                                    <li>Linear TV</li>
+                                    <li>Connected TV (CTV)</li>
+                                    <li>YouTube long-form</li>
+                                    <li>Demand Gen</li>
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Creative</h4>
+                                <ul>
+                                    <li>15/30/60 second spots</li>
+                                    <li>Adapted from winning elevated content</li>
+                                    <li>Brand moment integration</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="notes-section">
+                            <div class="notes-header" onclick="toggleNotes('broadcast-notes')">
+                                <h4>Notes</h4>
+                                <span class="notes-toggle">+</span>
+                            </div>
+                            <div class="notes-content" id="broadcast-notes">
+                                <textarea placeholder="Add your notes here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short"></div>
+
+                <div class="phase-complete">
+                    <span class="complete-icon">🏆</span>
+                    <h4>Full Funnel Achieved</h4>
+                    <p>This persona has scaled from research to broadcast</p>
                 </div>
             </div>
 
@@ -977,11 +1412,19 @@
             notesSection.classList.toggle('open');
         }
 
-        function selectPath(color) {
-            const result = document.getElementById('result-' + color);
-            const paths = document.querySelectorAll('.decision-path');
+        function selectPath(color, phase) {
+            // Handle Phase 3 (original, no phase suffix)
+            const resultId = phase ? 'result-' + color + '-' + phase : 'result-' + color;
+            const result = document.getElementById(resultId);
+
+            // Get all decision flowcharts and find the right one
+            const flowcharts = document.querySelectorAll('.decision-flowchart');
+            const flowchartIndex = phase ? phase - 3 : 0; // Phase 3 = index 0, Phase 4 = index 1, etc.
+            const paths = flowcharts[flowchartIndex]?.querySelectorAll('.decision-path') || [];
             const colorIndex = color === 'green' ? 0 : color === 'amber' ? 1 : 2;
             const clickedPath = paths[colorIndex];
+
+            if (!clickedPath || !result) return;
 
             // If clicking the same one that's already open, close it
             if (clickedPath.classList.contains('selected')) {
@@ -990,9 +1433,12 @@
                 return;
             }
 
-            // Hide all results and remove selected state
-            document.querySelectorAll('.decision-result').forEach(r => r.classList.remove('active'));
-            document.querySelectorAll('.decision-path').forEach(p => p.classList.remove('selected'));
+            // Only hide results and selections within the same phase
+            const phaseResults = phase ?
+                document.querySelectorAll(`[id^="result-"][id$="-${phase}"]`) :
+                document.querySelectorAll('.decision-result:not([id*="-4"]):not([id*="-5"]):not([id*="-6"])');
+            phaseResults.forEach(r => r.classList.remove('active'));
+            paths.forEach(p => p.classList.remove('selected'));
 
             // Show selected result
             result.classList.add('active');
