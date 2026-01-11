@@ -163,16 +163,19 @@
         /* Summary Cards */
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
             margin-bottom: 30px;
         }
 
         .summary-card {
             background: #fff;
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            min-height: 130px;
         }
 
         .summary-card.highlight {
@@ -181,11 +184,12 @@
         }
 
         .summary-card h3 {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #666;
             margin-bottom: 8px;
+            min-height: 28px;
         }
 
         .summary-card.highlight h3 {
@@ -193,19 +197,32 @@
         }
 
         .summary-card .value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             font-family: 'Space Mono', monospace;
+            margin-top: auto;
         }
 
         .summary-card .subvalue {
-            font-size: 13px;
+            font-size: 12px;
             color: #888;
             margin-top: 4px;
         }
 
         .summary-card.highlight .subvalue {
             color: #aaa;
+        }
+
+        @media (max-width: 1200px) {
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         /* Filter Section */
@@ -586,9 +603,9 @@
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3>Bonus % by Category</h3>
+                    <h3>Total Compensation by Team (2026)</h3>
                     <div class="chart-container">
-                        <canvas id="bonusChart"></canvas>
+                        <canvas id="teamChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -833,10 +850,6 @@
             const avgBonus = filteredData.length > 0 ? (filteredData.reduce((sum, s) => sum + s.bonusPercent, 0) / filteredData.length) : 0;
             const meritIncrease = totalProposedSalary - totalCurrentSalary;
 
-            // 2025 Office bonus pool (excluding retail)
-            const officeBonus2025 = filteredData.filter(s => !s.isRetail).reduce((sum, s) => sum + s.bonus2025, 0);
-            const officeCount = filteredData.filter(s => !s.isRetail).length;
-
             document.getElementById('summaryGrid').innerHTML = `
                 <div class="summary-card">
                     <h3>Headcount</h3>
@@ -844,29 +857,24 @@
                     <div class="subvalue">Full-time employees</div>
                 </div>
                 <div class="summary-card">
-                    <h3>2025 Salary Total</h3>
+                    <h3>2025 Salary</h3>
                     <div class="value">${formatMoney(totalCurrentSalary)}</div>
-                    <div class="subvalue">Current base salaries</div>
+                    <div class="subvalue">Current base</div>
                 </div>
                 <div class="summary-card">
-                    <h3>2026 Proposed Salary</h3>
+                    <h3>2026 Salary</h3>
                     <div class="value">${formatMoney(totalProposedSalary)}</div>
-                    <div class="subvalue positive">+${formatMoney(meritIncrease)} merit</div>
+                    <div class="subvalue positive">+${formatMoney(meritIncrease)}</div>
                 </div>
                 <div class="summary-card">
-                    <h3>Avg Merit Increase</h3>
+                    <h3>Avg Merit</h3>
                     <div class="value">${avgMerit.toFixed(1)}%</div>
-                    <div class="subvalue">${formatMoney(meritIncrease)} total</div>
+                    <div class="subvalue">Increase</div>
                 </div>
                 <div class="summary-card">
-                    <h3>2025 Office Bonus Pool</h3>
-                    <div class="value">${formatMoney(officeBonus2025)}</div>
-                    <div class="subvalue">${officeCount} office employees</div>
-                </div>
-                <div class="summary-card">
-                    <h3>2026 Proposed Bonus</h3>
+                    <h3>2026 Bonus</h3>
                     <div class="value">${formatMoney(totalProposedBonus)}</div>
-                    <div class="subvalue">Avg ${avgBonus.toFixed(1)}% bonus</div>
+                    <div class="subvalue">Avg ${avgBonus.toFixed(1)}%</div>
                 </div>
                 <div class="summary-card highlight">
                     <h3>Total Comp 2026</h3>
@@ -1083,14 +1091,23 @@
                 }
             });
 
-            charts.bonus = new Chart(document.getElementById('bonusChart'), {
+            const teamColors = {
+                'Cody': '#3b82f6',
+                'Chrissy': '#10b981',
+                'Bobbi': '#ec4899',
+                'Board': '#fbbf24',
+                'C Suite': '#6366f1'
+            };
+
+            const teamData = getDataByTeam();
+            charts.team = new Chart(document.getElementById('teamChart'), {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(categoryData),
+                    labels: Object.keys(teamData),
                     datasets: [{
-                        label: 'Avg Bonus %',
-                        data: Object.values(categoryData).map(d => d.avgBonus),
-                        backgroundColor: Object.keys(categoryData).map(c => chartColors[c] || '#6b7280')
+                        label: 'Total Compensation',
+                        data: Object.values(teamData).map(d => d.totalComp),
+                        backgroundColor: Object.keys(teamData).map(t => teamColors[t] || '#6b7280')
                     }]
                 },
                 options: {
@@ -1100,7 +1117,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks: { callback: value => value + '%' }
+                            ticks: { callback: value => '$' + (value / 1000) + 'K' }
                         }
                     }
                 }
@@ -1125,6 +1142,20 @@
             return data;
         }
 
+        function getDataByTeam() {
+            const data = {};
+            filteredData.forEach(s => {
+                const team = s.cSuite;
+                if (!data[team]) {
+                    data[team] = { count: 0, totalComp: 0, totalSalary: 0 };
+                }
+                data[team].count++;
+                data[team].totalComp += getTotalComp(s);
+                data[team].totalSalary += getProposedSalary(s);
+            });
+            return data;
+        }
+
         function getMeritDistribution() {
             const ranges = { '0%': 0, '1-5%': 0, '5-10%': 0, '10-15%': 0, '15-20%': 0, '20%+': 0 };
 
@@ -1143,6 +1174,7 @@
         function updateCharts() {
             const categoryData = getDataByCategory();
             const meritRanges = getMeritDistribution();
+            const teamData = getDataByTeam();
 
             charts.category.data.labels = Object.keys(categoryData);
             charts.category.data.datasets[0].data = Object.values(categoryData).map(d => d.totalComp);
@@ -1155,9 +1187,9 @@
             charts.headcount.data.datasets[0].data = Object.values(categoryData).map(d => d.count);
             charts.headcount.update();
 
-            charts.bonus.data.labels = Object.keys(categoryData);
-            charts.bonus.data.datasets[0].data = Object.values(categoryData).map(d => d.avgBonus);
-            charts.bonus.update();
+            charts.team.data.labels = Object.keys(teamData);
+            charts.team.data.datasets[0].data = Object.values(teamData).map(d => d.totalComp);
+            charts.team.update();
         }
 
         function exportCSV() {
