@@ -343,6 +343,23 @@
             align-items: center;
             overflow: hidden;
             border: 1px solid #e5e5e5;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .decision-path:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .decision-path .path-expandable {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            width: 100%;
+        }
+
+        .decision-path.open .path-expandable {
+            max-height: 400px;
         }
 
         .path-header {
@@ -352,6 +369,18 @@
             align-items: center;
             gap: 8px;
             color: #fff;
+            position: relative;
+        }
+
+        .path-header .expand-hint {
+            margin-left: auto;
+            font-size: 12px;
+            opacity: 0.7;
+            transition: transform 0.3s ease;
+        }
+
+        .decision-path.open .path-header .expand-hint {
+            transform: rotate(180deg);
         }
 
         .path-header.green { background: var(--green); }
@@ -682,10 +711,11 @@
 
                 <div class="decision-flowchart">
                     <!-- GREEN PATH -->
-                    <div class="decision-path green">
+                    <div class="decision-path" onclick="togglePath(this)">
                         <div class="path-header green">
                             <span class="path-icon">✓</span>
                             <h3>Green Light</h3>
+                            <span class="expand-hint">▼</span>
                         </div>
                         <div class="path-if">
                             <span class="if-label">IF</span>
@@ -695,28 +725,31 @@
                                 <li>≥ 60% New Visit Rate</li>
                             </ul>
                         </div>
-                        <div class="path-arrow green">↓</div>
-                        <div class="path-then">
-                            <span class="then-label">THEN</span>
-                            <ul>
-                                <li>Scale within ad set & campaigns</li>
-                                <li>Produce 2nd batch of statics</li>
-                                <li>Create sub-persona batches</li>
-                                <li>Animate to GIFs/short videos</li>
-                                <li>Test awareness levels</li>
-                            </ul>
-                        </div>
-                        <div class="path-arrow green">↓</div>
-                        <div class="path-outcome green">
-                            Continue to Phase 4
+                        <div class="path-expandable">
+                            <div class="path-arrow green">↓</div>
+                            <div class="path-then">
+                                <span class="then-label">THEN</span>
+                                <ul>
+                                    <li>Scale within ad set & campaigns</li>
+                                    <li>Produce 2nd batch of statics</li>
+                                    <li>Create sub-persona batches</li>
+                                    <li>Animate to GIFs/short videos</li>
+                                    <li>Test awareness levels</li>
+                                </ul>
+                            </div>
+                            <div class="path-arrow green">↓</div>
+                            <div class="path-outcome green">
+                                Continue to Phase 4
+                            </div>
                         </div>
                     </div>
 
                     <!-- YELLOW PATH -->
-                    <div class="decision-path amber">
+                    <div class="decision-path" onclick="togglePath(this)">
                         <div class="path-header amber">
                             <span class="path-icon">⟳</span>
                             <h3>Yellow Light</h3>
+                            <span class="expand-hint">▼</span>
                         </div>
                         <div class="path-if">
                             <span class="if-label">IF</span>
@@ -726,27 +759,30 @@
                                 <li>≥ 50% New Visit Rate</li>
                             </ul>
                         </div>
-                        <div class="path-arrow amber">↓</div>
-                        <div class="path-then">
-                            <span class="then-label">THEN</span>
-                            <ul>
-                                <li>Refine angle/messaging</li>
-                                <li>Test new creative formats</li>
-                                <li>Adjust targeting</li>
-                                <li>Consider sub-segments</li>
-                            </ul>
-                        </div>
-                        <div class="path-arrow amber">↓</div>
-                        <div class="path-outcome amber">
-                            ↻ Back to Phase 2
+                        <div class="path-expandable">
+                            <div class="path-arrow amber">↓</div>
+                            <div class="path-then">
+                                <span class="then-label">THEN</span>
+                                <ul>
+                                    <li>Refine angle/messaging</li>
+                                    <li>Test new creative formats</li>
+                                    <li>Adjust targeting</li>
+                                    <li>Consider sub-segments</li>
+                                </ul>
+                            </div>
+                            <div class="path-arrow amber">↓</div>
+                            <div class="path-outcome amber">
+                                ↻ Back to Phase 2
+                            </div>
                         </div>
                     </div>
 
                     <!-- RED PATH -->
-                    <div class="decision-path red">
+                    <div class="decision-path" onclick="togglePath(this)">
                         <div class="path-header red">
                             <span class="path-icon">✕</span>
                             <h3>Red Light</h3>
+                            <span class="expand-hint">▼</span>
                         </div>
                         <div class="path-if">
                             <span class="if-label">IF</span>
@@ -756,18 +792,20 @@
                                 <li>&lt; 40% New Visit Rate</li>
                             </ul>
                         </div>
-                        <div class="path-arrow red">↓</div>
-                        <div class="path-then">
-                            <span class="then-label">THEN</span>
-                            <ul>
-                                <li>Cut losses immediately</li>
-                                <li>Document learnings</li>
-                                <li>Apply insights elsewhere</li>
-                            </ul>
-                        </div>
-                        <div class="path-arrow red">↓</div>
-                        <div class="path-outcome red">
-                            ● End
+                        <div class="path-expandable">
+                            <div class="path-arrow red">↓</div>
+                            <div class="path-then">
+                                <span class="then-label">THEN</span>
+                                <ul>
+                                    <li>Cut losses immediately</li>
+                                    <li>Document learnings</li>
+                                    <li>Apply insights elsewhere</li>
+                                </ul>
+                            </div>
+                            <div class="path-arrow red">↓</div>
+                            <div class="path-outcome red">
+                                ● End
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -844,6 +882,10 @@
             const notesContent = document.getElementById(id);
             const notesSection = notesContent.parentElement;
             notesSection.classList.toggle('open');
+        }
+
+        function togglePath(el) {
+            el.classList.toggle('open');
         }
     </script>
 </body>
