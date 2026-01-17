@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Extract base64 data and media type
-    const matches = image.match(/^data:(image\/[a-zA-Z]+);base64,(.+)$/s);
+    const matches = image.match(/^data:(image\/[a-zA-Z]+);base64,(.+)$/);
     if (!matches) {
       console.error("Image regex failed. Image starts with:", image.substring(0, 50));
       return NextResponse.json(
