@@ -194,9 +194,22 @@ Output only the copy - no explanations, no meta-commentary. Just the ready-to-us
   return systemPrompt;
 }
 
+// Load ad format specs
+function getAdFormatSpecs(formatId: string): { name: string; specs: { copyPlacements: Array<{ zone: string; position: string; style: string; maxChars: number; required: boolean }>; styleNotes: string; bestFor: string[] } } | null {
+  if (!formatId) return null;
+
+  try {
+    const formatsPath = path.join(TRAINING_DATA_DIR, "ad-formats/ad-formats.json");
+    const formats = JSON.parse(fs.readFileSync(formatsPath, "utf-8"));
+    return formats.find((f: { id: string }) => f.id === formatId) || null;
+  } catch {
+    return null;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const { persona, channel, landingPageType, bulletCount, smsType, emailType, metaAdType, awareness, productInfo, angle, referenceImage } = await request.json();
+    const { persona, channel, landingPageType, bulletCount, smsType, emailType, metaAdType, adFormatId, awareness, productInfo, angle, referenceImage } = await request.json();
 
     if (!channel || !productInfo) {
       return NextResponse.json(
@@ -229,14 +242,37 @@ export async function POST(request: NextRequest) {
       userPrompt += `\n\nTarget Persona: ${persona}`;
     }
 
+    // Load ad format if specified
+    const adFormat = adFormatId ? getAdFormatSpecs(adFormatId) : null;
+
     const channelInstructions: Record<string, string> = {
       "meta-ads": metaAdType === "static-creative" ? `
 Generate copy for a STATIC CREATIVE (image ad with text overlays).
 
-${referenceImage ? `## REFERENCE CREATIVE ANALYSIS
+${adFormat ? `## AD FORMAT: ${adFormat.name}
+
+This ad uses a specific format with defined copy zones. Generate copy for EACH zone below:
+
+${adFormat.specs.copyPlacements.map((p: { zone: string; position: string; style: string; maxChars: number; required: boolean }) => `
+### ${p.zone.toUpperCase()}
+- Position: ${p.position}
+- Style: ${p.style}
+- Required: ${p.required ? "Yes" : "No"}
+`).join("")}
+
+Style notes: ${adFormat.specs.styleNotes}
+Best for: ${adFormat.specs.bestFor.join(", ")}
+
+## OUTPUT FORMAT
+For each zone defined above:
+
+### [ZONE NAME]
+**Copy:** [Your generated copy]
+
+Provide 2-3 variations for the main headline/hook zones.` : referenceImage ? `## REFERENCE CREATIVE ANALYSIS
 I've uploaded a reference creative image. Please:
 1. Analyze the layout and identify ALL text placement zones (headline, subhead, body text, CTA button, badges, etc.)
-2. Note the approximate character count and style for each zone
+2. Note the style for each zone
 3. Generate Jones Road copy for EACH text zone you identify
 
 ## OUTPUT FORMAT
@@ -246,7 +282,6 @@ For each text zone identified in the reference:
 **Position:** [Where it appears - top, center, bottom, etc.]
 **Style:** [Large/bold, small/subtle, etc.]
 **Copy:** [Your generated copy]
-**Character count:** XXX
 
 Provide 2-3 variations for the main headline/hook.` : `## OUTPUT FORMAT
 Generate copy for a static creative with these common zones:

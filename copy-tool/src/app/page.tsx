@@ -1,6 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { AdFormat, AdFormatSpecs } from "@/types/ad-format";
+import AdFormatDropdown from "@/components/AdFormatDropdown";
+import NewFormatModal from "@/components/NewFormatModal";
+import FormatChoiceModal from "@/components/FormatChoiceModal";
 
 const personas = [
   { id: "educator", name: "The Dedicated Educator", description: "Teachers, professors, school administrators" },
@@ -102,6 +106,11 @@ export default function Home() {
   const [selectedSmsType, setSelectedSmsType] = useState("");
   const [selectedEmailType, setSelectedEmailType] = useState("");
   const [selectedMetaAdType, setSelectedMetaAdType] = useState("");
+  const [adFormats, setAdFormats] = useState<AdFormat[]>([]);
+  const [selectedAdFormat, setSelectedAdFormat] = useState("");
+  const [showNewFormatModal, setShowNewFormatModal] = useState(false);
+  const [showFormatChoiceModal, setShowFormatChoiceModal] = useState(false);
+  const [pendingImage, setPendingImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -115,6 +124,12 @@ export default function Home() {
     fetch("/api/products")
       .then((res) => res.json())
       .then((data) => setProducts(data))
+      .catch(console.error);
+
+    // Load ad formats
+    fetch("/api/ad-formats")
+      .then((res) => res.json())
+      .then((data) => setAdFormats(data))
       .catch(console.error);
   }, []);
 
@@ -142,9 +157,123 @@ export default function Home() {
       setReferenceImageName(file.name);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setReferenceImage(reader.result as string);
+        const imageData = reader.result as string;
+        setReferenceImage(imageData);
+        // If no format selected, show choice modal
+        if (!selectedAdFormat) {
+          setPendingImage(imageData);
+          setShowFormatChoiceModal(true);
+        }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleNewFormatSave = async (data: {
+    name: string;
+    description: string;
+    specs: AdFormatSpecs;
+    image: string;
+  }) => {
+    try {
+      // Create the format
+      const response = await fetch("/api/ad-formats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          description: data.description,
+          specs: data.specs,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to create format");
+
+      const newFormat = await response.json();
+
+      // Upload the image as first sample
+      if (data.image) {
+        const uploadResponse = await fetch("/api/ad-formats/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            image: data.image,
+            formatId: newFormat.id,
+            filename: "sample-1.jpg",
+          }),
+        });
+
+        if (uploadResponse.ok) {
+          const uploadResult = await uploadResponse.json();
+          // Update format with thumbnail and sample
+          await fetch(`/api/ad-formats/${newFormat.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              thumbnail: uploadResult.path,
+              sampleImages: [uploadResult.path],
+            }),
+          });
+        }
+      }
+
+      // Refresh formats list
+      const formatsResponse = await fetch("/api/ad-formats");
+      const formats = await formatsResponse.json();
+      setAdFormats(formats);
+
+      // Select the new format
+      setSelectedAdFormat(newFormat.id);
+      setShowNewFormatModal(false);
+      setPendingImage(null);
+    } catch (error) {
+      console.error("Error saving format:", error);
+      alert("Failed to save format. Please try again.");
+    }
+  };
+
+  const handleAddToExistingFormat = async (formatId: string) => {
+    if (!pendingImage) return;
+
+    try {
+      const format = adFormats.find((f) => f.id === formatId);
+      if (!format) return;
+
+      // Upload the image
+      const uploadResponse = await fetch("/api/ad-formats/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          image: pendingImage,
+          formatId: formatId,
+          filename: `sample-${format.sampleImages.length + 1}.jpg`,
+        }),
+      });
+
+      if (uploadResponse.ok) {
+        const uploadResult = await uploadResponse.json();
+        // Update format with new sample
+        await fetch(`/api/ad-formats/${formatId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sampleImages: [...format.sampleImages, uploadResult.path],
+          }),
+        });
+
+        // Refresh formats list
+        const formatsResponse = await fetch("/api/ad-formats");
+        const formats = await formatsResponse.json();
+        setAdFormats(formats);
+      }
+
+      // Select this format
+      setSelectedAdFormat(formatId);
+      setShowFormatChoiceModal(false);
+      setPendingImage(null);
+    } catch (error) {
+      console.error("Error adding to format:", error);
+      alert("Failed to add image to format. Please try again.");
     }
   };
 
@@ -203,6 +332,7 @@ export default function Home() {
           smsType: selectedSmsType,
           emailType: selectedEmailType,
           metaAdType: selectedMetaAdType,
+          adFormatId: selectedChannel === "meta-ads" && selectedMetaAdType === "static-creative" ? selectedAdFormat : null,
           awareness: selectedAwareness,
           productInfo,
           angle,
@@ -241,6 +371,12 @@ export default function Home() {
               className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors"
             >
               Training Data
+            </a>
+            <a
+              href="/ad-formats"
+              className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors"
+            >
+              Ad Formats
             </a>
             <button
               onClick={toggleTheme}
@@ -336,6 +472,24 @@ export default function Home() {
                 {selectedMetaAdType && (
                   <p className="text-xs text-[var(--muted)] mt-2">
                     {metaAdTypes.find((t) => t.id === selectedMetaAdType)?.description}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Ad Format Selection - Only shows for Static Creative */}
+            {selectedChannel === "meta-ads" && selectedMetaAdType === "static-creative" && (
+              <div>
+                <label className="floating-label mb-3 block">Ad Format</label>
+                <AdFormatDropdown
+                  formats={adFormats}
+                  selected={selectedAdFormat}
+                  onSelect={setSelectedAdFormat}
+                  onNewFormat={() => setShowNewFormatModal(true)}
+                />
+                {selectedAdFormat && (
+                  <p className="text-xs text-[var(--muted)] mt-2">
+                    {adFormats.find((f) => f.id === selectedAdFormat)?.specs.copyPlacements.length} copy zones defined
                   </p>
                 )}
               </div>
@@ -604,9 +758,87 @@ export default function Home() {
                   <div className="loading-shimmer h-4 rounded w-4/5"></div>
                 </div>
               ) : generatedCopy ? (
-                <pre className="whitespace-pre-wrap font-sans text-[var(--foreground)] text-[15px] leading-relaxed">
-                  {generatedCopy}
-                </pre>
+                <div className="space-y-4">
+                  {(() => {
+                    // Track variation numbers per section
+                    const variationCounters: Record<string, number> = {};
+
+                    // Helper to clean text - remove markdown formatting
+                    const cleanText = (text: string) => text
+                      .replace(/\*\*(.+?)\*\*/g, '$1')
+                      .replace(/\*(.+?)\*/g, '$1')
+                      .replace(/^#+\s*/gm, '')
+                      .replace(/\*\*Copy:\*\*\s*/gi, '')
+                      .replace(/^-\s+/gm, '• ');
+
+                    return generatedCopy.split(/(?=^#{2,3}\s)/m).map((section, index) => {
+                      const trimmed = section.trim();
+                      if (!trimmed) return null;
+
+                      // Check if it's a heading (## or ###)
+                      const h2Match = trimmed.match(/^##\s+(.+?)(?:\n|$)/);
+                      const h3Match = trimmed.match(/^###\s+(.+?)(?:\n|$)/);
+
+                      if (h2Match) {
+                        const title = cleanText(h2Match[1]);
+                        const content = trimmed.slice(h2Match[0].length).trim();
+                        return (
+                          <div key={index} className="mb-6">
+                            <h2 className="text-lg font-semibold text-[var(--accent)] mb-3 pb-2 border-b border-[var(--card-border)]">
+                              {title}
+                            </h2>
+                            {content && (
+                              <div className="text-[var(--foreground)] text-[15px] leading-relaxed whitespace-pre-wrap">
+                                {cleanText(content)}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      if (h3Match) {
+                        const rawTitle = cleanText(h3Match[1]);
+                        const content = trimmed.slice(h3Match[0].length).trim();
+
+                        // Check if this is a variation (contains "variation" or "option" or "alt")
+                        const isVariation = /variation|option|alt|v\d|version/i.test(rawTitle);
+
+                        // Get base name without variation indicators
+                        const baseName = rawTitle.replace(/\s*(variation|option|v?\d+|version|alt)\s*\d*/gi, '').trim().toLowerCase();
+
+                        if (!variationCounters[baseName]) {
+                          variationCounters[baseName] = 1;
+                        } else {
+                          variationCounters[baseName]++;
+                        }
+
+                        // Add V1, V2, etc. if there are multiple of the same type
+                        const cleanTitle = rawTitle.replace(/\s*(variation|option|v?\d+|version|alt)\s*\d*/gi, '').trim();
+                        const displayTitle = variationCounters[baseName] > 1 || isVariation
+                          ? `${cleanTitle} — V${variationCounters[baseName]}`
+                          : cleanTitle;
+
+                        return (
+                          <div key={index} className="mb-4 pl-0">
+                            <h3 className="text-sm font-medium text-[var(--muted)] uppercase tracking-wide mb-2">
+                              {displayTitle}
+                            </h3>
+                            <div className="text-[var(--foreground)] text-[15px] leading-relaxed whitespace-pre-wrap bg-[var(--input-bg)] rounded-lg p-3">
+                              {cleanText(content)}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      // Plain text without heading - still clean it
+                      return (
+                        <div key={index} className="text-[var(--foreground)] text-[15px] leading-relaxed whitespace-pre-wrap">
+                          {cleanText(trimmed)}
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-[550px] text-center">
                   <div className="w-12 h-12 rounded-lg bg-[var(--card)] border border-[var(--card-border)] flex items-center justify-center mb-4">
@@ -624,6 +856,36 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Modals */}
+      <NewFormatModal
+        isOpen={showNewFormatModal}
+        onClose={() => {
+          setShowNewFormatModal(false);
+          setPendingImage(null);
+        }}
+        onSave={handleNewFormatSave}
+        initialImage={pendingImage || undefined}
+      />
+
+      <FormatChoiceModal
+        isOpen={showFormatChoiceModal}
+        onClose={() => {
+          setShowFormatChoiceModal(false);
+          setPendingImage(null);
+        }}
+        onNewFormat={() => {
+          setShowFormatChoiceModal(false);
+          setShowNewFormatModal(true);
+        }}
+        onExistingFormat={handleAddToExistingFormat}
+        onSkip={() => {
+          setShowFormatChoiceModal(false);
+          setPendingImage(null);
+        }}
+        formats={adFormats}
+        imagePreview={pendingImage || undefined}
+      />
     </div>
   );
 }

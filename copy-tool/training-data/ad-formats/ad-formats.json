@@ -1,0 +1,223 @@
+[
+  {
+    "id": "product-hero-with-benefit-badge-mkiu5w13",
+    "name": "Product Hero with Benefit Badge",
+    "description": "",
+    "createdAt": "2026-01-17T21:45:11.271Z",
+    "thumbnail": "/ad-formats/product-hero-with-benefit-badge-mkiu5w13/sample-1.jpg",
+    "sampleImages": [
+      "/ad-formats/product-hero-with-benefit-badge-mkiu5w13/sample-1.jpg"
+    ],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "headline",
+          "position": "top-center",
+          "style": "bold, large green text",
+          "maxChars": 25,
+          "required": true,
+          "description": "Main benefit statement or product positioning"
+        },
+        {
+          "zone": "benefit-badge",
+          "position": "middle-right",
+          "style": "burst/star shape with bold text",
+          "maxChars": 35,
+          "required": false,
+          "description": "Highlighting key product attribute or comparison"
+        },
+        {
+          "zone": "humorous-subline",
+          "position": "bottom-center",
+          "style": "parenthetical, smaller casual text",
+          "maxChars": 50,
+          "required": false,
+          "description": "Playful or relatable benefit statement in casual tone"
+        },
+        {
+          "zone": "product-label",
+          "position": "overlay-center-product",
+          "style": "product packaging text",
+          "maxChars": 20,
+          "required": true,
+          "description": "Brand name and product identifier on package"
+        },
+        {
+          "zone": "product-descriptor",
+          "position": "overlay-bottom-product",
+          "style": "small descriptive text on package",
+          "maxChars": 30,
+          "required": true,
+          "description": "Product category or flavor description"
+        }
+      ],
+      "styleNotes": "Clean, health-focused design with warm cream background, hand-held product shot for relatability, uses humor to make health benefits approachable, combines bold benefit claims with casual conversational tone",
+      "bestFor": [
+        "health food products",
+        "functional snacks",
+        "wellness supplements",
+        "fiber/protein products",
+        "digestive health items",
+        "millennial/gen-z targeted CPG"
+      ]
+    }
+  },
+  {
+    "id": "product-hero-with-social-proof-mkiuarmi",
+    "name": "Product Hero with Social Proof",
+    "description": "",
+    "createdAt": "2026-01-17T21:48:58.842Z",
+    "thumbnail": "/ad-formats/product-hero-with-social-proof-mkiuarmi/sample-1.jpg",
+    "sampleImages": [
+      "/ad-formats/product-hero-with-social-proof-mkiuarmi/sample-1.jpg"
+    ],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "brand-header",
+          "position": "top-left",
+          "style": "bold",
+          "maxChars": 25,
+          "required": true,
+          "description": "Brand name and sponsored label"
+        },
+        {
+          "zone": "opening-hook",
+          "position": "upper-left",
+          "style": "conversational",
+          "maxChars": 120,
+          "required": true,
+          "description": "Problem-focused opening question or statement"
+        },
+        {
+          "zone": "main-headline",
+          "position": "center-overlay",
+          "style": "elegant-serif",
+          "maxChars": 60,
+          "required": true,
+          "description": "Primary value proposition with emphasis text"
+        },
+        {
+          "zone": "subheadline",
+          "position": "center-below-headline",
+          "style": "clean-sans",
+          "maxChars": 80,
+          "required": true,
+          "description": "Supporting benefit statement"
+        },
+        {
+          "zone": "social-proof",
+          "position": "lower-center",
+          "style": "badge-style",
+          "maxChars": 30,
+          "required": true,
+          "description": "Star rating and review count"
+        },
+        {
+          "zone": "website-url",
+          "position": "bottom-left",
+          "style": "small-subtle",
+          "maxChars": 40,
+          "required": true,
+          "description": "Brand website URL"
+        },
+        {
+          "zone": "secondary-headline",
+          "position": "bottom-left-large",
+          "style": "bold-sans",
+          "maxChars": 35,
+          "required": true,
+          "description": "Action-oriented headline"
+        },
+        {
+          "zone": "product-description",
+          "position": "bottom-left-small",
+          "style": "light-descriptive",
+          "maxChars": 40,
+          "required": false,
+          "description": "Brief product description"
+        },
+        {
+          "zone": "cta-button",
+          "position": "bottom-right",
+          "style": "bold-button",
+          "maxChars": 15,
+          "required": true,
+          "description": "Primary call-to-action"
+        }
+      ],
+      "styleNotes": "Clean, minimal design with elegant serif headlines contrasting with modern sans-serif supporting text. Uses warm, natural product photography with plenty of white space. Social proof prominently displayed as credibility badge.",
+      "bestFor": [
+        "beauty products",
+        "skincare",
+        "wellness products",
+        "lifestyle brands",
+        "subscription services",
+        "premium consumer goods"
+      ]
+    }
+  },
+  {
+    "id": "product-benefits-list-with-hero-shot-mkiukjjz",
+    "name": "Product Benefits List with Hero Shot",
+    "description": "",
+    "createdAt": "2026-01-17T21:56:34.943Z",
+    "thumbnail": "/ad-formats/product-benefits-list-with-hero-shot-mkiukjjz/sample-1.jpg",
+    "sampleImages": [
+      "/ad-formats/product-benefits-list-with-hero-shot-mkiukjjz/sample-1.jpg"
+    ],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "headline",
+          "position": "top-left",
+          "style": "bold, large",
+          "maxChars": 60,
+          "required": true,
+          "description": "Main benefit-focused headline introducing the product"
+        },
+        {
+          "zone": "benefits-list",
+          "position": "center-left",
+          "style": "numbered, clean sans-serif",
+          "maxChars": 20,
+          "required": true,
+          "description": "Numbered list of key product benefits, 6 items max"
+        },
+        {
+          "zone": "product-name",
+          "position": "overlay-center-right",
+          "style": "large, bold, white text on product",
+          "maxChars": 10,
+          "required": true,
+          "description": "Product brand/name prominently displayed on package"
+        },
+        {
+          "zone": "product-tagline",
+          "position": "overlay-bottom-right",
+          "style": "smaller, descriptive, white text",
+          "maxChars": 25,
+          "required": true,
+          "description": "Brief product description or category"
+        },
+        {
+          "zone": "badge",
+          "position": "bottom-right-corner",
+          "style": "small, subtle",
+          "maxChars": 15,
+          "required": false,
+          "description": "Optional certification or quality badge"
+        }
+      ],
+      "styleNotes": "Clean, minimalist design with numbered benefits list on left side and hero product shot on right. Uses neutral background with dark green product packaging. Text hierarchy emphasizes benefits over product features.",
+      "bestFor": [
+        "health supplements",
+        "nutrition products",
+        "wellness brands",
+        "functional foods",
+        "premium health products",
+        "benefit-driven campaigns"
+      ]
+    }
+  }
+]
