@@ -997,9 +997,8 @@
         /* Personas Page - Tree Visualization with SVG Lines */
         .personas-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 60px;
-            justify-content: center;
+            flex-direction: column;
+            gap: 40px;
             margin-top: 24px;
         }
 
@@ -1007,9 +1006,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 320px;
-            max-width: 380px;
+            width: 100%;
             position: relative;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 30px;
         }
 
         .persona-tree-inner {
@@ -1039,59 +1041,113 @@
 
         .persona-tree svg.connection-lines line.testing {
             stroke: var(--amber);
-            opacity: 0.5;
+            opacity: 0.6;
+            stroke-width: 2;
         }
 
         .persona-tree svg.connection-lines line.tested {
             stroke: var(--green);
-            opacity: 0.5;
+            opacity: 0.6;
+            stroke-width: 2;
         }
 
         .persona-tree svg.connection-lines line.winner {
             stroke: var(--green);
-            stroke-width: 3;
-            opacity: 0.8;
+            stroke-width: 4;
+            opacity: 0.9;
         }
 
         .persona-node {
             background: var(--navy);
             color: #fff;
-            padding: 16px 24px;
-            border-radius: 12px;
+            padding: 20px 32px;
+            border-radius: 16px;
             text-align: center;
             position: relative;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.3);
+            box-shadow: 0 4px 16px rgba(26, 58, 92, 0.3);
             z-index: 2;
+            min-width: 280px;
         }
 
         .persona-node:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(26, 58, 92, 0.4);
+            box-shadow: 0 8px 24px rgba(26, 58, 92, 0.4);
         }
 
         .persona-node h3 {
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 500;
-            margin: 0 0 4px 0;
+            margin: 0 0 6px 0;
         }
 
         .persona-node p {
-            font-size: 10px;
+            font-size: 12px;
             opacity: 0.8;
             margin: 0;
+        }
+
+        .persona-node .click-hint {
+            font-size: 9px;
+            opacity: 0.6;
+            margin-top: 8px;
+            display: block;
+        }
+
+        /* Persona Research Panel - Shows when clicking persona */
+        .persona-research-panel {
+            display: none;
+            width: 100%;
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+            z-index: 3;
+        }
+
+        .persona-research-panel.open {
+            display: block;
+        }
+
+        .persona-research-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .research-item {
+            background: #fff;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .research-item h5 {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--navy);
+            margin: 0 0 8px 0;
+        }
+
+        .research-item p {
+            font-size: 12px;
+            color: var(--text);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .angles-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            max-width: 340px;
-            padding: 20px 16px 16px;
-            margin-top: 40px;
+            gap: 12px;
+            max-width: 600px;
+            padding: 24px 20px 20px;
+            margin-top: 50px;
             position: relative;
             z-index: 1;
             background: var(--cream);
@@ -1102,12 +1158,12 @@
         .angles-container::before {
             content: 'VALUE PROPS / ANGLES';
             position: absolute;
-            top: -10px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             background: #fff;
-            padding: 2px 10px;
-            font-size: 9px;
+            padding: 4px 14px;
+            font-size: 10px;
             font-weight: 600;
             letter-spacing: 0.5px;
             color: var(--text-light);
@@ -1115,20 +1171,20 @@
             border: 1px solid #ddd;
         }
 
-        /* Legacy tree connector - hidden but keep for backwards compat */
+        /* Legacy tree connector - hidden */
         .tree-connector {
             display: none;
         }
 
-        /* Legacy angles-cloud - converted to angles-container */
+        /* angles-cloud - same as angles-container */
         .angles-cloud {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            max-width: 340px;
-            padding: 20px 16px 16px;
-            margin-top: 40px;
+            gap: 12px;
+            max-width: 600px;
+            padding: 24px 20px 20px;
+            margin-top: 50px;
             position: relative;
             z-index: 1;
             background: var(--cream);
@@ -1139,12 +1195,12 @@
         .angles-cloud::before {
             content: 'VALUE PROPS / ANGLES';
             position: absolute;
-            top: -10px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             background: #fff;
-            padding: 2px 10px;
-            font-size: 9px;
+            padding: 4px 14px;
+            font-size: 10px;
             font-weight: 600;
             letter-spacing: 0.5px;
             color: var(--text-light);
@@ -1155,18 +1211,20 @@
         .angle-node {
             background: #fff;
             border: 2px solid #ddd;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 11px;
+            padding: 12px 18px;
+            border-radius: 24px;
+            font-size: 13px;
             color: var(--text);
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
+            font-weight: 500;
         }
 
         .angle-node:hover {
             border-color: var(--navy);
             transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .angle-node.testing {
@@ -1412,6 +1470,120 @@
             position: absolute;
             left: 0;
             color: var(--navy);
+        }
+
+        /* Channels Sidebar - Always visible on flowchart */
+        .flowchart-with-channels {
+            display: flex;
+            gap: 24px;
+        }
+
+        .channels-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .channels-sidebar-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--navy);
+        }
+
+        .channel-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .channel-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .channel-item:hover {
+            border-color: var(--navy);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .channel-item.active {
+            border-left: 3px solid;
+        }
+
+        .channel-item.lp { border-left-color: #6366f1; }
+        .channel-item.popup { border-left-color: #ec4899; }
+        .channel-item.email { border-left-color: #f59e0b; }
+        .channel-item.sms { border-left-color: #10b981; }
+        .channel-item.directmail { border-left-color: #8b5cf6; }
+
+        .channel-item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .channel-item-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .channel-item-dot.lp { background: #6366f1; }
+        .channel-item-dot.popup { background: #ec4899; }
+        .channel-item-dot.email { background: #f59e0b; }
+        .channel-item-dot.sms { background: #10b981; }
+        .channel-item-dot.directmail { background: #8b5cf6; }
+
+        .channel-item-name {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .channel-item-phase {
+            font-size: 9px;
+            color: var(--text-light);
+            margin-left: auto;
+            background: var(--cream);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .channel-item-desc {
+            font-size: 10px;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .channel-item-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .channel-item-actions span {
+            font-size: 9px;
+            padding: 3px 8px;
+            background: var(--cream);
+            border-radius: 3px;
+            color: var(--text);
+        }
+
+        .flowchart-main {
+            flex: 1;
+            min-width: 0;
         }
 
         /* Ad Formats Page */
@@ -1740,13 +1912,84 @@
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showPage('flowchart')">Funnel Flow</button>
+            <button class="nav-tab" onclick="showPage('brief')">Persona Brief</button>
             <button class="nav-tab" onclick="showPage('personas')">Personas & Angles</button>
-            <button class="nav-tab" onclick="showPage('brief')">Brief Template</button>
             <button class="nav-tab" onclick="showPage('formats')">Ad Formats</button>
         </div>
 
         <!-- FLOWCHART PAGE -->
         <div class="page-view active" id="page-flowchart">
+        <div class="flowchart-with-channels">
+            <!-- Channels Sidebar -->
+            <div class="channels-sidebar">
+                <div class="channels-sidebar-title">Channels Timeline</div>
+                <div class="channel-timeline">
+                    <div class="channel-item active lp">
+                        <div class="channel-item-header">
+                            <span class="channel-item-dot lp"></span>
+                            <span class="channel-item-name">Landing Pages</span>
+                            <span class="channel-item-phase">Phase 3+</span>
+                        </div>
+                        <div class="channel-item-desc">Persona-specific LPs after UGC validation</div>
+                        <div class="channel-item-actions">
+                            <span>Listicle</span>
+                            <span>Trojan Horse</span>
+                            <span>PDP</span>
+                        </div>
+                    </div>
+                    <div class="channel-item active popup">
+                        <div class="channel-item-header">
+                            <span class="channel-item-dot popup"></span>
+                            <span class="channel-item-name">Popups</span>
+                            <span class="channel-item-phase">Phase 3+</span>
+                        </div>
+                        <div class="channel-item-desc">Persona-targeted messaging & offers</div>
+                        <div class="channel-item-actions">
+                            <span>Exit Intent</span>
+                            <span>Welcome</span>
+                        </div>
+                    </div>
+                    <div class="channel-item active email">
+                        <div class="channel-item-header">
+                            <span class="channel-item-dot email"></span>
+                            <span class="channel-item-name">Email</span>
+                            <span class="channel-item-phase">Phase 3+</span>
+                        </div>
+                        <div class="channel-item-desc">Welcome, abandon cart, post-purchase flows</div>
+                        <div class="channel-item-actions">
+                            <span>Flows</span>
+                            <span>Campaigns</span>
+                        </div>
+                    </div>
+                    <div class="channel-item active sms">
+                        <div class="channel-item-header">
+                            <span class="channel-item-dot sms"></span>
+                            <span class="channel-item-name">SMS</span>
+                            <span class="channel-item-phase">Phase 4+</span>
+                        </div>
+                        <div class="channel-item-desc">Persona-specific sequences & alerts</div>
+                        <div class="channel-item-actions">
+                            <span>Welcome</span>
+                            <span>Cart</span>
+                            <span>Promos</span>
+                        </div>
+                    </div>
+                    <div class="channel-item active directmail">
+                        <div class="channel-item-header">
+                            <span class="channel-item-dot directmail"></span>
+                            <span class="channel-item-name">Direct Mail</span>
+                            <span class="channel-item-phase">Phase 4+</span>
+                        </div>
+                        <div class="channel-item-desc">High-value persona mailers & catalogs</div>
+                        <div class="channel-item-actions">
+                            <span>Postcards</span>
+                            <span>Catalogs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Flowchart -->
+            <div class="flowchart-main">
         <div class="flow-wrapper" id="flow-wrapper">
         <div class="flow" id="main-flow">
 
@@ -2491,13 +2734,15 @@
 
         </div>
         </div>
+            </div>
+        </div>
         </div>
         <!-- END FLOWCHART PAGE -->
 
         <!-- PERSONAS & ANGLES PAGE -->
         <div class="page-view" id="page-personas">
             <p style="text-align: center; color: var(--text-light); margin-bottom: 16px;">
-                Each persona connects to its value props and angles. Click angles to cycle through status.
+                Click persona to see research summary. Click angles to cycle through status.
             </p>
 
             <!-- Legend -->
@@ -2523,10 +2768,42 @@
             <div class="personas-container">
                 <!-- Persona Tree 1 -->
                 <div class="persona-tree">
-                    <div class="persona-node">
+                    <div class="persona-node" onclick="toggleResearchPanel('research-1')">
                         <h3>The Minimalist Professional</h3>
-                        <p>35-55 • Career-focused • Efficiency</p>
+                        <p>35-55 • Career-focused • Efficiency-driven</p>
+                        <span class="click-hint">Click for research summary ↓</span>
                     </div>
+
+                    <!-- Research Panel -->
+                    <div class="persona-research-panel" id="research-1">
+                        <div class="persona-research-grid">
+                            <div class="research-item">
+                                <h5>Who They Are</h5>
+                                <p>Executive women, lawyers, doctors, consultants. Value time over everything. Want to look polished without spending time.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Key Motivations</h5>
+                                <p>Efficiency, professional appearance, confidence in meetings, not looking "done up" but polished.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Why JR Appeals</h5>
+                                <p>Multi-use products, quick application, natural finish that's office-appropriate. Bobbi's credibility.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Golden Nugget Reviews</h5>
+                                <p>"I can do my whole face in 5 minutes before Zoom calls." "Finally makeup that doesn't look like makeup."</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Key Products</h5>
+                                <p>Miracle Balm, The Face Pencil, Sparkle Wash. Multi-tasking essentials.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Creator Profiles</h5>
+                                <p>Career-focused lifestyle, productivity content, capsule wardrobe aesthetic, "quiet luxury".</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="tree-connector"></div>
                     <div class="angles-cloud">
                         <span class="angle-node winner" onclick="cycleAngleStatus(this)">5-minute routine</span>
@@ -2543,10 +2820,42 @@
 
                 <!-- Persona Tree 2 -->
                 <div class="persona-tree">
-                    <div class="persona-node">
+                    <div class="persona-node" onclick="toggleResearchPanel('research-2')">
                         <h3>The Natural Beauty Seeker</h3>
                         <p>28-45 • Health-conscious • Ingredient-aware</p>
+                        <span class="click-hint">Click for research summary ↓</span>
                     </div>
+
+                    <!-- Research Panel -->
+                    <div class="persona-research-panel" id="research-2">
+                        <div class="persona-research-grid">
+                            <div class="research-item">
+                                <h5>Who They Are</h5>
+                                <p>Yoga moms, wellness enthusiasts, clean eating advocates. Read every ingredient label.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Key Motivations</h5>
+                                <p>Avoiding toxins, skin health over coverage, alignment with lifestyle values.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Why JR Appeals</h5>
+                                <p>Clean ingredients, skin-first philosophy, enhances rather than masks. No parabens, sulfates.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Golden Nugget Reviews</h5>
+                                <p>"Finally a brand that cares about what goes ON my skin." "My dermatologist approved!"</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Key Products</h5>
+                                <p>Miracle Balm, What The Foundation, Light Aura Cream. Skin-nourishing formulas.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Creator Profiles</h5>
+                                <p>Clean beauty advocates, wellness influencers, organic lifestyle, "what I eat in a day" content.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="tree-connector"></div>
                     <div class="angles-cloud">
                         <span class="angle-node tested" onclick="cycleAngleStatus(this)">Clean beauty</span>
@@ -2563,10 +2872,42 @@
 
                 <!-- Persona Tree 3 -->
                 <div class="persona-tree">
-                    <div class="persona-node">
+                    <div class="persona-node" onclick="toggleResearchPanel('research-3')">
                         <h3>The Mature Elegance</h3>
                         <p>50+ • Sophisticated • Quality-focused</p>
+                        <span class="click-hint">Click for research summary ↓</span>
                     </div>
+
+                    <!-- Research Panel -->
+                    <div class="persona-research-panel" id="research-3">
+                        <div class="persona-research-grid">
+                            <div class="research-item">
+                                <h5>Who They Are</h5>
+                                <p>Empty nesters, retirees with disposable income, lifelong beauty enthusiasts. Quality over quantity.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Key Motivations</h5>
+                                <p>Age-appropriate beauty, not looking "overdone", celebrating their age gracefully.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Why JR Appeals</h5>
+                                <p>Bobbi Brown's legacy, "makeup for real women", not trying to look younger but better.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Golden Nugget Reviews</h5>
+                                <p>"Bobbi understands women our age." "Makes me feel elegant, not like I'm trying too hard."</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Key Products</h5>
+                                <p>The Hippie Stick, Miracle Balm, Cool Gloss. Hydrating, flattering formulas.</p>
+                            </div>
+                            <div class="research-item">
+                                <h5>Creator Profiles</h5>
+                                <p>Over-50 lifestyle, elegant aging, "granny chic", sophisticated travel content.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="tree-connector"></div>
                     <div class="angles-cloud">
                         <span class="angle-node" onclick="cycleAngleStatus(this)">Age-appropriate beauty</span>
@@ -2582,7 +2923,7 @@
                 </div>
 
                 <!-- Add New Persona -->
-                <div class="add-persona-tree" onclick="alert('Add persona functionality coming soon!')">
+                <div class="add-persona-tree" onclick="alert('Add persona functionality coming soon!')" style="min-height: 150px; align-self: center;">
                     <div style="font-size: 32px; margin-bottom: 8px;">+</div>
                     <div style="font-size: 12px;">Add Persona</div>
                 </div>
@@ -2590,190 +2931,155 @@
         </div>
         <!-- END PERSONAS PAGE -->
 
-        <!-- BRIEF TEMPLATE PAGE -->
+        <!-- BRIEF PAGE - Output-focused One-Sheeter -->
         <div class="page-view" id="page-brief">
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">
+                Research output → One-sheeter ready for creative briefing. Select a persona to view/edit.
+            </p>
+
+            <!-- Persona Selector -->
+            <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 24px;">
+                <button class="control-btn active" onclick="selectBriefPersona(0)" id="brief-persona-0">Minimalist Professional</button>
+                <button class="control-btn" onclick="selectBriefPersona(1)" id="brief-persona-1">Natural Beauty Seeker</button>
+                <button class="control-btn" onclick="selectBriefPersona(2)" id="brief-persona-2">Mature Elegance</button>
+                <button class="control-btn" onclick="alert('Add persona coming soon')">+ Add New</button>
+            </div>
+
             <div class="brief-template">
                 <div class="brief-header">
-                    <h2>Persona Research Brief</h2>
-                    <p>Complete this 1-2 page brief after the research phase</p>
+                    <h2 id="brief-title">The Minimalist Professional</h2>
+                    <p>35-55 • Career-focused • Efficiency-driven</p>
+                </div>
+
+                <!-- Quick Stats Bar -->
+                <div style="display: flex; gap: 16px; padding: 16px 24px; background: var(--cream); border-bottom: 1px solid #ddd;">
+                    <div style="flex: 1; text-align: center;">
+                        <div style="font-size: 20px; font-weight: 600; color: var(--navy);">5</div>
+                        <div style="font-size: 10px; color: var(--text-light); text-transform: uppercase;">Angles</div>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div style="font-size: 20px; font-weight: 600; color: var(--green);">1</div>
+                        <div style="font-size: 10px; color: var(--text-light); text-transform: uppercase;">Winners</div>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div style="font-size: 20px; font-weight: 600; color: var(--navy);">4</div>
+                        <div style="font-size: 10px; color: var(--text-light); text-transform: uppercase;">Products</div>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div style="font-size: 20px; font-weight: 600; color: var(--amber);">Phase 3</div>
+                        <div style="font-size: 10px; color: var(--text-light); text-transform: uppercase;">Current</div>
+                    </div>
                 </div>
 
                 <div class="brief-section">
-                    <h3>Persona Overview</h3>
+                    <h3>Who They Are</h3>
                     <div class="brief-grid">
-                        <div class="brief-field">
-                            <label>Persona Name</label>
-                            <input type="text" placeholder="e.g., The Minimalist Professional">
+                        <div class="research-item">
+                            <h5>Demographics</h5>
+                            <p>Women 35-55, household income $150k+, urban/suburban. Executive roles, lawyers, doctors, consultants, entrepreneurs.</p>
                         </div>
-                        <div class="brief-field">
-                            <label>Age Range</label>
-                            <input type="text" placeholder="e.g., 35-55">
+                        <div class="research-item">
+                            <h5>Lifestyle</h5>
+                            <p>Time-poor, calendar-driven. Early risers, workout before work. Value efficiency in everything. Capsule wardrobe mentality.</p>
                         </div>
                     </div>
-                    <div class="brief-field">
-                        <label>One-Line Description</label>
-                        <input type="text" placeholder="Who is this person in one sentence?">
+                    <div class="research-item" style="margin-top: 12px;">
+                        <h5>Psychographics</h5>
+                        <p>Achievement-oriented but tired of "hustle culture." Seeking ways to simplify without sacrificing quality. Skeptical of trends, prefer proven solutions. "Quiet luxury" aesthetic - want to look polished, not "done up."</p>
                     </div>
                 </div>
 
                 <div class="brief-section">
-                    <h3>Demographics & Psychographics</h3>
+                    <h3>Problems & Desires</h3>
                     <div class="brief-grid">
-                        <div class="brief-field">
-                            <label>Common Professions</label>
-                            <textarea placeholder="What jobs do they have? What industries?"></textarea>
+                        <div class="research-item">
+                            <h5>Pain Points</h5>
+                            <p>• No time for complex routines<br>• Makeup looks cakey on Zoom<br>• Products that require too many steps<br>• Looking "overdone" for the office</p>
                         </div>
-                        <div class="brief-field">
-                            <label>Lifestyle & Values</label>
-                            <textarea placeholder="What do they value? How do they spend time?"></textarea>
+                        <div class="research-item">
+                            <h5>Desires</h5>
+                            <p>• Look polished in 5 minutes<br>• Confidence in meetings<br>• Products that work hard<br>• Natural but elevated look</p>
                         </div>
                     </div>
-                    <div class="brief-field">
-                        <label>Psychographic Profile</label>
-                        <textarea placeholder="What drives them? What are their beliefs about beauty, self-care, quality?"></textarea>
+                    <div class="research-item" style="margin-top: 12px;">
+                        <h5>Job to Be Done</h5>
+                        <p>"Help me look put-together and confident for my workday without taking more than 5 minutes or looking like I'm wearing makeup."</p>
                     </div>
                 </div>
 
                 <div class="brief-section">
-                    <h3>Problems, Desires & Jobs to Be Done</h3>
-                    <div class="brief-field">
-                        <label>Core Problems / Pain Points</label>
-                        <textarea placeholder="What frustrates them about current beauty options? What's missing?"></textarea>
+                    <h3>Why Jones Road</h3>
+                    <div class="research-item">
+                        <h5>Brand Appeal</h5>
+                        <p>Bobbi Brown's credibility speaks to this audience - she built her career on "natural beauty." Multi-use products align with efficiency mindset. Clean ingredients matter but not the primary driver. Price point signals quality without being frivolous.</p>
                     </div>
-                    <div class="brief-field">
-                        <label>Desires & Aspirations</label>
-                        <textarea placeholder="What do they want to feel? Look like? Be perceived as?"></textarea>
+                    <div class="brief-grid" style="margin-top: 12px;">
+                        <div class="research-item">
+                            <h5>Key Products</h5>
+                            <p>1. <strong>Miracle Balm</strong> - Multi-use, quick application<br>2. <strong>The Face Pencil</strong> - Concealer + foundation<br>3. <strong>Sparkle Wash</strong> - Effortless eye look<br>4. <strong>The Lip Tint</strong> - Natural color</p>
+                        </div>
+                        <div class="research-item">
+                            <h5>Competitive Set</h5>
+                            <p>Currently using: Glossier, ILIA, Westman Atelier, Kosas. Considering: Merit, Saie. Moving away from: heavy coverage brands.</p>
+                        </div>
                     </div>
-                    <div class="brief-field">
-                        <label>Jobs to Be Done</label>
-                        <textarea placeholder="What 'job' are they hiring our product to do? (e.g., 'Help me look polished in 5 minutes')"></textarea>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Angles to Test</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+                        <span class="angle-node winner">5-minute routine</span>
+                        <span class="angle-node tested">Clean ingredients</span>
+                        <span class="angle-node tested">No-makeup makeup</span>
+                        <span class="angle-node testing">Confidence boost</span>
+                        <span class="angle-node">Office appropriate</span>
                     </div>
+                    <div class="research-item">
+                        <h5>Hypothesis</h5>
+                        <p>The "5-minute routine" angle has proven strongest because it directly addresses their #1 pain point (time). Secondary angles around "looking polished, not done up" resonate with their professional context. Clean ingredients matter but isn't the lead message.</p>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Creative Inputs</h3>
                     <div class="brief-grid">
-                        <div class="brief-field">
-                            <label>Emotional Triggers</label>
-                            <textarea placeholder="What emotions drive their purchase? (confidence, fear of aging, self-care, etc.)"></textarea>
+                        <div class="research-item">
+                            <h5>Golden Nugget Reviews</h5>
+                            <p>"I can do my whole face in 5 minutes before Zoom calls - game changer."<br><br>"Finally makeup that doesn't look like makeup. My colleagues think I just 'look healthy.'"<br><br>"As a surgeon, I need to look professional but not distracting. This is perfect."</p>
                         </div>
-                        <div class="brief-field">
-                            <label>Objections & Barriers</label>
-                            <textarea placeholder="What stops them from buying? Price? Skepticism? Past experiences?"></textarea>
+                        <div class="research-item">
+                            <h5>Creator Profiles</h5>
+                            <p><strong>They follow:</strong> Productivity content, career advice, "quiet luxury," capsule wardrobes, Alix Earle (but aged up)<br><br><strong>Creators for UGC:</strong> Women 35-50, professional backgrounds, polished but relatable aesthetic, "get ready with me for work" content</p>
+                        </div>
+                    </div>
+                    <div class="brief-grid" style="margin-top: 12px;">
+                        <div class="research-item">
+                            <h5>Language & Tone</h5>
+                            <p><strong>Words that work:</strong> Effortless, polished, streamlined, multi-tasking, elevated, curated<br><br><strong>Tone:</strong> Confident, sophisticated, efficient. Not trendy or try-hard. Speak to them like a peer.</p>
+                        </div>
+                        <div class="research-item">
+                            <h5>Hooks That Work</h5>
+                            <p>• "My entire makeup routine takes 5 minutes"<br>• "What I actually wear to work every day"<br>• "The only products in my makeup bag"<br>• "How I look put-together on no sleep"</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="brief-section">
-                    <h3>Buying Behavior & Context</h3>
+                    <h3>Success Metrics</h3>
                     <div class="brief-grid">
-                        <div class="brief-field">
-                            <label>Where They Discover Products</label>
-                            <textarea placeholder="Social media, friends, dermatologist, influencers, search?"></textarea>
+                        <div class="research-item">
+                            <h5>Green Light Criteria</h5>
+                            <p>• $2k/day spend on concepts<br>• ≥ 0.8 ROAS<br>• ≥ 60% New Visit Rate<br>• 20%+ hit rate on UGC</p>
                         </div>
-                        <div class="brief-field">
-                            <label>Buying Triggers / Moments</label>
-                            <textarea placeholder="What makes them buy NOW? Events, seasons, life changes?"></textarea>
-                        </div>
-                    </div>
-                    <div class="brief-field">
-                        <label>Competitive Alternatives</label>
-                        <textarea placeholder="What are they currently using? What brands are they considering?"></textarea>
-                    </div>
-                </div>
-
-                <div class="brief-section">
-                    <h3>Brand Connection</h3>
-                    <div class="brief-field">
-                        <label>Why Jones Road Appeals to This Persona</label>
-                        <textarea placeholder="What about our brand resonates with them? Why us over others?"></textarea>
-                    </div>
-                    <div class="brief-field">
-                        <label>Key Products for This Persona</label>
-                        <textarea placeholder="Which 2-4 products should we lead with? Why?"></textarea>
-                    </div>
-                </div>
-
-                <div class="brief-section">
-                    <h3>Value Props & Angles to Test</h3>
-                    <div class="brief-field">
-                        <label>4-6 Core Angles / Value Propositions</label>
-                        <textarea placeholder="List the main messages/angles to test in creative. Be specific.&#10;&#10;1. &#10;2. &#10;3. &#10;4. &#10;5. &#10;6. "></textarea>
-                    </div>
-                    <div class="brief-field">
-                        <label>Hypothesis: Why These Angles Will Work</label>
-                        <textarea placeholder="What's your hypothesis about why these angles will resonate?"></textarea>
-                    </div>
-                </div>
-
-                <div class="brief-section">
-                    <h3>Creative & Targeting Inputs</h3>
-                    <div class="brief-grid">
-                        <div class="brief-list">
-                            <h4>Creator Profiles They Follow</h4>
-                            <ul>
-                                <li>Type 1: _______________</li>
-                                <li>Type 2: _______________</li>
-                                <li>Type 3: _______________</li>
-                            </ul>
-                        </div>
-                        <div class="brief-list">
-                            <h4>Creators That Fit This Persona</h4>
-                            <ul>
-                                <li>Creator 1: _______________</li>
-                                <li>Creator 2: _______________</li>
-                                <li>Creator 3: _______________</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="brief-field" style="margin-top: 12px;">
-                        <label>Golden Nugget Reviews (Verbatim quotes from reviews)</label>
-                        <textarea placeholder="Copy/paste the best review quotes that capture this persona's voice and desires"></textarea>
-                    </div>
-                    <div class="brief-field">
-                        <label>Successful Non-Competitive Ads (References)</label>
-                        <textarea placeholder="Links or descriptions of ads from other brands that work for this persona"></textarea>
-                    </div>
-                </div>
-
-                <div class="brief-section">
-                    <h3>Language, Tone & Messaging</h3>
-                    <div class="brief-grid">
-                        <div class="brief-field">
-                            <label>Language / Vocabulary They Use</label>
-                            <textarea placeholder="What words do they use? What insider language? Formal vs casual?"></textarea>
-                        </div>
-                        <div class="brief-field">
-                            <label>Tone That Resonates</label>
-                            <textarea placeholder="Aspirational? Educational? Relatable? Luxurious? Down-to-earth?"></textarea>
-                        </div>
-                    </div>
-                    <div class="brief-field">
-                        <label>Hooks That Would Stop Their Scroll</label>
-                        <textarea placeholder="What opening lines, questions, or statements would grab their attention?"></textarea>
-                    </div>
-                </div>
-
-                <div class="brief-section">
-                    <h3>Sample Customer Profiles</h3>
-                    <div class="brief-field">
-                        <label>2-3 Real Customer Examples</label>
-                        <textarea placeholder="Describe 2-3 actual customers who fit this persona. What do we know about them?"></textarea>
-                    </div>
-                </div>
-
-                <div class="brief-section">
-                    <h3>Success Metrics & Hypothesis</h3>
-                    <div class="brief-grid">
-                        <div class="brief-field">
-                            <label>How We'll Know This Persona Works</label>
-                            <textarea placeholder="What metrics will indicate success? ROAS threshold? Spend level? NVR?"></textarea>
-                        </div>
-                        <div class="brief-field">
-                            <label>Initial Hypothesis</label>
-                            <textarea placeholder="Why do we believe this persona will convert? What's our bet?"></textarea>
+                        <div class="research-item">
+                            <h5>Current Status</h5>
+                            <p>• Phase 3 (UGC Testing)<br>• "5-minute routine" angle winning<br>• Ready for platform expansion<br>• LPs and Popups unlocked</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END BRIEF TEMPLATE PAGE -->
+        <!-- END BRIEF PAGE -->
 
         <!-- AD FORMATS PAGE -->
         <div class="page-view" id="page-formats">
@@ -3052,6 +3358,41 @@
             if (page === 'personas') {
                 setTimeout(initConnectionLines, 50);
             }
+        }
+
+        // Brief Persona Selector
+        function selectBriefPersona(index) {
+            // Update button states
+            document.querySelectorAll('[id^="brief-persona-"]').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            // In a full implementation, this would swap the brief content
+            // For now just show alert for non-first personas
+            if (index > 0) {
+                alert('This persona brief is not yet populated. Add your research data!');
+            }
+        }
+
+        // Toggle Research Panel for Personas
+        function toggleResearchPanel(panelId) {
+            const panel = document.getElementById(panelId);
+            const wasOpen = panel.classList.contains('open');
+
+            // Close all panels first
+            document.querySelectorAll('.persona-research-panel').forEach(p => {
+                p.classList.remove('open');
+            });
+
+            // Toggle the clicked one
+            if (!wasOpen) {
+                panel.classList.add('open');
+            }
+
+            // Redraw connection lines after panel toggle
+            setTimeout(() => {
+                const tree = panel.closest('.persona-tree');
+                if (tree) updateConnectionLines(tree);
+            }, 50);
         }
 
         // Cycle Angle Status (untested -> testing -> tested -> winner -> untested)
