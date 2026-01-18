@@ -21,7 +21,7 @@ async function readFormats(): Promise<AdFormat[]> {
     }
 
     const blobInfo = blobs.blobs[0];
-    const response = await fetch(blobInfo.url);
+    const response = await fetch(blobInfo.url, { cache: "no-store" });
     const data = await response.json();
     return data;
   } catch (error) {
