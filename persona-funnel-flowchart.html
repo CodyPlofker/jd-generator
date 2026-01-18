@@ -1472,118 +1472,38 @@
             color: var(--navy);
         }
 
-        /* Channels Sidebar - Always visible on flowchart */
-        .flowchart-with-channels {
-            display: flex;
-            gap: 24px;
+        /* Channel Phases in Flowchart */
+        .channel-phases {
+            transition: all 0.3s ease;
         }
 
-        .channels-sidebar {
-            width: 220px;
-            flex-shrink: 0;
-            position: sticky;
-            top: 20px;
-            height: fit-content;
+        .channel-phases.hidden {
+            display: none;
         }
 
-        .channels-sidebar-title {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--navy);
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--navy);
+        .channel-phase {
+            border-left: 4px solid #6366f1;
+            padding-left: 20px;
+            margin-left: 20px;
         }
 
-        .channel-timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        .channel-connector {
+            margin-left: 20px;
         }
 
-        .channel-item {
+        .narrower-lp {
             background: #fff;
-            border: 1px solid #ddd;
+            border: 2px solid #6366f1;
             border-radius: 8px;
             padding: 12px;
-            transition: all 0.2s;
-            cursor: pointer;
+            min-width: 140px;
         }
 
-        .channel-item:hover {
-            border-color: var(--navy);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .channel-item.active {
-            border-left: 3px solid;
-        }
-
-        .channel-item.lp { border-left-color: #6366f1; }
-        .channel-item.popup { border-left-color: #ec4899; }
-        .channel-item.email { border-left-color: #f59e0b; }
-        .channel-item.sms { border-left-color: #10b981; }
-        .channel-item.directmail { border-left-color: #8b5cf6; }
-
-        .channel-item-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-
-        .channel-item-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .channel-item-dot.lp { background: #6366f1; }
-        .channel-item-dot.popup { background: #ec4899; }
-        .channel-item-dot.email { background: #f59e0b; }
-        .channel-item-dot.sms { background: #10b981; }
-        .channel-item-dot.directmail { background: #8b5cf6; }
-
-        .channel-item-name {
-            font-weight: 600;
-            font-size: 12px;
-            color: var(--text);
-        }
-
-        .channel-item-phase {
-            font-size: 9px;
-            color: var(--text-light);
-            margin-left: auto;
-            background: var(--cream);
-            padding: 2px 6px;
-            border-radius: 3px;
-        }
-
-        .channel-item-desc {
-            font-size: 10px;
-            color: var(--text-light);
-            line-height: 1.4;
-        }
-
-        .channel-item-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-        }
-
-        .channel-item-actions span {
-            font-size: 9px;
-            padding: 3px 8px;
-            background: var(--cream);
-            border-radius: 3px;
-            color: var(--text);
-        }
-
-        .flowchart-main {
-            flex: 1;
-            min-width: 0;
+        .narrower-lp .branch-header {
+            font-size: 11px;
+            padding: 6px 10px;
+            margin: -12px -12px 10px -12px;
+            border-radius: 6px 6px 0 0;
         }
 
         /* Ad Formats Page */
@@ -1919,77 +1839,11 @@
 
         <!-- FLOWCHART PAGE -->
         <div class="page-view active" id="page-flowchart">
-        <div class="flowchart-with-channels">
-            <!-- Channels Sidebar -->
-            <div class="channels-sidebar">
-                <div class="channels-sidebar-title">Channels Timeline</div>
-                <div class="channel-timeline">
-                    <div class="channel-item active lp">
-                        <div class="channel-item-header">
-                            <span class="channel-item-dot lp"></span>
-                            <span class="channel-item-name">Landing Pages</span>
-                            <span class="channel-item-phase">Phase 3+</span>
-                        </div>
-                        <div class="channel-item-desc">Persona-specific LPs after UGC validation</div>
-                        <div class="channel-item-actions">
-                            <span>Listicle</span>
-                            <span>Trojan Horse</span>
-                            <span>PDP</span>
-                        </div>
-                    </div>
-                    <div class="channel-item active popup">
-                        <div class="channel-item-header">
-                            <span class="channel-item-dot popup"></span>
-                            <span class="channel-item-name">Popups</span>
-                            <span class="channel-item-phase">Phase 3+</span>
-                        </div>
-                        <div class="channel-item-desc">Persona-targeted messaging & offers</div>
-                        <div class="channel-item-actions">
-                            <span>Exit Intent</span>
-                            <span>Welcome</span>
-                        </div>
-                    </div>
-                    <div class="channel-item active email">
-                        <div class="channel-item-header">
-                            <span class="channel-item-dot email"></span>
-                            <span class="channel-item-name">Email</span>
-                            <span class="channel-item-phase">Phase 3+</span>
-                        </div>
-                        <div class="channel-item-desc">Welcome, abandon cart, post-purchase flows</div>
-                        <div class="channel-item-actions">
-                            <span>Flows</span>
-                            <span>Campaigns</span>
-                        </div>
-                    </div>
-                    <div class="channel-item active sms">
-                        <div class="channel-item-header">
-                            <span class="channel-item-dot sms"></span>
-                            <span class="channel-item-name">SMS</span>
-                            <span class="channel-item-phase">Phase 4+</span>
-                        </div>
-                        <div class="channel-item-desc">Persona-specific sequences & alerts</div>
-                        <div class="channel-item-actions">
-                            <span>Welcome</span>
-                            <span>Cart</span>
-                            <span>Promos</span>
-                        </div>
-                    </div>
-                    <div class="channel-item active directmail">
-                        <div class="channel-item-header">
-                            <span class="channel-item-dot directmail"></span>
-                            <span class="channel-item-name">Direct Mail</span>
-                            <span class="channel-item-phase">Phase 4+</span>
-                        </div>
-                        <div class="channel-item-desc">High-value persona mailers & catalogs</div>
-                        <div class="channel-item-actions">
-                            <span>Postcards</span>
-                            <span>Catalogs</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Main Flowchart -->
-            <div class="flowchart-main">
+        <!-- View Toggle -->
+        <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 20px;">
+            <button class="control-btn active" id="view-full" onclick="setFlowView('full')">Full Funnel (Ads + Channels)</button>
+            <button class="control-btn" id="view-ads" onclick="setFlowView('ads')">Ads Only</button>
+        </div>
         <div class="flow-wrapper" id="flow-wrapper">
         <div class="flow" id="main-flow">
 
@@ -2553,6 +2407,151 @@
                 </div>
             </div>
 
+            <!-- CHANNEL PHASES - Can be hidden with "Ads Only" view -->
+            <div class="channel-phases">
+                <div class="connector channel-connector"></div>
+
+                <!-- LP TESTING PHASE -->
+                <div class="phase channel-phase" style="max-width: 100%;">
+                    <span class="phase-label" style="background: #6366f1;">LP Testing & Optimization</span>
+                    <p class="phase-subtitle">Channel: Landing Pages</p>
+
+                    <div class="node" style="background: #6366f1;" onclick="toggleDetail('lp-testing')">
+                        <div class="node-title">Landing Page A/B Testing</div>
+                        <div class="node-subtitle">Test LP variations against /first-order</div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+
+                    <div class="detail-panel" id="lp-testing-detail">
+                        <div class="detail-inner">
+                            <div class="detail-grid">
+                                <div class="detail-section">
+                                    <h4>LP Formats to Test</h4>
+                                    <ul>
+                                        <li>Listicle LP</li>
+                                        <li>Trojan Horse LP</li>
+                                        <li>Optimized PDP</li>
+                                        <li>Faux Homepage</li>
+                                        <li>Persona-specific Quiz LP</li>
+                                    </ul>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>KPIs</h4>
+                                    <ul>
+                                        <li>CVR vs /first-order baseline</li>
+                                        <li>AOV by LP variant</li>
+                                        <li>Time on page</li>
+                                        <li>Scroll depth</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short channel-connector"></div>
+
+                <!-- POPUP SEGMENTATION PHASE -->
+                <div class="phase channel-phase" style="max-width: 100%;">
+                    <span class="phase-label" style="background: #ec4899;">Popup Segmentation</span>
+                    <p class="phase-subtitle">Channel: Popups</p>
+
+                    <div class="node" style="background: #ec4899;" onclick="toggleDetail('popup-segment')">
+                        <div class="node-title">Niche Down with Selectors</div>
+                        <div class="node-subtitle">Popups to segment audiences into subgroups</div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+
+                    <div class="detail-panel" id="popup-segment-detail">
+                        <div class="detail-inner">
+                            <div class="detail-grid">
+                                <div class="detail-section">
+                                    <h4>Popup Types</h4>
+                                    <ul>
+                                        <li>Quiz-style selector (What's your skin type?)</li>
+                                        <li>Need state identifier</li>
+                                        <li>Product recommender</li>
+                                        <li>Exit intent with persona offer</li>
+                                    </ul>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>Data Captured</h4>
+                                    <ul>
+                                        <li>Primary need state</li>
+                                        <li>Product interest</li>
+                                        <li>Skin concern/type</li>
+                                        <li>Experience level</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="connector short channel-connector"></div>
+
+                    <!-- Narrower LPs based on popup -->
+                    <div class="branch-section" style="gap: 20px;">
+                        <div class="branch narrower-lp">
+                            <div class="branch-header" style="background: #6366f1;">Narrower LP 1</div>
+                            <p style="font-size: 11px; text-align: center;">Based on popup response<br><strong>/surprise-30-discount</strong></p>
+                        </div>
+                        <div class="branch narrower-lp">
+                            <div class="branch-header" style="background: #6366f1;">Narrower LP 2</div>
+                            <p style="font-size: 11px; text-align: center;">Based on popup response<br><strong>/skincare-routine</strong></p>
+                        </div>
+                        <div class="branch narrower-lp">
+                            <div class="branch-header" style="background: #6366f1;">Narrower LP 3</div>
+                            <p style="font-size: 11px; text-align: center;">Based on popup response<br><strong>/quick-routine</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector short channel-connector"></div>
+
+                <!-- LIFECYCLE PHASE -->
+                <div class="phase channel-phase" style="max-width: 100%;">
+                    <span class="phase-label" style="background: linear-gradient(90deg, #f59e0b, #10b981);">Lifecycle & Retention</span>
+                    <p class="phase-subtitle">Channels: Email, SMS, Direct Mail</p>
+
+                    <div class="node" style="background: linear-gradient(135deg, #f59e0b, #10b981);" onclick="toggleDetail('lifecycle')">
+                        <div class="node-title">Retarget Based on Need State</div>
+                        <div class="node-subtitle">Lifecycle flows based on expressed interests via popup</div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+
+                    <div class="detail-panel" id="lifecycle-detail">
+                        <div class="detail-inner">
+                            <div class="detail-grid">
+                                <div class="detail-section">
+                                    <h4>Email Flows</h4>
+                                    <ul>
+                                        <li>Welcome series by need state</li>
+                                        <li>Abandon cart with persona copy</li>
+                                        <li>Browse abandon by product interest</li>
+                                        <li>Post-purchase education</li>
+                                        <li>Win-back by original need state</li>
+                                    </ul>
+                                </div>
+                                <div class="detail-section">
+                                    <h4>SMS & Direct Mail</h4>
+                                    <ul>
+                                        <li>SMS: Cart recovery, flash sales</li>
+                                        <li>SMS: Restock reminders</li>
+                                        <li>Direct Mail: VIP postcards</li>
+                                        <li>Direct Mail: Catalog for high LTV</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="detail-section" style="margin-top: 16px; padding: 12px; background: var(--cream); border-radius: 8px;">
+                                <h4 style="color: var(--navy);">Key Insight</h4>
+                                <p style="font-size: 12px; margin: 8px 0 0 0;">Retarget and nurture email + SMS subscribers based on the specific need state they expressed through the popup. Personalization drives significantly higher conversion.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END CHANNEL PHASES -->
+
             <div class="connector"></div>
 
             <!-- PHASE 5: Elevated Production -->
@@ -2733,8 +2732,6 @@
             </div>
 
         </div>
-        </div>
-            </div>
         </div>
         </div>
         <!-- END FLOWCHART PAGE -->
@@ -3357,6 +3354,23 @@
             // Initialize connection lines when switching to personas page
             if (page === 'personas') {
                 setTimeout(initConnectionLines, 50);
+            }
+        }
+
+        // Flowchart View Toggle (Full Funnel vs Ads Only)
+        function setFlowView(view) {
+            const channelPhases = document.querySelector('.channel-phases');
+            const fullBtn = document.getElementById('view-full');
+            const adsBtn = document.getElementById('view-ads');
+
+            if (view === 'ads') {
+                channelPhases.classList.add('hidden');
+                fullBtn.classList.remove('active');
+                adsBtn.classList.add('active');
+            } else {
+                channelPhases.classList.remove('hidden');
+                fullBtn.classList.add('active');
+                adsBtn.classList.remove('active');
             }
         }
 
