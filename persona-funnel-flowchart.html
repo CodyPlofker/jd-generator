@@ -728,6 +728,348 @@
             color: var(--text-muted);
         }
 
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 24px;
+            background: var(--cream);
+            padding: 4px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            color: var(--navy);
+        }
+
+        .nav-tab.active {
+            background: #fff;
+            color: var(--navy);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Channel Filters */
+        .channel-filters {
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+            margin-top: 4px;
+        }
+
+        .channel-filters label {
+            min-width: 50px;
+        }
+
+        .channel-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 3px 6px;
+            border-radius: 3px;
+            transition: all 0.2s;
+            background: var(--cream);
+            border: 1px solid transparent;
+        }
+
+        .channel-toggle:hover {
+            border-color: var(--navy);
+        }
+
+        .channel-toggle.active {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .channel-toggle input {
+            display: none;
+        }
+
+        /* Channel Layers */
+        .channel-layer {
+            display: none;
+            margin-top: 8px;
+            padding: 10px;
+            background: rgba(26, 58, 92, 0.05);
+            border: 1px dashed var(--navy);
+            border-radius: 4px;
+        }
+
+        .channel-layer.visible {
+            display: block;
+        }
+
+        .channel-layer-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--navy);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .channel-layer-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+
+        .channel-layer.landing-pages .channel-layer-title::before { background: #6366f1; }
+        .channel-layer.popups .channel-layer-title::before { background: #ec4899; }
+        .channel-layer.retention .channel-layer-title::before { background: #14b8a6; }
+
+        .channel-layer ul {
+            list-style: none;
+            font-size: 11px;
+            color: var(--text);
+        }
+
+        .channel-layer li {
+            padding: 2px 0;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .channel-layer li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--navy);
+            font-size: 10px;
+        }
+
+        /* Page Views */
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        /* Personas Page */
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .persona-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .persona-card-header {
+            background: var(--navy);
+            color: #fff;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .persona-card-header h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 20px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .persona-card-header p {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .persona-angles {
+            padding: 16px;
+        }
+
+        .persona-angles h4 {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .angle-tag {
+            display: inline-block;
+            background: var(--cream);
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 3px;
+            color: var(--text);
+        }
+
+        .angle-tag.tested {
+            border-color: var(--green);
+            background: rgba(45, 106, 79, 0.1);
+        }
+
+        .angle-tag.winner {
+            background: var(--green);
+            color: #fff;
+            border-color: var(--green);
+        }
+
+        /* Brief Template Page */
+        .brief-template {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .brief-header {
+            background: var(--navy);
+            color: #fff;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .brief-header h2 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 28px;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .brief-header p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 6px;
+        }
+
+        .brief-section {
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .brief-section:last-child {
+            border-bottom: none;
+        }
+
+        .brief-section h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brief-section h3::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        .brief-field {
+            margin-bottom: 12px;
+        }
+
+        .brief-field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .brief-field input,
+        .brief-field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .brief-field input:focus,
+        .brief-field textarea:focus {
+            outline: none;
+            border-color: var(--navy);
+        }
+
+        .brief-field textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .brief-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .brief-list {
+            background: var(--cream);
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .brief-list h4 {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .brief-list ul {
+            list-style: none;
+            font-size: 12px;
+        }
+
+        .brief-list li {
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .brief-list li::before {
+            content: '□';
+            position: absolute;
+            left: 0;
+            color: var(--navy);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .container { padding: 40px 20px; }
@@ -735,6 +1077,8 @@
             .branch-section::before { display: none; }
             .detail-grid { grid-template-columns: 1fr; }
             .persona-tracks { flex-direction: column; }
+            .brief-grid { grid-template-columns: 1fr; }
+            .nav-tabs { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -745,6 +1089,15 @@
             <p>Click any section to expand details</p>
         </div>
 
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showPage('flowchart')">Funnel Flow</button>
+            <button class="nav-tab" onclick="showPage('personas')">Personas & Angles</button>
+            <button class="nav-tab" onclick="showPage('brief')">Brief Template</button>
+        </div>
+
+        <!-- FLOWCHART PAGE -->
+        <div class="page-view active" id="page-flowchart">
         <div class="flow-wrapper" id="flow-wrapper">
         <div class="flow" id="main-flow">
 
@@ -1065,6 +1418,27 @@
                         <li>Launch on Pinterest</li>
                         <li>Launch on YouTube Shorts</li>
                     </ul>
+
+                    <!-- Channel Layers - appear when filters active -->
+                    <div class="channel-layer landing-pages" data-channel="landing-pages">
+                        <div class="channel-layer-title">Landing Pages</div>
+                        <ul>
+                            <li>Build persona-specific landing pages</li>
+                            <li>Test proven formats: Listicle, Trojan Horse, Optimized PDP, Faux Homepage</li>
+                            <li>Start with 2-3 formats that have worked</li>
+                            <li>A/B test headlines and hero content</li>
+                        </ul>
+                    </div>
+
+                    <div class="channel-layer popups" data-channel="popups">
+                        <div class="channel-layer-title">Popups</div>
+                        <ul>
+                            <li>Persona-targeted popup messaging</li>
+                            <li>Angle-specific offers and hooks</li>
+                            <li>Exit-intent with persona pain points</li>
+                        </ul>
+                    </div>
+
                     <span class="result-outcome">Continue to Phase 4 →</span>
                 </div>
 
@@ -1198,6 +1572,18 @@
                         <li>Build influencer program</li>
                         <li>Launch podcast/substack campaigns</li>
                     </ul>
+
+                    <!-- Channel Layer - Retention -->
+                    <div class="channel-layer retention" data-channel="retention">
+                        <div class="channel-layer-title">Retention Flows</div>
+                        <ul>
+                            <li>Tailor email flows by persona segments</li>
+                            <li>SMS sequences with persona-specific messaging</li>
+                            <li>Direct mail campaigns for high-value personas</li>
+                            <li>Post-purchase nurture by persona type</li>
+                        </ul>
+                    </div>
+
                     <span class="result-outcome">Continue to Phase 5 →</span>
                 </div>
 
@@ -1413,10 +1799,204 @@
 
         </div>
         </div>
+        </div>
+        <!-- END FLOWCHART PAGE -->
+
+        <!-- PERSONAS & ANGLES PAGE -->
+        <div class="page-view" id="page-personas">
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">
+                Visualize your personas and their associated angles/value props. Mark tested and winning angles.
+            </p>
+
+            <div class="personas-grid">
+                <!-- Persona Card 1 -->
+                <div class="persona-card">
+                    <div class="persona-card-header">
+                        <h3>The Minimalist Professional</h3>
+                        <p>35-55 • Career-focused • Values efficiency</p>
+                    </div>
+                    <div class="persona-angles">
+                        <h4>Value Props / Angles</h4>
+                        <span class="angle-tag winner">5-minute routine</span>
+                        <span class="angle-tag tested">Clean ingredients</span>
+                        <span class="angle-tag tested">No-makeup makeup</span>
+                        <span class="angle-tag">Confidence boost</span>
+                        <span class="angle-tag">Office appropriate</span>
+                    </div>
+                </div>
+
+                <!-- Persona Card 2 -->
+                <div class="persona-card">
+                    <div class="persona-card-header">
+                        <h3>The Natural Beauty Seeker</h3>
+                        <p>28-45 • Health-conscious • Ingredient-aware</p>
+                    </div>
+                    <div class="persona-angles">
+                        <h4>Value Props / Angles</h4>
+                        <span class="angle-tag tested">Clean beauty</span>
+                        <span class="angle-tag">No harsh chemicals</span>
+                        <span class="angle-tag">Skin-first approach</span>
+                        <span class="angle-tag">Enhances natural features</span>
+                        <span class="angle-tag">Breathable formulas</span>
+                    </div>
+                </div>
+
+                <!-- Persona Card 3 -->
+                <div class="persona-card">
+                    <div class="persona-card-header">
+                        <h3>The Mature Elegance</h3>
+                        <p>50+ • Sophisticated • Quality-focused</p>
+                    </div>
+                    <div class="persona-angles">
+                        <h4>Value Props / Angles</h4>
+                        <span class="angle-tag">Age-appropriate beauty</span>
+                        <span class="angle-tag">Timeless elegance</span>
+                        <span class="angle-tag">Luxurious feel</span>
+                        <span class="angle-tag">Bobbi Brown legacy</span>
+                        <span class="angle-tag">Less is more</span>
+                    </div>
+                </div>
+
+                <!-- Add New Persona Card -->
+                <div class="persona-card" style="border-style: dashed; display: flex; align-items: center; justify-content: center; min-height: 200px; cursor: pointer;" onclick="alert('Add persona functionality coming soon!')">
+                    <div style="text-align: center; color: var(--text-light);">
+                        <div style="font-size: 32px; margin-bottom: 8px;">+</div>
+                        <div style="font-size: 13px;">Add New Persona</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PERSONAS PAGE -->
+
+        <!-- BRIEF TEMPLATE PAGE -->
+        <div class="page-view" id="page-brief">
+            <div class="brief-template">
+                <div class="brief-header">
+                    <h2>Persona Research Brief</h2>
+                    <p>Complete this 1-2 page brief after the research phase</p>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Persona Overview</h3>
+                    <div class="brief-grid">
+                        <div class="brief-field">
+                            <label>Persona Name</label>
+                            <input type="text" placeholder="e.g., The Minimalist Professional">
+                        </div>
+                        <div class="brief-field">
+                            <label>Age Range</label>
+                            <input type="text" placeholder="e.g., 35-55">
+                        </div>
+                    </div>
+                    <div class="brief-field">
+                        <label>One-Line Description</label>
+                        <input type="text" placeholder="Who is this person in one sentence?">
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Demographics & Psychographics</h3>
+                    <div class="brief-grid">
+                        <div class="brief-field">
+                            <label>Common Professions</label>
+                            <textarea placeholder="What jobs do they have? What industries?"></textarea>
+                        </div>
+                        <div class="brief-field">
+                            <label>Lifestyle & Values</label>
+                            <textarea placeholder="What do they value? How do they spend time?"></textarea>
+                        </div>
+                    </div>
+                    <div class="brief-field">
+                        <label>Psychographic Profile</label>
+                        <textarea placeholder="What drives them? What are their beliefs about beauty, self-care, quality?"></textarea>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Problems, Desires & Jobs to Be Done</h3>
+                    <div class="brief-field">
+                        <label>Core Problems / Pain Points</label>
+                        <textarea placeholder="What frustrates them about current beauty options? What's missing?"></textarea>
+                    </div>
+                    <div class="brief-field">
+                        <label>Desires & Aspirations</label>
+                        <textarea placeholder="What do they want to feel? Look like? Be perceived as?"></textarea>
+                    </div>
+                    <div class="brief-field">
+                        <label>Jobs to Be Done</label>
+                        <textarea placeholder="What 'job' are they hiring our product to do? (e.g., 'Help me look polished in 5 minutes')"></textarea>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Brand Connection</h3>
+                    <div class="brief-field">
+                        <label>Why Jones Road Appeals to This Persona</label>
+                        <textarea placeholder="What about our brand resonates with them? Why us over others?"></textarea>
+                    </div>
+                    <div class="brief-field">
+                        <label>Key Products for This Persona</label>
+                        <textarea placeholder="Which 2-4 products should we lead with? Why?"></textarea>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Value Props & Angles to Test</h3>
+                    <div class="brief-field">
+                        <label>4-6 Core Angles / Value Propositions</label>
+                        <textarea placeholder="List the main messages/angles to test in creative. Be specific.&#10;&#10;1. &#10;2. &#10;3. &#10;4. &#10;5. &#10;6. "></textarea>
+                    </div>
+                    <div class="brief-field">
+                        <label>Hypothesis: Why These Angles Will Work</label>
+                        <textarea placeholder="What's your hypothesis about why these angles will resonate?"></textarea>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Creative & Targeting Inputs</h3>
+                    <div class="brief-grid">
+                        <div class="brief-list">
+                            <h4>Creator Profiles They Follow</h4>
+                            <ul>
+                                <li>Type 1: _______________</li>
+                                <li>Type 2: _______________</li>
+                                <li>Type 3: _______________</li>
+                            </ul>
+                        </div>
+                        <div class="brief-list">
+                            <h4>Creators That Fit This Persona</h4>
+                            <ul>
+                                <li>Creator 1: _______________</li>
+                                <li>Creator 2: _______________</li>
+                                <li>Creator 3: _______________</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="brief-field" style="margin-top: 12px;">
+                        <label>Golden Nugget Reviews (Verbatim quotes from reviews)</label>
+                        <textarea placeholder="Copy/paste the best review quotes that capture this persona's voice and desires"></textarea>
+                    </div>
+                    <div class="brief-field">
+                        <label>Successful Non-Competitive Ads (References)</label>
+                        <textarea placeholder="Links or descriptions of ads from other brands that work for this persona"></textarea>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Sample Customer Profiles</h3>
+                    <div class="brief-field">
+                        <label>2-3 Real Customer Examples</label>
+                        <textarea placeholder="Describe 2-3 actual customers who fit this persona. What do we know about them?"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END BRIEF TEMPLATE PAGE -->
+
     </div>
 
     <!-- Floating Controls -->
-    <div class="controls-float">
+    <div class="controls-float" id="flowchart-controls">
         <div class="control-group">
             <label>Zoom</label>
             <button class="control-btn" onclick="adjustZoom(-0.1)">−</button>
@@ -1428,9 +2008,46 @@
             <button class="control-btn active" id="btn-vertical" onclick="setLayout('vertical')">↕</button>
             <button class="control-btn" id="btn-horizontal" onclick="setLayout('horizontal')">↔</button>
         </div>
+        <div class="control-group channel-filters">
+            <label>Channels</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                <label class="channel-toggle" onclick="toggleChannel('landing-pages', this)">
+                    <span style="color: #6366f1;">●</span> LPs
+                </label>
+                <label class="channel-toggle" onclick="toggleChannel('popups', this)">
+                    <span style="color: #ec4899;">●</span> Popups
+                </label>
+                <label class="channel-toggle" onclick="toggleChannel('retention', this)">
+                    <span style="color: #14b8a6;">●</span> Retention
+                </label>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Page Navigation
+        function showPage(page) {
+            // Hide all pages
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            // Show selected page
+            document.getElementById('page-' + page).classList.add('active');
+            // Update nav tabs
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            // Show/hide flowchart controls
+            const controls = document.getElementById('flowchart-controls');
+            controls.style.display = page === 'flowchart' ? 'flex' : 'none';
+        }
+
+        // Channel Toggle
+        function toggleChannel(channel, element) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            document.querySelectorAll(`[data-channel="${channel}"]`).forEach(layer => {
+                layer.classList.toggle('visible', isActive);
+            });
+        }
+
         // Zoom and Layout Controls
         let currentZoom = 1;
 
