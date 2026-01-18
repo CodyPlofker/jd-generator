@@ -1918,6 +1918,592 @@
             border-color: var(--navy);
         }
 
+        /* Brief Calculator Flow */
+        .brief-calculator {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .calc-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0 0 4px 0;
+        }
+
+        .calc-subtitle {
+            color: #666;
+            margin: 0 0 28px 0;
+        }
+
+        .calc-step {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .calc-step:last-of-type {
+            border-bottom: none;
+            margin-bottom: 20px;
+            padding-bottom: 0;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--navy);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .step-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .select-all-btn {
+            margin-left: auto;
+            padding: 6px 12px;
+            font-size: 11px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .select-all-btn:hover {
+            background: #eee;
+        }
+
+        .step-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .persona-options {
+            flex-direction: column;
+        }
+
+        .option-card {
+            display: flex;
+            flex-direction: column;
+            padding: 14px 18px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-card:hover {
+            background: #f0f4f8;
+        }
+
+        .option-card.selected,
+        .option-card:has(input:checked) {
+            background: #fff;
+            border-color: var(--navy);
+            box-shadow: 0 2px 8px rgba(26,43,60,0.1);
+        }
+
+        .option-card input {
+            display: none;
+        }
+
+        .option-name {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        .option-meta {
+            font-size: 12px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .checkbox-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .option-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .option-chip:hover {
+            background: #eee;
+        }
+
+        .option-chip.selected,
+        .option-chip:has(input:checked) {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        .option-chip input {
+            display: none;
+        }
+
+        .chip-status {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .chip-status.winner {
+            color: var(--gold);
+        }
+
+        .option-chip.selected .chip-status.winner,
+        .option-chip:has(input:checked) .chip-status.winner {
+            color: var(--gold);
+        }
+
+        .step-count {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .step-count span {
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        /* Calculator Formula Display */
+        .calc-formula {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border: 2px solid var(--navy);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .formula-parts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .formula-num {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .formula-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #888;
+            letter-spacing: 0.5px;
+        }
+
+        .formula-op {
+            font-size: 20px;
+            color: #999;
+            font-weight: 300;
+        }
+
+        .formula-parts.total {
+            padding: 8px 16px;
+            background: var(--navy);
+            border-radius: 8px;
+        }
+
+        .formula-parts.total .formula-num {
+            color: #fff;
+        }
+
+        .formula-parts.total .formula-label {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--green);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .generate-btn:hover {
+            background: #0ea570;
+            transform: translateY(-1px);
+        }
+
+        /* Generated Matrix */
+        .generated-matrix {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .matrix-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .matrix-header-bar h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--navy);
+            margin: 0;
+        }
+
+        .matrix-header-bar h3 span {
+            font-weight: 400;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .matrix-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .matrix-btn {
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .matrix-btn:hover {
+            border-color: var(--navy);
+        }
+
+        .matrix-btn.primary {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+
+        .matrix-table-container {
+            overflow-x: auto;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .matrix-table th {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--navy);
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .matrix-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .matrix-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .matrix-table .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .status-badge.draft {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .status-badge.ready {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge.in-design {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-badge.complete {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .matrix-table .view-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            background: transparent;
+            border: 1px solid var(--navy);
+            color: var(--navy);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .matrix-table .view-btn:hover {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        /* Brief Modal */
+        .brief-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .brief-modal-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+            margin: 0;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #eee;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .brief-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .meta-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #f5f5f5;
+            border-radius: 16px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .brief-copy-section h4,
+        .brief-reference-section h4,
+        .brief-notes-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin: 0 0 12px 0;
+        }
+
+        .copy-block {
+            margin-bottom: 16px;
+        }
+
+        .copy-block label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-output {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-output:hover {
+            background: #f0f4f8;
+            border-color: var(--navy);
+        }
+
+        .copy-output::after {
+            content: 'Click to copy';
+            display: block;
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .brief-reference-section {
+            margin-top: 24px;
+        }
+
+        .reference-dropzone {
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reference-dropzone:hover {
+            border-color: var(--navy);
+            background: #f8f9fa;
+        }
+
+        .reference-dropzone span {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .reference-dropzone p {
+            margin: 0;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .brief-notes-section {
+            margin-top: 24px;
+        }
+
+        .brief-notes-section textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .brief-notes-section textarea:focus {
+            outline: none;
+            border-color: var(--navy);
+        }
+
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .status-dropdown {
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: #152535;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .container { padding: 40px 20px; }
@@ -3339,273 +3925,266 @@
 
             <!-- SUPER BRIEF GENERATOR SECTION -->
             <div class="toolkit-section" id="section-brief">
-                <!-- Persona Selector -->
-                <div class="brief-persona-selector">
-                    <label>Select Persona:</label>
-                    <select id="brief-persona-select" onchange="updateBriefTable()">
-                        <option value="minimalist">The Minimalist Professional</option>
-                        <option value="natural">The Natural Beauty Seeker</option>
-                        <option value="mature">The Mature Elegance</option>
-                    </select>
+                <!-- Brief Calculator Flow -->
+                <div class="brief-calculator">
+                    <h3 class="calc-title">Brief Generator</h3>
+                    <p class="calc-subtitle">Select options to generate all creative combinations</p>
+
+                    <!-- Step 1: Persona -->
+                    <div class="calc-step">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-label">Persona</span>
+                        </div>
+                        <div class="step-options persona-options">
+                            <label class="option-card selected" data-value="minimalist">
+                                <input type="radio" name="persona" value="minimalist" checked onchange="updateCalculator()">
+                                <span class="option-name">The Minimalist Professional</span>
+                                <span class="option-meta">35-55 • Efficiency</span>
+                            </label>
+                            <label class="option-card" data-value="natural">
+                                <input type="radio" name="persona" value="natural" onchange="updateCalculator()">
+                                <span class="option-name">The Natural Beauty Seeker</span>
+                                <span class="option-meta">28-45 • Clean beauty</span>
+                            </label>
+                            <label class="option-card" data-value="mature">
+                                <input type="radio" name="persona" value="mature" onchange="updateCalculator()">
+                                <span class="option-name">The Mature Elegance</span>
+                                <span class="option-meta">50+ • Sophisticated</span>
+                            </label>
+                        </div>
+                        <div class="step-count"><span id="persona-count">1</span> selected</div>
+                    </div>
+
+                    <!-- Step 2: Value Props -->
+                    <div class="calc-step">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-label">Value Props / Angles</span>
+                            <button class="select-all-btn" onclick="toggleAllValueProps()">Select All</button>
+                        </div>
+                        <div class="step-options checkbox-grid">
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="valueprop" value="5-minute" checked onchange="updateCalculator()">
+                                <span>5-minute routine</span>
+                                <span class="chip-status winner">★</span>
+                            </label>
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="valueprop" value="clean" checked onchange="updateCalculator()">
+                                <span>Clean ingredients</span>
+                            </label>
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="valueprop" value="nomakeup" checked onchange="updateCalculator()">
+                                <span>No-makeup makeup</span>
+                            </label>
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="valueprop" value="confidence" checked onchange="updateCalculator()">
+                                <span>Confidence boost</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="valueprop" value="office" onchange="updateCalculator()">
+                                <span>Office appropriate</span>
+                            </label>
+                        </div>
+                        <div class="step-count"><span id="valueprop-count">4</span> selected</div>
+                    </div>
+
+                    <!-- Step 3: Products -->
+                    <div class="calc-step">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-label">Products</span>
+                            <button class="select-all-btn" onclick="toggleAllProducts()">Select All</button>
+                        </div>
+                        <div class="step-options checkbox-grid">
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="product" value="miracle-balm" checked onchange="updateCalculator()">
+                                <span>Miracle Balm</span>
+                            </label>
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="product" value="face-pencil" checked onchange="updateCalculator()">
+                                <span>The Face Pencil</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="product" value="sparkle-wash" onchange="updateCalculator()">
+                                <span>Sparkle Wash</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="product" value="wtf" onchange="updateCalculator()">
+                                <span>What The Foundation</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="product" value="hippie-stick" onchange="updateCalculator()">
+                                <span>The Hippie Stick</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="product" value="cool-gloss" onchange="updateCalculator()">
+                                <span>Cool Gloss</span>
+                            </label>
+                        </div>
+                        <div class="step-count"><span id="product-count">2</span> selected</div>
+                    </div>
+
+                    <!-- Step 4: Formats -->
+                    <div class="calc-step">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-label">Ad Formats</span>
+                            <button class="select-all-btn" onclick="toggleAllFormats()">Select All</button>
+                        </div>
+                        <div class="step-options checkbox-grid formats-grid">
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="format" value="hero-badge" checked onchange="updateCalculator()">
+                                <span>Product Hero + Badge</span>
+                            </label>
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="format" value="benefits-list" checked onchange="updateCalculator()">
+                                <span>Benefits List</span>
+                            </label>
+                            <label class="option-chip selected">
+                                <input type="checkbox" name="format" value="comparison" checked onchange="updateCalculator()">
+                                <span>Comparison</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="format" value="testimonial" onchange="updateCalculator()">
+                                <span>Testimonial Quote</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="format" value="social-proof" onchange="updateCalculator()">
+                                <span>Hero + Social Proof</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="format" value="lifestyle" onchange="updateCalculator()">
+                                <span>Lifestyle Shot</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="format" value="ugc" onchange="updateCalculator()">
+                                <span>UGC Style</span>
+                            </label>
+                            <label class="option-chip">
+                                <input type="checkbox" name="format" value="before-after" onchange="updateCalculator()">
+                                <span>Before/After</span>
+                            </label>
+                        </div>
+                        <div class="step-count"><span id="format-count">3</span> selected</div>
+                    </div>
+
+                    <!-- Calculator Display -->
+                    <div class="calc-formula">
+                        <div class="formula-parts">
+                            <span class="formula-num" id="f-persona">1</span>
+                            <span class="formula-label">Persona</span>
+                        </div>
+                        <span class="formula-op">×</span>
+                        <div class="formula-parts">
+                            <span class="formula-num" id="f-valueprop">4</span>
+                            <span class="formula-label">Value Props</span>
+                        </div>
+                        <span class="formula-op">×</span>
+                        <div class="formula-parts">
+                            <span class="formula-num" id="f-product">2</span>
+                            <span class="formula-label">Products</span>
+                        </div>
+                        <span class="formula-op">×</span>
+                        <div class="formula-parts">
+                            <span class="formula-num" id="f-format">3</span>
+                            <span class="formula-label">Formats</span>
+                        </div>
+                        <span class="formula-op">=</span>
+                        <div class="formula-parts total">
+                            <span class="formula-num" id="f-total">24</span>
+                            <span class="formula-label">Briefs</span>
+                        </div>
+                    </div>
+
+                    <button class="generate-btn" onclick="generateMatrix()">Generate Matrix →</button>
                 </div>
 
-                <!-- Persona Context Card -->
-                <div class="persona-context-card" id="persona-context">
-                    <div class="context-header">
-                        <h3>The Minimalist Professional</h3>
-                        <span class="context-meta">35-55 • Career-focused • Efficiency-driven</span>
+                <!-- Generated Matrix -->
+                <div class="generated-matrix" id="generated-matrix" style="display: none;">
+                    <div class="matrix-header-bar">
+                        <h3>Creative Matrix <span id="matrix-count">(24 briefs)</span></h3>
+                        <div class="matrix-actions">
+                            <button class="matrix-btn" onclick="showCalculator()">← Back to Config</button>
+                            <button class="matrix-btn primary" onclick="exportAllBriefs()">Export All</button>
+                        </div>
                     </div>
-                    <div class="context-grid">
-                        <div class="context-item">
-                            <strong>Key Insight:</strong> Values time over everything. Wants to look polished without spending time.
-                        </div>
-                        <div class="context-item">
-                            <strong>Tone:</strong> Confident, sophisticated, efficient. Speak to them like a peer.
-                        </div>
-                        <div class="context-item">
-                            <strong>Words:</strong> Effortless, polished, streamlined, multi-tasking, elevated
-                        </div>
+
+                    <!-- Matrix Table -->
+                    <div class="matrix-table-container">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Value Prop</th>
+                                    <th>Product</th>
+                                    <th>Format</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrix-body">
+                                <!-- Generated rows will go here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Super Brief Matrix Table -->
-                <div class="super-brief-container">
-                    <h3>Super Brief Matrix <span style="font-size: 12px; font-weight: normal; color: var(--text-light);">— Designer-ready briefs for each combination</span></h3>
+                <!-- Individual Brief Modal -->
+                <div class="brief-modal" id="brief-modal" style="display: none;">
+                    <div class="brief-modal-content">
+                        <div class="modal-header">
+                            <h3 id="modal-title">Brief #1</h3>
+                            <button class="modal-close" onclick="closeBriefModal()">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="brief-meta">
+                                <span class="meta-tag" id="modal-persona">Minimalist Professional</span>
+                                <span class="meta-tag" id="modal-valueprop">5-minute routine</span>
+                                <span class="meta-tag" id="modal-product">Miracle Balm</span>
+                                <span class="meta-tag" id="modal-format">Product Hero + Badge</span>
+                            </div>
 
-                    <table class="super-brief-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 140px;">Value Prop</th>
-                                <th style="width: 140px;">Format</th>
-                                <th style="width: 120px;">Product</th>
-                                <th style="width: 300px;">Copy</th>
-                                <th style="width: 100px;">Reference</th>
-                                <th style="width: 80px;">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="brief-table-body">
-                            <!-- Row 1 -->
-                            <tr class="brief-row">
-                                <td class="cell-value-prop">
-                                    <span class="value-prop-tag winner">5-minute routine</span>
-                                </td>
-                                <td class="cell-format">
-                                    <select class="brief-select">
-                                        <option>Product Hero + Badge</option>
-                                        <option>Benefits List</option>
-                                        <option>Comparison</option>
-                                        <option>Testimonial</option>
-                                    </select>
-                                </td>
-                                <td class="cell-product">
-                                    <select class="brief-select">
-                                        <option>Miracle Balm</option>
-                                        <option>The Face Pencil</option>
-                                        <option>Sparkle Wash</option>
-                                        <option>What The Foundation</option>
-                                    </select>
-                                </td>
-                                <td class="cell-copy">
-                                    <div class="copy-fields">
-                                        <div class="copy-field">
-                                            <label>Headline:</label>
-                                            <input type="text" value="My entire makeup routine takes 5 minutes" placeholder="Headline...">
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>Body:</label>
-                                            <textarea placeholder="Body copy...">One product. Five minutes. Done.
+                            <div class="brief-copy-section">
+                                <h4>Generated Copy</h4>
+                                <div class="copy-block">
+                                    <label>Headline</label>
+                                    <div class="copy-output" id="modal-headline">My entire makeup routine takes 5 minutes</div>
+                                </div>
+                                <div class="copy-block">
+                                    <label>Body</label>
+                                    <div class="copy-output" id="modal-body">One product. Five minutes. Done.
 
-The Miracle Balm does the work of 3 products—so you can get out the door looking polished, not rushed.</textarea>
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>CTA:</label>
-                                            <input type="text" value="Shop Miracle Balm →" placeholder="CTA...">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cell-reference">
-                                    <div class="reference-upload">
-                                        <div class="ref-placeholder">🖼</div>
-                                        <button class="ref-btn">Upload</button>
-                                    </div>
-                                </td>
-                                <td class="cell-status">
-                                    <select class="status-select winner">
-                                        <option value="draft">Draft</option>
-                                        <option value="ready">Ready</option>
-                                        <option value="in-design">In Design</option>
-                                        <option value="complete" selected>Complete</option>
-                                    </select>
-                                </td>
-                            </tr>
+The Miracle Balm does the work of 3 products—so you can get out the door looking polished, not rushed.</div>
+                                </div>
+                                <div class="copy-block">
+                                    <label>CTA</label>
+                                    <div class="copy-output" id="modal-cta">Shop Miracle Balm →</div>
+                                </div>
+                            </div>
 
-                            <!-- Row 2 -->
-                            <tr class="brief-row">
-                                <td class="cell-value-prop">
-                                    <span class="value-prop-tag winner">5-minute routine</span>
-                                </td>
-                                <td class="cell-format">
-                                    <select class="brief-select">
-                                        <option>Benefits List</option>
-                                        <option>Product Hero + Badge</option>
-                                        <option>Comparison</option>
-                                        <option>Testimonial</option>
-                                    </select>
-                                </td>
-                                <td class="cell-product">
-                                    <select class="brief-select">
-                                        <option>The Face Pencil</option>
-                                        <option>Miracle Balm</option>
-                                        <option>Sparkle Wash</option>
-                                        <option>What The Foundation</option>
-                                    </select>
-                                </td>
-                                <td class="cell-copy">
-                                    <div class="copy-fields">
-                                        <div class="copy-field">
-                                            <label>Headline:</label>
-                                            <input type="text" value="4 reasons busy women love The Face Pencil" placeholder="Headline...">
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>Body:</label>
-                                            <textarea placeholder="Body copy...">✓ Concealer + foundation in one
-✓ Takes 60 seconds to apply
-✓ Doesn't look like makeup
-✓ Stays put through back-to-back meetings</textarea>
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>CTA:</label>
-                                            <input type="text" value="Find Your Shade →" placeholder="CTA...">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cell-reference">
-                                    <div class="reference-upload">
-                                        <div class="ref-placeholder">🖼</div>
-                                        <button class="ref-btn">Upload</button>
-                                    </div>
-                                </td>
-                                <td class="cell-status">
-                                    <select class="status-select ready">
-                                        <option value="draft">Draft</option>
-                                        <option value="ready" selected>Ready</option>
-                                        <option value="in-design">In Design</option>
-                                        <option value="complete">Complete</option>
-                                    </select>
-                                </td>
-                            </tr>
+                            <div class="brief-reference-section">
+                                <h4>Reference Image</h4>
+                                <div class="reference-dropzone" id="modal-dropzone">
+                                    <span>🖼</span>
+                                    <p>Drag image here or click to upload</p>
+                                </div>
+                            </div>
 
-                            <!-- Row 3 -->
-                            <tr class="brief-row">
-                                <td class="cell-value-prop">
-                                    <span class="value-prop-tag tested">Clean ingredients</span>
-                                </td>
-                                <td class="cell-format">
-                                    <select class="brief-select">
-                                        <option>Comparison</option>
-                                        <option>Product Hero + Badge</option>
-                                        <option>Benefits List</option>
-                                        <option>Testimonial</option>
-                                    </select>
-                                </td>
-                                <td class="cell-product">
-                                    <select class="brief-select">
-                                        <option>What The Foundation</option>
-                                        <option>Miracle Balm</option>
-                                        <option>The Face Pencil</option>
-                                        <option>Sparkle Wash</option>
-                                    </select>
-                                </td>
-                                <td class="cell-copy">
-                                    <div class="copy-fields">
-                                        <div class="copy-field">
-                                            <label>Headline:</label>
-                                            <input type="text" value="" placeholder="Headline...">
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>Body:</label>
-                                            <textarea placeholder="Body copy..."></textarea>
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>CTA:</label>
-                                            <input type="text" value="" placeholder="CTA...">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cell-reference">
-                                    <div class="reference-upload">
-                                        <div class="ref-placeholder">🖼</div>
-                                        <button class="ref-btn">Upload</button>
-                                    </div>
-                                </td>
-                                <td class="cell-status">
-                                    <select class="status-select draft">
-                                        <option value="draft" selected>Draft</option>
-                                        <option value="ready">Ready</option>
-                                        <option value="in-design">In Design</option>
-                                        <option value="complete">Complete</option>
-                                    </select>
-                                </td>
-                            </tr>
-
-                            <!-- Row 4 -->
-                            <tr class="brief-row">
-                                <td class="cell-value-prop">
-                                    <span class="value-prop-tag testing">Confidence boost</span>
-                                </td>
-                                <td class="cell-format">
-                                    <select class="brief-select">
-                                        <option>Testimonial</option>
-                                        <option>Product Hero + Badge</option>
-                                        <option>Benefits List</option>
-                                        <option>Comparison</option>
-                                    </select>
-                                </td>
-                                <td class="cell-product">
-                                    <select class="brief-select">
-                                        <option>Miracle Balm</option>
-                                        <option>The Face Pencil</option>
-                                        <option>Sparkle Wash</option>
-                                        <option>What The Foundation</option>
-                                    </select>
-                                </td>
-                                <td class="cell-copy">
-                                    <div class="copy-fields">
-                                        <div class="copy-field">
-                                            <label>Headline:</label>
-                                            <input type="text" value="" placeholder="Headline...">
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>Body:</label>
-                                            <textarea placeholder="Body copy..."></textarea>
-                                        </div>
-                                        <div class="copy-field">
-                                            <label>CTA:</label>
-                                            <input type="text" value="" placeholder="CTA...">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cell-reference">
-                                    <div class="reference-upload">
-                                        <div class="ref-placeholder">🖼</div>
-                                        <button class="ref-btn">Upload</button>
-                                    </div>
-                                </td>
-                                <td class="cell-status">
-                                    <select class="status-select draft">
-                                        <option value="draft" selected>Draft</option>
-                                        <option value="ready">Ready</option>
-                                        <option value="in-design">In Design</option>
-                                        <option value="complete">Complete</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="brief-actions">
-                        <button class="brief-action-btn" onclick="addBriefRow()">+ Add Row</button>
-                        <button class="brief-action-btn primary" onclick="exportBrief()">Export Brief</button>
+                            <div class="brief-notes-section">
+                                <h4>Designer Notes</h4>
+                                <textarea id="modal-notes" placeholder="Add notes for the designer..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <select class="status-dropdown" id="modal-status">
+                                <option value="draft">Draft</option>
+                                <option value="ready">Ready for Design</option>
+                                <option value="in-design">In Design</option>
+                                <option value="complete">Complete</option>
+                            </select>
+                            <button class="modal-btn" onclick="saveBrief()">Save Brief</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4026,6 +4605,293 @@ The Miracle Balm does the work of 3 products—so you can get out the door looki
             result.classList.add('active');
             clickedPath.classList.add('selected');
         }
+
+        // Brief Generator Functions
+        let generatedBriefs = [];
+
+        const copyTemplates = {
+            headlines: {
+                'minimalist': {
+                    '5-minute': 'My entire makeup routine takes 5 minutes',
+                    'clean': 'Finally, makeup I feel good about wearing',
+                    'nomakeup': 'People ask if I\'m wearing makeup. I am.',
+                    'confidence': 'I look put together without trying',
+                    'office': 'Meeting-ready in under 5 minutes'
+                },
+                'natural': {
+                    '5-minute': 'Nature-powered beauty in minutes',
+                    'clean': 'Clean beauty that actually works',
+                    'nomakeup': 'Enhance your natural glow, nothing more',
+                    'confidence': 'Feel beautiful in your own skin',
+                    'office': 'Professional polish, clean ingredients'
+                },
+                'mature': {
+                    '5-minute': 'Effortless elegance, every day',
+                    'clean': 'Gentle formulas for timeless beauty',
+                    'nomakeup': 'Age gracefully, look naturally radiant',
+                    'confidence': 'Confidence looks good at every age',
+                    'office': 'Sophisticated simplicity'
+                }
+            },
+            bodies: {
+                'miracle-balm': 'The Miracle Balm does the work of 3 products—so you can look polished without the fuss.',
+                'face-pencil': 'One pencil. Endless versatility. The Face Pencil contours, highlights, and defines.',
+                'sparkle-wash': 'A wash of sheer, buildable color for eyes that sparkle.',
+                'wtf': 'What The Foundation gives you coverage that looks like skin, not makeup.',
+                'hippie-stick': 'The Hippie Stick adds a natural flush anywhere you want it.',
+                'cool-gloss': 'Cool Gloss delivers the perfect hint of shine without the sticky feel.'
+            },
+            ctas: {
+                'miracle-balm': 'Shop Miracle Balm',
+                'face-pencil': 'Shop The Face Pencil',
+                'sparkle-wash': 'Shop Sparkle Wash',
+                'wtf': 'Shop WTF',
+                'hippie-stick': 'Shop Hippie Stick',
+                'cool-gloss': 'Shop Cool Gloss'
+            }
+        };
+
+        const displayNames = {
+            personas: {
+                'minimalist': 'Minimalist Professional',
+                'natural': 'Natural Beauty Seeker',
+                'mature': 'Mature Elegance'
+            },
+            valueprops: {
+                '5-minute': '5-Minute Routine',
+                'clean': 'Clean Ingredients',
+                'nomakeup': 'No-Makeup Makeup',
+                'confidence': 'Confidence Boost',
+                'office': 'Office Appropriate'
+            },
+            products: {
+                'miracle-balm': 'Miracle Balm',
+                'face-pencil': 'The Face Pencil',
+                'sparkle-wash': 'Sparkle Wash',
+                'wtf': 'What The Foundation',
+                'hippie-stick': 'The Hippie Stick',
+                'cool-gloss': 'Cool Gloss'
+            },
+            formats: {
+                'hero-badge': 'Product Hero + Badge',
+                'benefits-list': 'Benefits List',
+                'comparison': 'Comparison',
+                'testimonial': 'Testimonial Quote',
+                'social-proof': 'Hero + Social Proof',
+                'lifestyle': 'Lifestyle Shot',
+                'ugc': 'UGC Style',
+                'before-after': 'Before/After'
+            }
+        };
+
+        function updateCalculator() {
+            const persona = document.querySelector('input[name="persona"]:checked');
+            const valueprops = document.querySelectorAll('input[name="valueprop"]:checked');
+            const products = document.querySelectorAll('input[name="product"]:checked');
+            const formats = document.querySelectorAll('input[name="format"]:checked');
+
+            const personaCount = persona ? 1 : 0;
+            const valuepropCount = valueprops.length;
+            const productCount = products.length;
+            const formatCount = formats.length;
+            const total = personaCount * valuepropCount * productCount * formatCount;
+
+            // Update counts
+            document.getElementById('persona-count').textContent = personaCount;
+            document.getElementById('valueprop-count').textContent = valuepropCount;
+            document.getElementById('product-count').textContent = productCount;
+            document.getElementById('format-count').textContent = formatCount;
+
+            // Update formula display
+            document.getElementById('f-persona').textContent = personaCount;
+            document.getElementById('f-valueprop').textContent = valuepropCount;
+            document.getElementById('f-product').textContent = productCount;
+            document.getElementById('f-format').textContent = formatCount;
+            document.getElementById('f-total').textContent = total;
+
+            // Update chip selected states
+            document.querySelectorAll('.option-chip').forEach(chip => {
+                const input = chip.querySelector('input');
+                if (input && input.checked) {
+                    chip.classList.add('selected');
+                } else {
+                    chip.classList.remove('selected');
+                }
+            });
+
+            // Update card selected states
+            document.querySelectorAll('.option-card').forEach(card => {
+                const input = card.querySelector('input');
+                if (input && input.checked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+        }
+
+        function toggleAllValueProps() {
+            const checkboxes = document.querySelectorAll('input[name="valueprop"]');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+            updateCalculator();
+        }
+
+        function toggleAllProducts() {
+            const checkboxes = document.querySelectorAll('input[name="product"]');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+            updateCalculator();
+        }
+
+        function toggleAllFormats() {
+            const checkboxes = document.querySelectorAll('input[name="format"]');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+            updateCalculator();
+        }
+
+        function generateMatrix() {
+            const persona = document.querySelector('input[name="persona"]:checked')?.value;
+            const valueprops = Array.from(document.querySelectorAll('input[name="valueprop"]:checked')).map(cb => cb.value);
+            const products = Array.from(document.querySelectorAll('input[name="product"]:checked')).map(cb => cb.value);
+            const formats = Array.from(document.querySelectorAll('input[name="format"]:checked')).map(cb => cb.value);
+
+            if (!persona || valueprops.length === 0 || products.length === 0 || formats.length === 0) {
+                alert('Please select at least one option in each category');
+                return;
+            }
+
+            generatedBriefs = [];
+            let index = 1;
+
+            // Generate all combinations
+            valueprops.forEach(vp => {
+                products.forEach(prod => {
+                    formats.forEach(fmt => {
+                        generatedBriefs.push({
+                            index: index++,
+                            persona: persona,
+                            valueprop: vp,
+                            product: prod,
+                            format: fmt,
+                            status: 'draft',
+                            notes: '',
+                            headline: copyTemplates.headlines[persona]?.[vp] || 'Custom headline needed',
+                            body: copyTemplates.bodies[prod] || 'Custom body copy needed',
+                            cta: copyTemplates.ctas[prod] || 'Shop Now'
+                        });
+                    });
+                });
+            });
+
+            // Build table HTML
+            const tbody = document.getElementById('matrix-body');
+            tbody.innerHTML = generatedBriefs.map((brief, i) => `
+                <tr>
+                    <td>${brief.index}</td>
+                    <td>${displayNames.valueprops[brief.valueprop] || brief.valueprop}</td>
+                    <td>${displayNames.products[brief.product] || brief.product}</td>
+                    <td>${displayNames.formats[brief.format] || brief.format}</td>
+                    <td><span class="status-badge ${brief.status}">${brief.status}</span></td>
+                    <td><button class="view-btn" onclick="openBriefModal(${i})">View</button></td>
+                </tr>
+            `).join('');
+
+            // Update count
+            document.getElementById('matrix-count').textContent = `(${generatedBriefs.length} briefs)`;
+
+            // Show matrix, hide calculator
+            document.querySelector('.brief-calculator').style.display = 'none';
+            document.getElementById('generated-matrix').style.display = 'block';
+        }
+
+        function showCalculator() {
+            document.querySelector('.brief-calculator').style.display = 'block';
+            document.getElementById('generated-matrix').style.display = 'none';
+        }
+
+        function openBriefModal(index) {
+            const brief = generatedBriefs[index];
+            if (!brief) return;
+
+            document.getElementById('modal-title').textContent = `Brief #${brief.index}`;
+            document.getElementById('modal-persona').textContent = displayNames.personas[brief.persona] || brief.persona;
+            document.getElementById('modal-valueprop').textContent = displayNames.valueprops[brief.valueprop] || brief.valueprop;
+            document.getElementById('modal-product').textContent = displayNames.products[brief.product] || brief.product;
+            document.getElementById('modal-format').textContent = displayNames.formats[brief.format] || brief.format;
+
+            document.getElementById('modal-headline').textContent = brief.headline;
+            document.getElementById('modal-body').textContent = brief.body;
+            document.getElementById('modal-cta').textContent = brief.cta + ' →';
+
+            document.getElementById('modal-notes').value = brief.notes || '';
+            document.getElementById('modal-status').value = brief.status;
+
+            document.getElementById('brief-modal').style.display = 'flex';
+            document.getElementById('brief-modal').dataset.index = index;
+
+            // Add click-to-copy on copy outputs
+            document.querySelectorAll('.copy-output').forEach(el => {
+                el.onclick = function() {
+                    copyToClipboard(this.textContent.replace('Click to copy', '').trim());
+                    this.style.background = '#e8f5e9';
+                    setTimeout(() => this.style.background = '', 500);
+                };
+            });
+        }
+
+        function closeBriefModal() {
+            document.getElementById('brief-modal').style.display = 'none';
+        }
+
+        function saveBrief() {
+            const index = parseInt(document.getElementById('brief-modal').dataset.index);
+            if (generatedBriefs[index]) {
+                generatedBriefs[index].notes = document.getElementById('modal-notes').value;
+                generatedBriefs[index].status = document.getElementById('modal-status').value;
+
+                // Update table row
+                const rows = document.querySelectorAll('#matrix-body tr');
+                if (rows[index]) {
+                    const statusCell = rows[index].querySelector('.status-badge');
+                    statusCell.className = `status-badge ${generatedBriefs[index].status}`;
+                    statusCell.textContent = generatedBriefs[index].status;
+                }
+            }
+            closeBriefModal();
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                console.log('Copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        function exportAllBriefs() {
+            let csv = 'Index,Persona,Value Prop,Product,Format,Status,Headline,Body,CTA,Notes\n';
+            generatedBriefs.forEach(brief => {
+                csv += `${brief.index},"${displayNames.personas[brief.persona]}","${displayNames.valueprops[brief.valueprop]}","${displayNames.products[brief.product]}","${displayNames.formats[brief.format]}","${brief.status}","${brief.headline}","${brief.body}","${brief.cta}","${brief.notes}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'creative-briefs.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Close modal on background click
+        document.getElementById('brief-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeBriefModal();
+        });
+
+        // Initialize calculator on load
+        document.addEventListener('DOMContentLoaded', updateCalculator);
     </script>
 </body>
 </html>
