@@ -1506,308 +1506,416 @@
             border-radius: 6px 6px 0 0;
         }
 
-        /* Ad Formats Page */
-        .formats-page-header {
-            text-align: center;
+        /* Static Ad Toolkit Page */
+        .toolkit-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
             margin-bottom: 24px;
         }
 
-        .formats-page-header p {
-            color: var(--text-light);
+        .toolkit-tab {
+            padding: 10px 24px;
             font-size: 13px;
-        }
-
-        .formats-matrix-container {
-            overflow-x: auto;
-        }
-
-        .formats-matrix {
-            display: grid;
-            grid-template-columns: 180px repeat(3, 1fr);
-            gap: 1px;
-            background: #ddd;
+            font-weight: 500;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            min-width: 800px;
+            border-radius: 6px;
+            background: #fff;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .matrix-header {
+        .toolkit-tab:hover {
+            border-color: var(--navy);
+        }
+
+        .toolkit-tab.active {
             background: var(--navy);
             color: #fff;
-            padding: 14px 16px;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
+            border-color: var(--navy);
         }
 
-        .matrix-header.corner {
-            background: var(--navy-light);
+        .toolkit-section {
+            display: none;
         }
 
-        .matrix-row-header {
-            background: var(--cream);
-            padding: 14px 16px;
-            font-weight: 600;
-            font-size: 12px;
-            color: var(--navy);
+        .toolkit-section.active {
+            display: block;
+        }
+
+        /* Format Library */
+        .library-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .library-search {
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .matrix-row-header .persona-mini {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--navy);
-        }
-
-        .matrix-cell {
-            background: #fff;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-height: 100px;
-        }
-
-        .matrix-cell:hover {
-            background: var(--cream);
-        }
-
-        .matrix-cell-status {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        .cell-status-tag {
-            font-size: 9px;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-weight: 500;
-        }
-
-        .cell-status-tag.untested {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-
-        .cell-status-tag.testing {
-            background: rgba(181, 101, 29, 0.1);
-            color: var(--amber);
-        }
-
-        .cell-status-tag.winner {
-            background: rgba(45, 106, 79, 0.1);
-            color: var(--green);
-        }
-
-        .matrix-cell-angles {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-
-        .cell-angle-chip {
-            font-size: 9px;
-            padding: 3px 8px;
+            padding: 10px 16px;
             background: #fff;
             border: 1px solid #ddd;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
+            border-radius: 8px;
+            width: 300px;
         }
 
-        .cell-angle-chip:hover {
-            border-color: var(--navy);
+        .library-search input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+            width: 100%;
         }
 
-        .cell-angle-chip.selected {
+        .add-format-btn {
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
             background: var(--navy);
             color: #fff;
-            border-color: var(--navy);
-        }
-
-        .cell-add-btn {
-            font-size: 10px;
-            color: var(--text-light);
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
-            padding: 4px 8px;
-            border: 1px dashed #ddd;
-            border-radius: 4px;
-            text-align: center;
             transition: all 0.2s;
         }
 
-        .cell-add-btn:hover {
+        .add-format-btn:hover {
+            background: var(--navy-light);
+        }
+
+        .format-filter-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: #fff;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
             border-color: var(--navy);
-            color: var(--navy);
         }
 
-        /* Format Templates Section */
-        .format-templates {
-            margin-top: 40px;
+        .filter-tab.active {
+            background: var(--gold);
+            color: #fff;
+            border-color: var(--gold);
         }
 
-        .format-templates h3 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 22px;
-            color: var(--navy);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .format-cards {
+        .format-library-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 20px;
         }
 
-        .format-card {
+        .library-format-card {
             background: #fff;
-            border: 1px solid #ddd;
             border-radius: 12px;
             overflow: hidden;
+            cursor: pointer;
             transition: all 0.2s;
+            border: 2px solid transparent;
         }
 
-        .format-card:hover {
+        .library-format-card:hover {
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             transform: translateY(-2px);
         }
 
-        .format-card-header {
-            background: var(--navy);
-            color: #fff;
-            padding: 14px 16px;
+        .library-format-card.selected {
+            border-color: var(--navy);
+        }
+
+        .format-card-image {
+            height: 160px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        .format-card-header h4 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 16px;
-            font-weight: 500;
-            margin: 0;
+        .format-preview-mini {
+            text-align: center;
+            padding: 12px;
         }
 
-        .format-type-badge {
+        .other-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #333;
+            color: #fff;
             font-size: 9px;
             padding: 3px 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
+            border-radius: 4px;
         }
 
-        .format-card-body {
-            padding: 16px;
+        .format-card-info {
+            padding: 14px 16px;
+            background: #fff;
         }
 
-        .format-preview {
-            background: var(--cream);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        .format-preview .hook {
+        .format-card-info h4 {
+            font-size: 13px;
             font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-
-        .format-preview .body-text {
             color: var(--text);
+            margin: 0 0 4px 0;
         }
 
-        .format-preview .cta {
-            margin-top: 8px;
-            color: var(--gold);
-            font-weight: 600;
-        }
-
-        .format-preview ul {
-            margin: 8px 0;
-            padding-left: 16px;
-        }
-
-        .format-preview li {
-            margin: 4px 0;
-        }
-
-        .format-card-meta {
-            display: flex;
-            gap: 12px;
+        .zones-count {
             font-size: 11px;
             color: var(--text-light);
         }
 
-        .format-card-meta span {
+        /* Super Brief Generator */
+        .brief-persona-selector {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .format-card-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
+        .brief-persona-selector label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
         }
 
-        .format-action-btn {
-            flex: 1;
-            padding: 8px 12px;
+        .brief-persona-selector select {
+            padding: 10px 16px;
+            font-size: 13px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+            min-width: 250px;
+        }
+
+        .persona-context-card {
+            background: var(--cream);
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .context-header {
+            margin-bottom: 12px;
+        }
+
+        .context-header h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 20px;
+            color: var(--navy);
+            margin: 0 0 4px 0;
+        }
+
+        .context-meta {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .context-item {
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .context-item strong {
+            color: var(--navy);
+        }
+
+        .super-brief-container {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .super-brief-container h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 20px;
+            color: var(--navy);
+            margin: 0 0 20px 0;
+        }
+
+        .super-brief-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .super-brief-table th {
+            background: var(--navy);
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .super-brief-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .brief-row:hover {
+            background: var(--cream);
+        }
+
+        .value-prop-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
             font-size: 11px;
             font-weight: 500;
+        }
+
+        .value-prop-tag.winner {
+            background: rgba(45, 106, 79, 0.15);
+            color: var(--green);
+        }
+
+        .value-prop-tag.tested {
+            background: rgba(45, 106, 79, 0.1);
+            color: var(--green);
+        }
+
+        .value-prop-tag.testing {
+            background: rgba(181, 101, 29, 0.1);
+            color: var(--amber);
+        }
+
+        .brief-select {
+            width: 100%;
+            padding: 6px 8px;
+            font-size: 11px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background: #fff;
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .format-action-btn:hover {
-            border-color: var(--navy);
-            color: var(--navy);
+        .copy-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .format-action-btn.primary {
-            background: var(--navy);
-            color: #fff;
-            border-color: var(--navy);
+        .copy-field label {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
         }
 
-        .format-action-btn.primary:hover {
-            background: var(--navy-light);
+        .copy-field input,
+        .copy-field textarea {
+            width: 100%;
+            padding: 6px 8px;
+            font-size: 11px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
         }
 
-        /* Add Format Button */
-        .add-format-card {
+        .copy-field textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .reference-upload {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 6px;
+        }
+
+        .ref-placeholder {
+            width: 60px;
+            height: 60px;
+            background: #f5f5f5;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            min-height: 200px;
-            border: 2px dashed #ddd;
-            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        .ref-btn {
+            font-size: 9px;
+            padding: 4px 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             cursor: pointer;
-            color: var(--text-light);
+        }
+
+        .ref-btn:hover {
+            border-color: var(--navy);
+        }
+
+        .status-select {
+            padding: 6px 8px;
+            font-size: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .status-select.winner {
+            background: rgba(45, 106, 79, 0.1);
+            border-color: var(--green);
+        }
+
+        .status-select.ready {
+            background: rgba(181, 101, 29, 0.1);
+            border-color: var(--amber);
+        }
+
+        .brief-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .brief-action-btn {
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .add-format-card:hover {
+        .brief-action-btn:hover {
             border-color: var(--navy);
-            color: var(--navy);
         }
 
-        .add-format-card .plus-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
+        .brief-action-btn.primary {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
         }
 
         /* Responsive */
@@ -1834,7 +1942,7 @@
             <button class="nav-tab active" onclick="showPage('flowchart')">Funnel Flow</button>
             <button class="nav-tab" onclick="showPage('brief')">Persona Brief</button>
             <button class="nav-tab" onclick="showPage('personas')">Personas & Angles</button>
-            <button class="nav-tab" onclick="showPage('formats')">Ad Formats</button>
+            <button class="nav-tab" onclick="showPage('formats')">Static Toolkit</button>
         </div>
 
         <!-- FLOWCHART PAGE -->
@@ -3078,200 +3186,431 @@
         </div>
         <!-- END BRIEF PAGE -->
 
-        <!-- AD FORMATS PAGE -->
+        <!-- STATIC AD TOOLKIT PAGE -->
         <div class="page-view" id="page-formats">
-            <div class="formats-page-header">
-                <p>Matrix view: Personas × Ad Formats. Click cells to track testing progress.</p>
+            <!-- Tab Navigation within page -->
+            <div class="toolkit-tabs">
+                <button class="toolkit-tab active" onclick="showToolkitSection('library')">Format Library</button>
+                <button class="toolkit-tab" onclick="showToolkitSection('brief')">Super Brief Generator</button>
             </div>
 
-            <!-- Formats Matrix -->
-            <div class="formats-matrix-container">
-                <div class="formats-matrix">
-                    <!-- Header Row -->
-                    <div class="matrix-header corner">Persona / Format</div>
-                    <div class="matrix-header">Comparison Hook</div>
-                    <div class="matrix-header">Benefits List</div>
-                    <div class="matrix-header">Before/After</div>
+            <!-- FORMAT LIBRARY SECTION -->
+            <div class="toolkit-section active" id="section-library">
+                <!-- Header with search and add -->
+                <div class="library-header">
+                    <div class="library-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search formats..." id="format-search" onkeyup="filterFormats()">
+                    </div>
+                    <button class="add-format-btn" onclick="alert('Add format coming soon!')">+ New Format</button>
+                </div>
 
-                    <!-- Row 1: Minimalist Professional -->
-                    <div class="matrix-row-header">
-                        <span class="persona-mini"></span>
-                        The Minimalist Professional
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag winner">1 Winner</span>
-                        </div>
-                        <div class="matrix-cell-angles">
-                            <span class="cell-angle-chip selected">5-min routine</span>
-                            <span class="cell-angle-chip">Clean ingredients</span>
-                        </div>
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag testing">Testing</span>
-                        </div>
-                        <div class="matrix-cell-angles">
-                            <span class="cell-angle-chip selected">Confidence boost</span>
-                        </div>
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag untested">Untested</span>
-                        </div>
-                        <div class="cell-add-btn">+ Add angle</div>
-                    </div>
+                <!-- Filter Tabs -->
+                <div class="format-filter-tabs">
+                    <button class="filter-tab active" onclick="filterByCategory('all')">All</button>
+                    <button class="filter-tab" onclick="filterByCategory('product-shot')">Product Shot</button>
+                    <button class="filter-tab" onclick="filterByCategory('benefits')">Benefits List</button>
+                    <button class="filter-tab" onclick="filterByCategory('comparison')">Comparison</button>
+                    <button class="filter-tab" onclick="filterByCategory('testimonial')">Testimonial</button>
+                    <button class="filter-tab" onclick="filterByCategory('lifestyle')">Lifestyle</button>
+                    <button class="filter-tab" onclick="filterByCategory('ugc')">UGC</button>
+                    <button class="filter-tab" onclick="filterByCategory('other')">Other</button>
+                </div>
 
-                    <!-- Row 2: Natural Beauty Seeker -->
-                    <div class="matrix-row-header">
-                        <span class="persona-mini"></span>
-                        The Natural Beauty Seeker
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag testing">Testing</span>
+                <!-- Format Cards Grid -->
+                <div class="format-library-grid" id="format-library">
+                    <!-- Product Hero with Benefit Badge -->
+                    <div class="library-format-card" data-category="product-shot" onclick="selectFormat(this)">
+                        <div class="format-card-image" style="background: linear-gradient(135deg, #d4a373, #ccd5ae);">
+                            <div class="format-preview-mini">
+                                <div style="font-size: 10px; font-weight: bold; color: #2d5016;">Fiber is the new protein.</div>
+                                <div style="width: 40px; height: 50px; background: #4a7c23; border-radius: 4px; margin: 8px auto;"></div>
+                                <div style="background: #f59e0b; color: #fff; font-size: 8px; padding: 2px 6px; border-radius: 8px; display: inline-block;">MORE FIBER THAN 2 CUPS</div>
+                            </div>
                         </div>
-                        <div class="matrix-cell-angles">
-                            <span class="cell-angle-chip selected">Clean beauty</span>
+                        <div class="format-card-info">
+                            <h4>Product Hero with Benefit Badge</h4>
+                            <span class="zones-count">5 zones</span>
                         </div>
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag untested">Untested</span>
-                        </div>
-                        <div class="cell-add-btn">+ Add angle</div>
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag untested">Untested</span>
-                        </div>
-                        <div class="cell-add-btn">+ Add angle</div>
                     </div>
 
-                    <!-- Row 3: Mature Elegance -->
-                    <div class="matrix-row-header">
-                        <span class="persona-mini"></span>
-                        The Mature Elegance
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag untested">Untested</span>
+                    <!-- Product Hero with Social Proof -->
+                    <div class="library-format-card" data-category="product-shot" onclick="selectFormat(this)">
+                        <div class="format-card-image" style="background: linear-gradient(135deg, #f5f5dc, #e8dcc4);">
+                            <div class="format-preview-mini">
+                                <div style="font-size: 9px; font-weight: 500; color: #333; margin-bottom: 4px;">The no-makeup makeup for chronically late people</div>
+                                <div style="width: 35px; height: 35px; background: #8b4513; border-radius: 50%; margin: 6px auto;"></div>
+                                <div style="font-size: 7px; color: #666;">★★★★★ 29,931 5-star reviews</div>
+                            </div>
                         </div>
-                        <div class="cell-add-btn">+ Add angle</div>
-                    </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag untested">Untested</span>
+                        <div class="format-card-info">
+                            <h4>Product Hero with Social Proof</h4>
+                            <span class="zones-count">9 zones</span>
                         </div>
-                        <div class="cell-add-btn">+ Add angle</div>
                     </div>
-                    <div class="matrix-cell">
-                        <div class="matrix-cell-status">
-                            <span class="cell-status-tag untested">Untested</span>
+
+                    <!-- Product Benefits List -->
+                    <div class="library-format-card" data-category="benefits" onclick="selectFormat(this)">
+                        <div class="format-card-image" style="background: linear-gradient(135deg, #1a3a2f, #2d5a45);">
+                            <div class="format-preview-mini" style="color: #fff;">
+                                <div style="font-size: 8px; margin-bottom: 4px;">6 benefits of AG1's natural ingredients:</div>
+                                <div style="font-size: 7px; text-align: left; padding-left: 8px;">
+                                    1. Focus & Energy<br>
+                                    2. Gut Health<br>
+                                    3. Nutrient Replenishment
+                                </div>
+                            </div>
                         </div>
-                        <div class="cell-add-btn">+ Add angle</div>
+                        <div class="format-card-info">
+                            <h4>Product Benefits List with Hero Shot</h4>
+                            <span class="zones-count">5 zones</span>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Health Warning -->
+                    <div class="library-format-card" data-category="comparison" onclick="selectFormat(this)">
+                        <div class="format-card-image" style="background: #f5f5f5;">
+                            <div class="format-preview-mini">
+                                <span class="other-badge">Other</span>
+                                <div style="width: 40px; height: 40px; background: #ddd; border-radius: 4px; margin: 12px auto; display: flex; align-items: center; justify-content: center; color: #999; font-size: 16px;">🖼</div>
+                            </div>
+                        </div>
+                        <div class="format-card-info">
+                            <h4>Product Comparison Health Warning</h4>
+                            <span class="zones-count">3 zones</span>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial Quote -->
+                    <div class="library-format-card" data-category="testimonial" onclick="selectFormat(this)">
+                        <div class="format-card-image" style="background: linear-gradient(135deg, #fef3e2, #fde8d0);">
+                            <div class="format-preview-mini">
+                                <div style="font-size: 20px; color: var(--gold);">"</div>
+                                <div style="font-size: 8px; font-style: italic; color: #333;">This changed my whole routine...</div>
+                                <div style="font-size: 7px; color: #666; margin-top: 4px;">— Sarah, 42</div>
+                            </div>
+                        </div>
+                        <div class="format-card-info">
+                            <h4>Testimonial Quote Card</h4>
+                            <span class="zones-count">4 zones</span>
+                        </div>
+                    </div>
+
+                    <!-- Lifestyle Shot -->
+                    <div class="library-format-card" data-category="lifestyle" onclick="selectFormat(this)">
+                        <div class="format-card-image" style="background: linear-gradient(135deg, #e8d5c4, #d4c4b0);">
+                            <div class="format-preview-mini">
+                                <div style="width: 50px; height: 35px; background: rgba(0,0,0,0.1); border-radius: 4px; margin: 8px auto;"></div>
+                                <div style="font-size: 8px; font-weight: 500; color: #333;">Morning routine essentials</div>
+                            </div>
+                        </div>
+                        <div class="format-card-info">
+                            <h4>Lifestyle Context Shot</h4>
+                            <span class="zones-count">6 zones</span>
+                        </div>
+                    </div>
+
+                    <!-- UGC Style -->
+                    <div class="library-format-card" data-category="ugc" onclick="selectFormat(this)">
+                        <div class="format-card-image" style="background: linear-gradient(135deg, #f0e6d3, #e8dcc4);">
+                            <div class="format-preview-mini">
+                                <div style="width: 30px; height: 30px; background: #ccc; border-radius: 50%; margin: 4px auto;"></div>
+                                <div style="font-size: 8px; color: #333;">POV: You finally found...</div>
+                                <div style="font-size: 7px; color: #666; margin-top: 2px;">@creator_name</div>
+                            </div>
+                        </div>
+                        <div class="format-card-info">
+                            <h4>UGC Screenshot Style</h4>
+                            <span class="zones-count">7 zones</span>
+                        </div>
+                    </div>
+
+                    <!-- Add New Format -->
+                    <div class="library-format-card add-new" onclick="alert('Add format coming soon!')">
+                        <div class="format-card-image" style="background: #f9f9f9; border: 2px dashed #ddd;">
+                            <div class="format-preview-mini" style="color: #999;">
+                                <div style="font-size: 32px;">+</div>
+                                <div style="font-size: 10px;">Add Format</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Format Templates -->
-            <div class="format-templates">
-                <h3>Ad Format Templates</h3>
-                <div class="format-cards">
-                    <!-- Comparison Hook Card -->
-                    <div class="format-card">
-                        <div class="format-card-header">
-                            <h4>Comparison Hook</h4>
-                            <span class="format-type-badge">STATIC</span>
+            <!-- SUPER BRIEF GENERATOR SECTION -->
+            <div class="toolkit-section" id="section-brief">
+                <!-- Persona Selector -->
+                <div class="brief-persona-selector">
+                    <label>Select Persona:</label>
+                    <select id="brief-persona-select" onchange="updateBriefTable()">
+                        <option value="minimalist">The Minimalist Professional</option>
+                        <option value="natural">The Natural Beauty Seeker</option>
+                        <option value="mature">The Mature Elegance</option>
+                    </select>
+                </div>
+
+                <!-- Persona Context Card -->
+                <div class="persona-context-card" id="persona-context">
+                    <div class="context-header">
+                        <h3>The Minimalist Professional</h3>
+                        <span class="context-meta">35-55 • Career-focused • Efficiency-driven</span>
+                    </div>
+                    <div class="context-grid">
+                        <div class="context-item">
+                            <strong>Key Insight:</strong> Values time over everything. Wants to look polished without spending time.
                         </div>
-                        <div class="format-card-body">
-                            <div class="format-preview">
-                                <div class="hook">[Alternative] VS [Your Product]</div>
-                                <div class="body-text">
-                                    <strong>Starbucks Matcha:</strong> 28g sugar, artificial ingredients<br>
-                                    <strong>Your Matcha:</strong> 0g sugar, organic, clean energy
-                                </div>
-                                <div class="cta">Make the switch →</div>
-                            </div>
-                            <div class="format-card-meta">
-                                <span>📐 1080×1080</span>
-                                <span>🎯 Awareness</span>
-                                <span>📊 Used 12x</span>
-                            </div>
-                            <div class="format-card-actions">
-                                <button class="format-action-btn">View Examples</button>
-                                <button class="format-action-btn primary">Use Template</button>
-                            </div>
+                        <div class="context-item">
+                            <strong>Tone:</strong> Confident, sophisticated, efficient. Speak to them like a peer.
+                        </div>
+                        <div class="context-item">
+                            <strong>Words:</strong> Effortless, polished, streamlined, multi-tasking, elevated
                         </div>
                     </div>
+                </div>
 
-                    <!-- Benefits List Card -->
-                    <div class="format-card">
-                        <div class="format-card-header">
-                            <h4>Benefits List</h4>
-                            <span class="format-type-badge">STATIC</span>
-                        </div>
-                        <div class="format-card-body">
-                            <div class="format-preview">
-                                <div class="hook">[Number] Reasons to Try [Product]</div>
-                                <ul>
-                                    <li>✓ Benefit 1 with emotional trigger</li>
-                                    <li>✓ Benefit 2 with proof point</li>
-                                    <li>✓ Benefit 3 with outcome</li>
-                                    <li>✓ Benefit 4 with differentiator</li>
-                                    <li>✓ Benefit 5 with social proof</li>
-                                    <li>✓ Benefit 6 with urgency</li>
-                                </ul>
-                                <div class="cta">Shop Now →</div>
-                            </div>
-                            <div class="format-card-meta">
-                                <span>📐 1080×1350</span>
-                                <span>🎯 Conversion</span>
-                                <span>📊 Used 8x</span>
-                            </div>
-                            <div class="format-card-actions">
-                                <button class="format-action-btn">View Examples</button>
-                                <button class="format-action-btn primary">Use Template</button>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Super Brief Matrix Table -->
+                <div class="super-brief-container">
+                    <h3>Super Brief Matrix <span style="font-size: 12px; font-weight: normal; color: var(--text-light);">— Designer-ready briefs for each combination</span></h3>
 
-                    <!-- Before/After Card -->
-                    <div class="format-card">
-                        <div class="format-card-header">
-                            <h4>Before / After</h4>
-                            <span class="format-type-badge">STATIC</span>
-                        </div>
-                        <div class="format-card-body">
-                            <div class="format-preview">
-                                <div class="hook">The [Timeframe] Transformation</div>
-                                <div class="body-text">
-                                    <strong>Before:</strong> [Pain point / problem state]<br>
-                                    <strong>After:</strong> [Desired outcome / transformation]
-                                </div>
-                                <div class="cta">Start your journey →</div>
-                            </div>
-                            <div class="format-card-meta">
-                                <span>📐 1080×1080</span>
-                                <span>🎯 Social Proof</span>
-                                <span>📊 Used 5x</span>
-                            </div>
-                            <div class="format-card-actions">
-                                <button class="format-action-btn">View Examples</button>
-                                <button class="format-action-btn primary">Use Template</button>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="super-brief-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 140px;">Value Prop</th>
+                                <th style="width: 140px;">Format</th>
+                                <th style="width: 120px;">Product</th>
+                                <th style="width: 300px;">Copy</th>
+                                <th style="width: 100px;">Reference</th>
+                                <th style="width: 80px;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="brief-table-body">
+                            <!-- Row 1 -->
+                            <tr class="brief-row">
+                                <td class="cell-value-prop">
+                                    <span class="value-prop-tag winner">5-minute routine</span>
+                                </td>
+                                <td class="cell-format">
+                                    <select class="brief-select">
+                                        <option>Product Hero + Badge</option>
+                                        <option>Benefits List</option>
+                                        <option>Comparison</option>
+                                        <option>Testimonial</option>
+                                    </select>
+                                </td>
+                                <td class="cell-product">
+                                    <select class="brief-select">
+                                        <option>Miracle Balm</option>
+                                        <option>The Face Pencil</option>
+                                        <option>Sparkle Wash</option>
+                                        <option>What The Foundation</option>
+                                    </select>
+                                </td>
+                                <td class="cell-copy">
+                                    <div class="copy-fields">
+                                        <div class="copy-field">
+                                            <label>Headline:</label>
+                                            <input type="text" value="My entire makeup routine takes 5 minutes" placeholder="Headline...">
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>Body:</label>
+                                            <textarea placeholder="Body copy...">One product. Five minutes. Done.
 
-                    <!-- Add Format Card -->
-                    <div class="add-format-card" onclick="alert('Add format functionality coming soon!')">
-                        <span class="plus-icon">+</span>
-                        <span>Add Format Template</span>
+The Miracle Balm does the work of 3 products—so you can get out the door looking polished, not rushed.</textarea>
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>CTA:</label>
+                                            <input type="text" value="Shop Miracle Balm →" placeholder="CTA...">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cell-reference">
+                                    <div class="reference-upload">
+                                        <div class="ref-placeholder">🖼</div>
+                                        <button class="ref-btn">Upload</button>
+                                    </div>
+                                </td>
+                                <td class="cell-status">
+                                    <select class="status-select winner">
+                                        <option value="draft">Draft</option>
+                                        <option value="ready">Ready</option>
+                                        <option value="in-design">In Design</option>
+                                        <option value="complete" selected>Complete</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="brief-row">
+                                <td class="cell-value-prop">
+                                    <span class="value-prop-tag winner">5-minute routine</span>
+                                </td>
+                                <td class="cell-format">
+                                    <select class="brief-select">
+                                        <option>Benefits List</option>
+                                        <option>Product Hero + Badge</option>
+                                        <option>Comparison</option>
+                                        <option>Testimonial</option>
+                                    </select>
+                                </td>
+                                <td class="cell-product">
+                                    <select class="brief-select">
+                                        <option>The Face Pencil</option>
+                                        <option>Miracle Balm</option>
+                                        <option>Sparkle Wash</option>
+                                        <option>What The Foundation</option>
+                                    </select>
+                                </td>
+                                <td class="cell-copy">
+                                    <div class="copy-fields">
+                                        <div class="copy-field">
+                                            <label>Headline:</label>
+                                            <input type="text" value="4 reasons busy women love The Face Pencil" placeholder="Headline...">
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>Body:</label>
+                                            <textarea placeholder="Body copy...">✓ Concealer + foundation in one
+✓ Takes 60 seconds to apply
+✓ Doesn't look like makeup
+✓ Stays put through back-to-back meetings</textarea>
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>CTA:</label>
+                                            <input type="text" value="Find Your Shade →" placeholder="CTA...">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cell-reference">
+                                    <div class="reference-upload">
+                                        <div class="ref-placeholder">🖼</div>
+                                        <button class="ref-btn">Upload</button>
+                                    </div>
+                                </td>
+                                <td class="cell-status">
+                                    <select class="status-select ready">
+                                        <option value="draft">Draft</option>
+                                        <option value="ready" selected>Ready</option>
+                                        <option value="in-design">In Design</option>
+                                        <option value="complete">Complete</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="brief-row">
+                                <td class="cell-value-prop">
+                                    <span class="value-prop-tag tested">Clean ingredients</span>
+                                </td>
+                                <td class="cell-format">
+                                    <select class="brief-select">
+                                        <option>Comparison</option>
+                                        <option>Product Hero + Badge</option>
+                                        <option>Benefits List</option>
+                                        <option>Testimonial</option>
+                                    </select>
+                                </td>
+                                <td class="cell-product">
+                                    <select class="brief-select">
+                                        <option>What The Foundation</option>
+                                        <option>Miracle Balm</option>
+                                        <option>The Face Pencil</option>
+                                        <option>Sparkle Wash</option>
+                                    </select>
+                                </td>
+                                <td class="cell-copy">
+                                    <div class="copy-fields">
+                                        <div class="copy-field">
+                                            <label>Headline:</label>
+                                            <input type="text" value="" placeholder="Headline...">
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>Body:</label>
+                                            <textarea placeholder="Body copy..."></textarea>
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>CTA:</label>
+                                            <input type="text" value="" placeholder="CTA...">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cell-reference">
+                                    <div class="reference-upload">
+                                        <div class="ref-placeholder">🖼</div>
+                                        <button class="ref-btn">Upload</button>
+                                    </div>
+                                </td>
+                                <td class="cell-status">
+                                    <select class="status-select draft">
+                                        <option value="draft" selected>Draft</option>
+                                        <option value="ready">Ready</option>
+                                        <option value="in-design">In Design</option>
+                                        <option value="complete">Complete</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <!-- Row 4 -->
+                            <tr class="brief-row">
+                                <td class="cell-value-prop">
+                                    <span class="value-prop-tag testing">Confidence boost</span>
+                                </td>
+                                <td class="cell-format">
+                                    <select class="brief-select">
+                                        <option>Testimonial</option>
+                                        <option>Product Hero + Badge</option>
+                                        <option>Benefits List</option>
+                                        <option>Comparison</option>
+                                    </select>
+                                </td>
+                                <td class="cell-product">
+                                    <select class="brief-select">
+                                        <option>Miracle Balm</option>
+                                        <option>The Face Pencil</option>
+                                        <option>Sparkle Wash</option>
+                                        <option>What The Foundation</option>
+                                    </select>
+                                </td>
+                                <td class="cell-copy">
+                                    <div class="copy-fields">
+                                        <div class="copy-field">
+                                            <label>Headline:</label>
+                                            <input type="text" value="" placeholder="Headline...">
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>Body:</label>
+                                            <textarea placeholder="Body copy..."></textarea>
+                                        </div>
+                                        <div class="copy-field">
+                                            <label>CTA:</label>
+                                            <input type="text" value="" placeholder="CTA...">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cell-reference">
+                                    <div class="reference-upload">
+                                        <div class="ref-placeholder">🖼</div>
+                                        <button class="ref-btn">Upload</button>
+                                    </div>
+                                </td>
+                                <td class="cell-status">
+                                    <select class="status-select draft">
+                                        <option value="draft" selected>Draft</option>
+                                        <option value="ready">Ready</option>
+                                        <option value="in-design">In Design</option>
+                                        <option value="complete">Complete</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="brief-actions">
+                        <button class="brief-action-btn" onclick="addBriefRow()">+ Add Row</button>
+                        <button class="brief-action-btn primary" onclick="exportBrief()">Export Brief</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END AD FORMATS PAGE -->
+        <!-- END STATIC AD TOOLKIT PAGE -->
 
     </div>
 
@@ -3355,6 +3694,61 @@
             if (page === 'personas') {
                 setTimeout(initConnectionLines, 50);
             }
+        }
+
+        // Static Ad Toolkit Functions
+        function showToolkitSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.toolkit-section').forEach(s => s.classList.remove('active'));
+            // Show selected section
+            document.getElementById('section-' + section).classList.add('active');
+            // Update tabs
+            document.querySelectorAll('.toolkit-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function filterByCategory(category) {
+            const cards = document.querySelectorAll('.library-format-card[data-category]');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            // Update tabs
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function filterFormats() {
+            const search = document.getElementById('format-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.library-format-card[data-category]');
+            cards.forEach(card => {
+                const title = card.querySelector('h4').textContent.toLowerCase();
+                card.style.display = title.includes(search) ? 'block' : 'none';
+            });
+        }
+
+        function selectFormat(card) {
+            document.querySelectorAll('.library-format-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        }
+
+        function updateBriefTable() {
+            // In a full implementation, this would update the table based on persona
+            const persona = document.getElementById('brief-persona-select').value;
+            if (persona !== 'minimalist') {
+                alert('Only Minimalist Professional has data populated. Add your research for other personas!');
+            }
+        }
+
+        function addBriefRow() {
+            alert('Add row functionality coming soon!');
+        }
+
+        function exportBrief() {
+            alert('Export to PDF/CSV coming soon!');
         }
 
         // Flowchart View Toggle (Full Funnel vs Ads Only)
