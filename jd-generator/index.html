@@ -516,7 +516,7 @@
         <!-- Templates Section -->
         <div class="card templates-section">
             <h2>Start from a Template</h2>
-            <div class="templates-grid">
+            <div class="templates-grid" id="templatesGrid">
                 <div class="template-card" onclick="loadTemplate('cro')">
                     <h4>CRO Specialist</h4>
                     <p>Conversion rate optimization</p>
@@ -541,6 +541,11 @@
                     <h4>Start Blank</h4>
                     <p>Create from scratch</p>
                 </div>
+            </div>
+            <!-- Custom Templates -->
+            <div id="customTemplatesSection" style="display: none; margin-top: 25px;">
+                <h3 style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 15px; color: #666;">Your Saved Templates</h3>
+                <div class="templates-grid" id="customTemplatesGrid"></div>
             </div>
         </div>
 
@@ -769,12 +774,13 @@
         <!-- Output Section -->
         <div class="card output-section" id="outputSection">
             <div class="output-header">
-                <h2><span class="step">✓</span> Your Job Description</h2>
+                <h2><span class="step">‚úì</span> Your Job Description</h2>
                 <div class="output-actions">
                     <button class="btn btn-secondary btn-small" onclick="copyToClipboard()">Copy</button>
                     <button class="btn btn-secondary btn-small" onclick="downloadAsTxt()">Download TXT</button>
                     <button class="btn btn-secondary btn-small" onclick="downloadAsWord()">Download Word</button>
                     <button class="btn btn-secondary btn-small" onclick="downloadAsHTML()">Download HTML</button>
+                    <button class="btn btn-secondary btn-small" onclick="saveAsTemplate()">Save as Template</button>
                     <button class="btn btn-secondary btn-small" onclick="startOver()">Start Over</button>
                 </div>
             </div>
@@ -797,6 +803,25 @@
             <div class="modal-buttons">
                 <button class="btn btn-secondary" onclick="closeSaveModal()">Cancel</button>
                 <button class="btn btn-primary" onclick="confirmSaveDraft()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Template Modal -->
+    <div class="modal-overlay" id="templateModal">
+        <div class="modal">
+            <h3>Save as Template</h3>
+            <div class="form-group">
+                <label>Template Name</label>
+                <input type="text" id="templateName" placeholder="e.g., Social Media Manager">
+            </div>
+            <div class="form-group">
+                <label>Short Description</label>
+                <input type="text" id="templateDescription" placeholder="e.g., Content & community management">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeTemplateModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmSaveTemplate()">Save Template</button>
             </div>
         </div>
     </div>
@@ -994,6 +1019,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadDraftsList();
+            loadCustomTemplates();
         });
 
         function loadTemplate(templateName) {
@@ -1185,7 +1211,7 @@
 **IMPORTANT: Follow the Jones Road JD format exactly:**
 
 1. Header: Job Title, Company (Jones Road Beauty), Location
-2. About Jones Road (use this exact text): "Jones Road Beauty was founded by makeup artist Bobbi Brown on the philosophy that the world doesn't need more beauty products. It needs better beauty products. Clean, strategic, high-grade formulations that work on every skin type and tone—and that are as simple to use as they are to master. Jones Road is a lifetime of beauty knowledge, distilled."
+2. About Jones Road (use this exact text): "Jones Road Beauty was founded by makeup artist Bobbi Brown on the philosophy that the world doesn't need more beauty products. It needs better beauty products. Clean, strategic, high-grade formulations that work on every skin type and tone‚Äîand that are as simple to use as they are to master. Jones Road is a lifetime of beauty knowledge, distilled."
 3. About the Role: 1-2 paragraphs explaining scope, reporting structure, and ideal candidate
 4. What You'll Do: Bullet points with action verbs appropriate for the seniority level
 5. What You'll Bring: Qualifications as bullet points
@@ -1342,6 +1368,118 @@ Generate the complete job description now. Use clean formatting with clear secti
             });
             nextStep(1);
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Custom Template functions
+        function saveAsTemplate() {
+            document.getElementById('templateName').value = document.getElementById('jobTitle').value || '';
+            document.getElementById('templateDescription').value = '';
+            document.getElementById('templateModal').classList.add('active');
+        }
+
+        function closeTemplateModal() {
+            document.getElementById('templateModal').classList.remove('active');
+        }
+
+        function confirmSaveTemplate() {
+            const templateName = document.getElementById('templateName').value.trim();
+            const templateDescription = document.getElementById('templateDescription').value.trim();
+
+            if (!templateName) {
+                alert('Please enter a template name');
+                return;
+            }
+
+            const customTemplates = JSON.parse(localStorage.getItem('jd_custom_templates') || '[]');
+
+            const templateData = {
+                id: Date.now(),
+                name: templateName,
+                description: templateDescription || 'Custom template',
+                date: new Date().toLocaleDateString(),
+                data: gatherFormData()
+            };
+
+            customTemplates.unshift(templateData);
+            localStorage.setItem('jd_custom_templates', JSON.stringify(customTemplates.slice(0, 50))); // Keep max 50 templates
+
+            closeTemplateModal();
+            loadCustomTemplates();
+            alert('Template saved! You can find it in "Your Saved Templates".');
+        }
+
+        function loadCustomTemplates() {
+            const customTemplates = JSON.parse(localStorage.getItem('jd_custom_templates') || '[]');
+            const section = document.getElementById('customTemplatesSection');
+            const grid = document.getElementById('customTemplatesGrid');
+
+            if (customTemplates.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            grid.innerHTML = customTemplates.map(template => `
+                <div class="template-card" style="position: relative;">
+                    <div onclick="loadCustomTemplate(${template.id})" style="cursor: pointer;">
+                        <h4>${template.name}</h4>
+                        <p>${template.description}</p>
+                    </div>
+                    <button onclick="event.stopPropagation(); deleteCustomTemplate(${template.id})"
+                        style="position: absolute; top: 8px; right: 8px; background: none; border: none; cursor: pointer; font-size: 14px; color: #999; padding: 4px;"
+                        title="Delete template">&times;</button>
+                </div>
+            `).join('');
+        }
+
+        function loadCustomTemplate(id) {
+            const customTemplates = JSON.parse(localStorage.getItem('jd_custom_templates') || '[]');
+            const template = customTemplates.find(t => t.id === id);
+            if (!template) return;
+
+            const data = template.data;
+            document.getElementById('jobTitle').value = data.jobTitle || '';
+            document.getElementById('department').value = data.department || '';
+            document.getElementById('level').value = data.level || '';
+            document.getElementById('reportsTo').value = data.reportsTo || '';
+            document.getElementById('experience').value = data.experience || '';
+            document.getElementById('location').value = data.location || '';
+            document.getElementById('manages').value = data.manages || '';
+            document.getElementById('rolePurpose').value = data.rolePurpose || '';
+            document.getElementById('responsibilities').value = data.responsibilities || '';
+            document.getElementById('collaborators').value = data.collaborators || '';
+            document.getElementById('requiredSkills').value = data.requiredSkills || '';
+            document.getElementById('niceToHave').value = data.niceToHave || '';
+            document.getElementById('education').value = data.education || '';
+            document.getElementById('sponsorship').value = data.sponsorship || '';
+            document.getElementById('successMetrics').value = data.successMetrics || '';
+            document.getElementById('otherNotes').value = data.otherNotes || '';
+
+            // Reset checkboxes
+            document.querySelectorAll('.checkbox-item input').forEach(cb => cb.checked = false);
+            // Set checkboxes from template
+            (data.background || []).forEach(val => {
+                document.querySelectorAll('.checkbox-item input').forEach(cb => {
+                    if (cb.value === val) cb.checked = true;
+                });
+            });
+
+            // Show step 1
+            document.querySelectorAll('.step-card').forEach(card => card.style.display = 'none');
+            document.querySelector('.step-card[data-step="1"]').style.display = 'block';
+            document.querySelectorAll('.step-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'completed');
+                if (i === 0) dot.classList.add('active');
+            });
+            document.querySelector('.step-card[data-step="1"]').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function deleteCustomTemplate(id) {
+            if (!confirm('Delete this template?')) return;
+            let customTemplates = JSON.parse(localStorage.getItem('jd_custom_templates') || '[]');
+            customTemplates = customTemplates.filter(t => t.id !== id);
+            localStorage.setItem('jd_custom_templates', JSON.stringify(customTemplates));
+            loadCustomTemplates();
         }
     </script>
 </body>
