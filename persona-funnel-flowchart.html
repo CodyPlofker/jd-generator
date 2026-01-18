@@ -802,42 +802,88 @@
             display: none;
         }
 
-        /* Channel Layers */
-        .channel-layer {
-            display: none;
-            margin-top: 8px;
-            padding: 10px;
-            background: rgba(26, 58, 92, 0.05);
-            border: 1px dashed var(--navy);
-            border-radius: 4px;
+        /* Channel Trigger - Inline indicator showing when to activate */
+        .channel-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            margin: 10px 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text);
         }
 
-        .channel-layer.visible {
-            display: block;
+        .channel-trigger-icon {
+            font-size: 16px;
+        }
+
+        .channel-trigger strong {
+            color: var(--navy);
+        }
+
+        .channel-trigger-badges {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .channel-badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .channel-badge.lp { background: #6366f1; color: #fff; }
+        .channel-badge.popup { background: #ec4899; color: #fff; }
+        .channel-badge.retention { background: #14b8a6; color: #fff; }
+
+        /* Channel Layers - Always visible when present */
+        .channel-layer {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid;
+        }
+
+        .channel-layer.landing-pages {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: #6366f1;
+        }
+
+        .channel-layer.popups {
+            background: rgba(236, 72, 153, 0.08);
+            border-color: #ec4899;
+        }
+
+        .channel-layer.retention {
+            background: rgba(20, 184, 166, 0.08);
+            border-color: #14b8a6;
         }
 
         .channel-layer-title {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--navy);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .channel-layer-title::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            border-radius: 2px;
-        }
+        .channel-layer.landing-pages .channel-layer-title { color: #6366f1; }
+        .channel-layer.popups .channel-layer-title { color: #ec4899; }
+        .channel-layer.retention .channel-layer-title { color: #14b8a6; }
 
-        .channel-layer.landing-pages .channel-layer-title::before { background: #6366f1; }
-        .channel-layer.popups .channel-layer-title::before { background: #ec4899; }
-        .channel-layer.retention .channel-layer-title::before { background: #14b8a6; }
+        .channel-layer-title::before {
+            content: '◆';
+            font-size: 8px;
+        }
 
         .channel-layer ul {
             list-style: none;
@@ -846,7 +892,7 @@
         }
 
         .channel-layer li {
-            padding: 2px 0;
+            padding: 3px 0;
             padding-left: 14px;
             position: relative;
         }
@@ -855,9 +901,12 @@
             content: '→';
             position: absolute;
             left: 0;
-            color: var(--navy);
             font-size: 10px;
         }
+
+        .channel-layer.landing-pages li::before { color: #6366f1; }
+        .channel-layer.popups li::before { color: #ec4899; }
+        .channel-layer.retention li::before { color: #14b8a6; }
 
         /* Page Views */
         .page-view {
@@ -868,75 +917,229 @@
             display: block;
         }
 
-        /* Personas Page */
-        .personas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+        /* Personas Page - Tree Visualization */
+        .personas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
             margin-top: 24px;
         }
 
-        .persona-card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
+        .persona-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 280px;
+            max-width: 320px;
         }
 
-        .persona-card-header {
+        .persona-node {
             background: var(--navy);
             color: #fff;
-            padding: 16px;
+            padding: 16px 24px;
+            border-radius: 12px;
             text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.3);
         }
 
-        .persona-card-header h3 {
+        .persona-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(26, 58, 92, 0.4);
+        }
+
+        .persona-node h3 {
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
+            margin: 0 0 4px 0;
+        }
+
+        .persona-node p {
+            font-size: 10px;
+            opacity: 0.8;
             margin: 0;
         }
 
-        .persona-card-header p {
-            font-size: 11px;
-            opacity: 0.8;
-            margin-top: 4px;
+        .tree-connector {
+            width: 2px;
+            height: 20px;
+            background: var(--navy);
+            position: relative;
         }
 
-        .persona-angles {
-            padding: 16px;
+        .tree-connector::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid var(--navy);
         }
 
-        .persona-angles h4 {
-            font-size: 10px;
+        .angles-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 300px;
+            position: relative;
+            padding: 12px;
+            background: var(--cream);
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .angles-cloud::before {
+            content: 'VALUE PROPS / ANGLES';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 0 8px;
+            font-size: 9px;
             font-weight: 600;
-            text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-light);
-            margin-bottom: 10px;
         }
 
-        .angle-tag {
-            display: inline-block;
-            background: var(--cream);
-            border: 1px solid #ddd;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin: 3px;
+        .angle-node {
+            background: #fff;
+            border: 2px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 11px;
             color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
         }
 
-        .angle-tag.tested {
+        .angle-node:hover {
+            border-color: var(--navy);
+            transform: scale(1.05);
+        }
+
+        .angle-node.testing {
+            border-color: var(--amber);
+            background: rgba(181, 101, 29, 0.1);
+        }
+
+        .angle-node.testing::after {
+            content: '⏳';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            font-size: 10px;
+        }
+
+        .angle-node.tested {
             border-color: var(--green);
             background: rgba(45, 106, 79, 0.1);
         }
 
-        .angle-tag.winner {
+        .angle-node.tested::after {
+            content: '✓';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--green);
+            color: #fff;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .angle-node.winner {
             background: var(--green);
             color: #fff;
             border-color: var(--green);
+            font-weight: 600;
         }
+
+        .angle-node.winner::after {
+            content: '🏆';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 12px;
+        }
+
+        .persona-status {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .add-persona-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
+            min-height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .add-persona-tree:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        /* Angle Legend */
+        .angle-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding: 12px;
+            background: var(--cream);
+            border-radius: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid;
+        }
+
+        .legend-dot.untested { border-color: #ddd; background: #fff; }
+        .legend-dot.testing { border-color: var(--amber); background: rgba(181, 101, 29, 0.1); }
+        .legend-dot.tested { border-color: var(--green); background: rgba(45, 106, 79, 0.1); }
+        .legend-dot.winner { border-color: var(--green); background: var(--green); }
 
         /* Brief Template Page */
         .brief-template {
@@ -1419,18 +1622,28 @@
                         <li>Launch on YouTube Shorts</li>
                     </ul>
 
-                    <!-- Channel Layers - appear when filters active -->
-                    <div class="channel-layer landing-pages" data-channel="landing-pages">
+                    <!-- Channel Trigger -->
+                    <div class="channel-trigger">
+                        <span class="channel-trigger-icon">🎯</span>
+                        <span><strong>Unlock Channels:</strong> UGC at Green = time to optimize the funnel</span>
+                        <div class="channel-trigger-badges">
+                            <span class="channel-badge lp">LPs</span>
+                            <span class="channel-badge popup">Popups</span>
+                        </div>
+                    </div>
+
+                    <!-- Channel Layers - Always visible -->
+                    <div class="channel-layer landing-pages">
                         <div class="channel-layer-title">Landing Pages</div>
                         <ul>
                             <li>Build persona-specific landing pages</li>
                             <li>Test proven formats: Listicle, Trojan Horse, Optimized PDP, Faux Homepage</li>
                             <li>Start with 2-3 formats that have worked</li>
-                            <li>A/B test headlines and hero content</li>
+                            <li>A/B test headlines and hero content for this persona</li>
                         </ul>
                     </div>
 
-                    <div class="channel-layer popups" data-channel="popups">
+                    <div class="channel-layer popups">
                         <div class="channel-layer-title">Popups</div>
                         <ul>
                             <li>Persona-targeted popup messaging</li>
@@ -1573,14 +1786,24 @@
                         <li>Launch podcast/substack campaigns</li>
                     </ul>
 
+                    <!-- Channel Trigger -->
+                    <div class="channel-trigger">
+                        <span class="channel-trigger-icon">🎯</span>
+                        <span><strong>Unlock Retention:</strong> Partnerships scaling = time to personalize retention</span>
+                        <div class="channel-trigger-badges">
+                            <span class="channel-badge retention">Retention</span>
+                        </div>
+                    </div>
+
                     <!-- Channel Layer - Retention -->
-                    <div class="channel-layer retention" data-channel="retention">
+                    <div class="channel-layer retention">
                         <div class="channel-layer-title">Retention Flows</div>
                         <ul>
                             <li>Tailor email flows by persona segments</li>
                             <li>SMS sequences with persona-specific messaging</li>
                             <li>Direct mail campaigns for high-value personas</li>
                             <li>Post-purchase nurture by persona type</li>
+                            <li>Win-back flows with persona-relevant angles</li>
                         </ul>
                     </div>
 
@@ -1804,65 +2027,95 @@
 
         <!-- PERSONAS & ANGLES PAGE -->
         <div class="page-view" id="page-personas">
-            <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">
-                Visualize your personas and their associated angles/value props. Mark tested and winning angles.
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 16px;">
+                Each persona connects to its value props and angles. Click angles to cycle through status.
             </p>
 
-            <div class="personas-grid">
-                <!-- Persona Card 1 -->
-                <div class="persona-card">
-                    <div class="persona-card-header">
+            <!-- Legend -->
+            <div class="angle-legend">
+                <div class="legend-item">
+                    <span class="legend-dot untested"></span>
+                    <span>Untested</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot testing"></span>
+                    <span>Testing</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot tested"></span>
+                    <span>Tested</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot winner"></span>
+                    <span>Winner</span>
+                </div>
+            </div>
+
+            <div class="personas-container">
+                <!-- Persona Tree 1 -->
+                <div class="persona-tree">
+                    <div class="persona-node">
                         <h3>The Minimalist Professional</h3>
-                        <p>35-55 • Career-focused • Values efficiency</p>
+                        <p>35-55 • Career-focused • Efficiency</p>
                     </div>
-                    <div class="persona-angles">
-                        <h4>Value Props / Angles</h4>
-                        <span class="angle-tag winner">5-minute routine</span>
-                        <span class="angle-tag tested">Clean ingredients</span>
-                        <span class="angle-tag tested">No-makeup makeup</span>
-                        <span class="angle-tag">Confidence boost</span>
-                        <span class="angle-tag">Office appropriate</span>
+                    <div class="tree-connector"></div>
+                    <div class="angles-cloud">
+                        <span class="angle-node winner" onclick="cycleAngleStatus(this)">5-minute routine</span>
+                        <span class="angle-node tested" onclick="cycleAngleStatus(this)">Clean ingredients</span>
+                        <span class="angle-node tested" onclick="cycleAngleStatus(this)">No-makeup makeup</span>
+                        <span class="angle-node testing" onclick="cycleAngleStatus(this)">Confidence boost</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Office appropriate</span>
+                    </div>
+                    <div class="persona-status">
+                        <span class="status-item">📊 3/5 tested</span>
+                        <span class="status-item">🏆 1 winner</span>
                     </div>
                 </div>
 
-                <!-- Persona Card 2 -->
-                <div class="persona-card">
-                    <div class="persona-card-header">
+                <!-- Persona Tree 2 -->
+                <div class="persona-tree">
+                    <div class="persona-node">
                         <h3>The Natural Beauty Seeker</h3>
                         <p>28-45 • Health-conscious • Ingredient-aware</p>
                     </div>
-                    <div class="persona-angles">
-                        <h4>Value Props / Angles</h4>
-                        <span class="angle-tag tested">Clean beauty</span>
-                        <span class="angle-tag">No harsh chemicals</span>
-                        <span class="angle-tag">Skin-first approach</span>
-                        <span class="angle-tag">Enhances natural features</span>
-                        <span class="angle-tag">Breathable formulas</span>
+                    <div class="tree-connector"></div>
+                    <div class="angles-cloud">
+                        <span class="angle-node tested" onclick="cycleAngleStatus(this)">Clean beauty</span>
+                        <span class="angle-node testing" onclick="cycleAngleStatus(this)">No harsh chemicals</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Skin-first approach</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Enhances natural features</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Breathable formulas</span>
+                    </div>
+                    <div class="persona-status">
+                        <span class="status-item">📊 2/5 tested</span>
+                        <span class="status-item">🏆 0 winners</span>
                     </div>
                 </div>
 
-                <!-- Persona Card 3 -->
-                <div class="persona-card">
-                    <div class="persona-card-header">
+                <!-- Persona Tree 3 -->
+                <div class="persona-tree">
+                    <div class="persona-node">
                         <h3>The Mature Elegance</h3>
                         <p>50+ • Sophisticated • Quality-focused</p>
                     </div>
-                    <div class="persona-angles">
-                        <h4>Value Props / Angles</h4>
-                        <span class="angle-tag">Age-appropriate beauty</span>
-                        <span class="angle-tag">Timeless elegance</span>
-                        <span class="angle-tag">Luxurious feel</span>
-                        <span class="angle-tag">Bobbi Brown legacy</span>
-                        <span class="angle-tag">Less is more</span>
+                    <div class="tree-connector"></div>
+                    <div class="angles-cloud">
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Age-appropriate beauty</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Timeless elegance</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Luxurious feel</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Bobbi Brown legacy</span>
+                        <span class="angle-node" onclick="cycleAngleStatus(this)">Less is more</span>
+                    </div>
+                    <div class="persona-status">
+                        <span class="status-item">📊 0/5 tested</span>
+                        <span class="status-item">🏆 0 winners</span>
                     </div>
                 </div>
 
-                <!-- Add New Persona Card -->
-                <div class="persona-card" style="border-style: dashed; display: flex; align-items: center; justify-content: center; min-height: 200px; cursor: pointer;" onclick="alert('Add persona functionality coming soon!')">
-                    <div style="text-align: center; color: var(--text-light);">
-                        <div style="font-size: 32px; margin-bottom: 8px;">+</div>
-                        <div style="font-size: 13px;">Add New Persona</div>
-                    </div>
+                <!-- Add New Persona -->
+                <div class="add-persona-tree" onclick="alert('Add persona functionality coming soon!')">
+                    <div style="font-size: 32px; margin-bottom: 8px;">+</div>
+                    <div style="font-size: 12px;">Add Persona</div>
                 </div>
             </div>
         </div>
@@ -1926,6 +2179,34 @@
                         <label>Jobs to Be Done</label>
                         <textarea placeholder="What 'job' are they hiring our product to do? (e.g., 'Help me look polished in 5 minutes')"></textarea>
                     </div>
+                    <div class="brief-grid">
+                        <div class="brief-field">
+                            <label>Emotional Triggers</label>
+                            <textarea placeholder="What emotions drive their purchase? (confidence, fear of aging, self-care, etc.)"></textarea>
+                        </div>
+                        <div class="brief-field">
+                            <label>Objections & Barriers</label>
+                            <textarea placeholder="What stops them from buying? Price? Skepticism? Past experiences?"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Buying Behavior & Context</h3>
+                    <div class="brief-grid">
+                        <div class="brief-field">
+                            <label>Where They Discover Products</label>
+                            <textarea placeholder="Social media, friends, dermatologist, influencers, search?"></textarea>
+                        </div>
+                        <div class="brief-field">
+                            <label>Buying Triggers / Moments</label>
+                            <textarea placeholder="What makes them buy NOW? Events, seasons, life changes?"></textarea>
+                        </div>
+                    </div>
+                    <div class="brief-field">
+                        <label>Competitive Alternatives</label>
+                        <textarea placeholder="What are they currently using? What brands are they considering?"></textarea>
+                    </div>
                 </div>
 
                 <div class="brief-section">
@@ -1983,10 +2264,42 @@
                 </div>
 
                 <div class="brief-section">
+                    <h3>Language, Tone & Messaging</h3>
+                    <div class="brief-grid">
+                        <div class="brief-field">
+                            <label>Language / Vocabulary They Use</label>
+                            <textarea placeholder="What words do they use? What insider language? Formal vs casual?"></textarea>
+                        </div>
+                        <div class="brief-field">
+                            <label>Tone That Resonates</label>
+                            <textarea placeholder="Aspirational? Educational? Relatable? Luxurious? Down-to-earth?"></textarea>
+                        </div>
+                    </div>
+                    <div class="brief-field">
+                        <label>Hooks That Would Stop Their Scroll</label>
+                        <textarea placeholder="What opening lines, questions, or statements would grab their attention?"></textarea>
+                    </div>
+                </div>
+
+                <div class="brief-section">
                     <h3>Sample Customer Profiles</h3>
                     <div class="brief-field">
                         <label>2-3 Real Customer Examples</label>
                         <textarea placeholder="Describe 2-3 actual customers who fit this persona. What do we know about them?"></textarea>
+                    </div>
+                </div>
+
+                <div class="brief-section">
+                    <h3>Success Metrics & Hypothesis</h3>
+                    <div class="brief-grid">
+                        <div class="brief-field">
+                            <label>How We'll Know This Persona Works</label>
+                            <textarea placeholder="What metrics will indicate success? ROAS threshold? Spend level? NVR?"></textarea>
+                        </div>
+                        <div class="brief-field">
+                            <label>Initial Hypothesis</label>
+                            <textarea placeholder="Why do we believe this persona will convert? What's our bet?"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2008,20 +2321,6 @@
             <button class="control-btn active" id="btn-vertical" onclick="setLayout('vertical')">↕</button>
             <button class="control-btn" id="btn-horizontal" onclick="setLayout('horizontal')">↔</button>
         </div>
-        <div class="control-group channel-filters">
-            <label>Channels</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-                <label class="channel-toggle" onclick="toggleChannel('landing-pages', this)">
-                    <span style="color: #6366f1;">●</span> LPs
-                </label>
-                <label class="channel-toggle" onclick="toggleChannel('popups', this)">
-                    <span style="color: #ec4899;">●</span> Popups
-                </label>
-                <label class="channel-toggle" onclick="toggleChannel('retention', this)">
-                    <span style="color: #14b8a6;">●</span> Retention
-                </label>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -2039,13 +2338,23 @@
             controls.style.display = page === 'flowchart' ? 'flex' : 'none';
         }
 
-        // Channel Toggle
-        function toggleChannel(channel, element) {
-            element.classList.toggle('active');
-            const isActive = element.classList.contains('active');
-            document.querySelectorAll(`[data-channel="${channel}"]`).forEach(layer => {
-                layer.classList.toggle('visible', isActive);
-            });
+        // Cycle Angle Status (untested -> testing -> tested -> winner -> untested)
+        function cycleAngleStatus(element) {
+            const statuses = ['', 'testing', 'tested', 'winner'];
+            let currentIndex = 0;
+
+            if (element.classList.contains('winner')) currentIndex = 3;
+            else if (element.classList.contains('tested')) currentIndex = 2;
+            else if (element.classList.contains('testing')) currentIndex = 1;
+
+            // Remove current status
+            element.classList.remove('testing', 'tested', 'winner');
+
+            // Add next status
+            const nextIndex = (currentIndex + 1) % 4;
+            if (statuses[nextIndex]) {
+                element.classList.add(statuses[nextIndex]);
+            }
         }
 
         // Zoom and Layout Controls
