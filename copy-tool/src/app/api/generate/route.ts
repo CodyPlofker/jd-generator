@@ -47,6 +47,14 @@ function readTrainingFile(relativePath: string): string {
 
 function getPersonaContent(personaId: string): string {
   const personaMap: Record<string, string> = {
+    // Full IDs from personas.json
+    "dedicated-educator": "personas/the-dedicated-educator.md",
+    "ageless-matriarch": "personas/the-ageless-matriarch.md",
+    "high-powered-executive": "personas/the-high-powered-executive.md",
+    "wellness-healthcare-practitioner": "personas/the-wellness-healthcare-practitioner.md",
+    "busy-suburban-supermom": "personas/the-busy-suburban-supermom.md",
+    "creative-entrepreneur": "personas/the-creative-entrepreneur.md",
+    // Legacy short IDs for backwards compatibility
     educator: "personas/the-dedicated-educator.md",
     matriarch: "personas/the-ageless-matriarch.md",
     executive: "personas/the-high-powered-executive.md",
