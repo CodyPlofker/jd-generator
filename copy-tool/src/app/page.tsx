@@ -390,6 +390,12 @@ export default function Home() {
             >
               Ad Formats
             </a>
+            <a
+              href="/personas"
+              className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors"
+            >
+              Personas
+            </a>
             <button
               onClick={toggleTheme}
               className="theme-toggle"
