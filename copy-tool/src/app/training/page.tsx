@@ -55,6 +55,21 @@ interface Product {
   keyBenefits: string[];
   shades: string;
   bestFor: string;
+  // New fields from creative brief
+  launchDate?: string;
+  launchTier?: string;
+  tagline?: string;
+  whyWeLoveIt?: string;
+  howItsDifferent?: string;
+  howToUse?: string;
+  whoItsFor?: string;
+  keyIngredients?: string;
+  finish?: string;
+  formula?: string;
+  application?: string;
+  claims?: string[];
+  weight?: string;
+  availability?: string[];
 }
 
 const categories = [
@@ -78,6 +93,20 @@ const emptyProduct: Product = {
   keyBenefits: [""],
   shades: "",
   bestFor: "",
+  launchDate: "",
+  launchTier: "",
+  tagline: "",
+  whyWeLoveIt: "",
+  howItsDifferent: "",
+  howToUse: "",
+  whoItsFor: "",
+  keyIngredients: "",
+  finish: "",
+  formula: "",
+  application: "",
+  claims: [""],
+  weight: "",
+  availability: [""],
 };
 
 export default function TrainingPage() {
@@ -176,9 +205,10 @@ export default function TrainingPage() {
       });
 
       if (response.ok) {
+        const data = await response.json();
         await fetchProducts();
         setIsAddingProduct(false);
-        setSelectedProduct(editingProduct);
+        setSelectedProduct(data.product); // Use the product from API response which has the ID
         setEditingProduct(emptyProduct);
       }
     } catch (error) {
@@ -223,6 +253,42 @@ export default function TrainingPage() {
   const removeBenefit = (index: number) => {
     const newBenefits = editingProduct.keyBenefits.filter((_, i) => i !== index);
     setEditingProduct({ ...editingProduct, keyBenefits: newBenefits });
+  };
+
+  const addClaim = () => {
+    setEditingProduct({
+      ...editingProduct,
+      claims: [...(editingProduct.claims || []), ""],
+    });
+  };
+
+  const updateClaim = (index: number, value: string) => {
+    const newClaims = [...(editingProduct.claims || [])];
+    newClaims[index] = value;
+    setEditingProduct({ ...editingProduct, claims: newClaims });
+  };
+
+  const removeClaim = (index: number) => {
+    const newClaims = (editingProduct.claims || []).filter((_, i) => i !== index);
+    setEditingProduct({ ...editingProduct, claims: newClaims });
+  };
+
+  const addAvailability = () => {
+    setEditingProduct({
+      ...editingProduct,
+      availability: [...(editingProduct.availability || []), ""],
+    });
+  };
+
+  const updateAvailability = (index: number, value: string) => {
+    const newAvail = [...(editingProduct.availability || [])];
+    newAvail[index] = value;
+    setEditingProduct({ ...editingProduct, availability: newAvail });
+  };
+
+  const removeAvailability = (index: number) => {
+    const newAvail = (editingProduct.availability || []).filter((_, i) => i !== index);
+    setEditingProduct({ ...editingProduct, availability: newAvail });
   };
 
   return (
@@ -452,137 +518,451 @@ export default function TrainingPage() {
               {selectedCategory === "products" ? (
                 isAddingProduct ? (
                   <div className="p-6 space-y-4 overflow-auto max-h-[600px]">
-                    <div>
-                      <label className="block text-xs text-[var(--muted)] mb-1">Product Name *</label>
-                      <input
-                        type="text"
-                        value={editingProduct.name}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                        className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
-                        placeholder="e.g., The New Lipstick"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs text-[var(--muted)] mb-1">Category</label>
-                        <select
-                          value={editingProduct.category}
-                          onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
-                          className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
-                        >
-                          <option value="Face">Face</option>
-                          <option value="Eyes">Eyes</option>
-                          <option value="Lips">Lips</option>
-                          <option value="Cheeks">Cheeks</option>
-                          <option value="Skincare">Skincare</option>
-                          <option value="Body">Body</option>
-                          <option value="Kits">Kits</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs text-[var(--muted)] mb-1">Price</label>
-                        <input
-                          type="text"
-                          value={editingProduct.price}
-                          onChange={(e) => setEditingProduct({ ...editingProduct, price: e.target.value })}
-                          className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
-                          placeholder="e.g., $38"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs text-[var(--muted)] mb-1">Description</label>
-                      <textarea
-                        value={editingProduct.description}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                        className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)] resize-none"
-                        rows={3}
-                        placeholder="Brief product description..."
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-[var(--muted)] mb-1">Key Benefits</label>
-                      {editingProduct.keyBenefits.map((benefit, index) => (
-                        <div key={index} className="flex gap-2 mb-2">
+                    {/* Section: Basic Info */}
+                    <div className="border-b border-[var(--card-border)] pb-4 mb-4">
+                      <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-3">Basic Info</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Product Name *</label>
                           <input
                             type="text"
-                            value={benefit}
-                            onChange={(e) => updateBenefit(index, e.target.value)}
-                            className="flex-1 p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
-                            placeholder="e.g., Buildable coverage"
+                            value={editingProduct.name}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                            placeholder="e.g., The Eyeshadow Stick"
                           />
-                          {editingProduct.keyBenefits.length > 1 && (
-                            <button
-                              onClick={() => removeBenefit(index)}
-                              className="p-3 text-[var(--muted-dim)] hover:text-red-400 transition-colors"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          )}
                         </div>
-                      ))}
-                      <button
-                        onClick={addBenefit}
-                        className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors flex items-center gap-1 mt-1"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Benefit
-                      </button>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Category</label>
+                            <select
+                              value={editingProduct.category}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                              className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                            >
+                              <option value="Face">Face</option>
+                              <option value="Eyes">Eyes</option>
+                              <option value="Lips">Lips</option>
+                              <option value="Cheeks">Cheeks</option>
+                              <option value="Skincare">Skincare</option>
+                              <option value="Body">Body</option>
+                              <option value="Kits">Kits</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Launch Tier</label>
+                            <select
+                              value={editingProduct.launchTier || ""}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, launchTier: e.target.value })}
+                              className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                            >
+                              <option value="">Select...</option>
+                              <option value="1">Tier 1</option>
+                              <option value="2">Tier 2</option>
+                              <option value="3">Tier 3</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Launch Date</label>
+                            <input
+                              type="text"
+                              value={editingProduct.launchDate || ""}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, launchDate: e.target.value })}
+                              className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                              placeholder="e.g., February 10, 2026"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Price (USD)</label>
+                            <input
+                              type="text"
+                              value={editingProduct.price}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, price: e.target.value })}
+                              className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                              placeholder="e.g., $32"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Weight / Size</label>
+                            <input
+                              type="text"
+                              value={editingProduct.weight || ""}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, weight: e.target.value })}
+                              className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                              placeholder="e.g., 1.5g / 0.05oz"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Tagline</label>
+                          <input
+                            type="text"
+                            value={editingProduct.tagline || ""}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, tagline: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                            placeholder="e.g., Not-So-Basic Basics"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-xs text-[var(--muted)] mb-1">Shades / Variants</label>
-                      <input
-                        type="text"
-                        value={editingProduct.shades}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, shades: e.target.value })}
-                        className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
-                        placeholder="e.g., 12 shades including Rose, Coral, Nude"
-                      />
+
+                    {/* Section: Messaging & Copy */}
+                    <div className="border-b border-[var(--card-border)] pb-4 mb-4">
+                      <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-3">Messaging & Copy</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">What It Is (Product Description)</label>
+                          <textarea
+                            value={editingProduct.description}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)] resize-none"
+                            rows={3}
+                            placeholder="The Eyeshadow Stick is a creamy, highly pigmented shadow that transforms without trying..."
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Why We Love It</label>
+                          <textarea
+                            value={editingProduct.whyWeLoveIt || ""}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, whyWeLoveIt: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)] resize-none"
+                            rows={2}
+                            placeholder="One stick, unlimited looks..."
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">How It&apos;s Different</label>
+                          <textarea
+                            value={editingProduct.howItsDifferent || ""}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, howItsDifferent: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)] resize-none"
+                            rows={2}
+                            placeholder="The secret is its formula..."
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Who It&apos;s For</label>
+                          <textarea
+                            value={editingProduct.whoItsFor || ""}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, whoItsFor: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)] resize-none"
+                            rows={2}
+                            placeholder="Even if you're someone who doesn't typically wear eyeshadow..."
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Best For (short)</label>
+                          <input
+                            type="text"
+                            value={editingProduct.bestFor}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, bestFor: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                            placeholder="e.g., Quick, effortless eye color"
+                          />
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Section: Product Details */}
+                    <div className="border-b border-[var(--card-border)] pb-4 mb-4">
+                      <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-3">Product Details</h3>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Finish</label>
+                            <input
+                              type="text"
+                              value={editingProduct.finish || ""}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, finish: e.target.value })}
+                              className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                              placeholder="e.g., Creamy, smooth, long-lasting"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-[var(--muted)] mb-1">Formula</label>
+                            <input
+                              type="text"
+                              value={editingProduct.formula || ""}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, formula: e.target.value })}
+                              className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                              placeholder="e.g., Creamy matte stick formula"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Key Ingredients</label>
+                          <input
+                            type="text"
+                            value={editingProduct.keyIngredients || ""}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, keyIngredients: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                            placeholder="e.g., Vitamin E, Soybean Oil"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">How To Use / Application</label>
+                          <textarea
+                            value={editingProduct.howToUse || ""}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, howToUse: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)] resize-none"
+                            rows={2}
+                            placeholder="Apply directly to eyelids and blend using your fingertip..."
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Shades / Variants</label>
+                          <input
+                            type="text"
+                            value={editingProduct.shades}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, shades: e.target.value })}
+                            className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                            placeholder="e.g., Cream, Sand, Taupe, Toffee, Smokey Grey, Brown"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section: Claims & Benefits */}
+                    <div className="border-b border-[var(--card-border)] pb-4 mb-4">
+                      <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-3">Claims & Benefits</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Key Benefits</label>
+                          {editingProduct.keyBenefits.map((benefit, index) => (
+                            <div key={index} className="flex gap-2 mb-2">
+                              <input
+                                type="text"
+                                value={benefit}
+                                onChange={(e) => updateBenefit(index, e.target.value)}
+                                className="flex-1 p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                                placeholder="e.g., Buildable coverage"
+                              />
+                              {editingProduct.keyBenefits.length > 1 && (
+                                <button
+                                  onClick={() => removeBenefit(index)}
+                                  className="p-3 text-[var(--muted-dim)] hover:text-red-400 transition-colors"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                          <button
+                            onClick={addBenefit}
+                            className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors flex items-center gap-1 mt-1"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Benefit
+                          </button>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-[var(--muted)] mb-1">Product Claims</label>
+                          {(editingProduct.claims || [""]).map((claim, index) => (
+                            <div key={index} className="flex gap-2 mb-2">
+                              <input
+                                type="text"
+                                value={claim}
+                                onChange={(e) => updateClaim(index, e.target.value)}
+                                className="flex-1 p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                                placeholder="e.g., Dermatologist tested"
+                              />
+                              {(editingProduct.claims || []).length > 1 && (
+                                <button
+                                  onClick={() => removeClaim(index)}
+                                  className="p-3 text-[var(--muted-dim)] hover:text-red-400 transition-colors"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                          <button
+                            onClick={addClaim}
+                            className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors flex items-center gap-1 mt-1"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Claim
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section: Availability */}
                     <div>
-                      <label className="block text-xs text-[var(--muted)] mb-1">Best For</label>
-                      <input
-                        type="text"
-                        value={editingProduct.bestFor}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, bestFor: e.target.value })}
-                        className="w-full p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
-                        placeholder="e.g., Everyday natural coverage"
-                      />
+                      <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-3">Availability</h3>
+                      <div>
+                        <label className="block text-xs text-[var(--muted)] mb-1">Available At</label>
+                        {(editingProduct.availability || [""]).map((loc, index) => (
+                          <div key={index} className="flex gap-2 mb-2">
+                            <input
+                              type="text"
+                              value={loc}
+                              onChange={(e) => updateAvailability(index, e.target.value)}
+                              className="flex-1 p-3 bg-[var(--card)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--muted-dim)]"
+                              placeholder="e.g., JRB.com, All JRB Stores"
+                            />
+                            {(editingProduct.availability || []).length > 1 && (
+                              <button
+                                onClick={() => removeAvailability(index)}
+                                className="p-3 text-[var(--muted-dim)] hover:text-red-400 transition-colors"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                        <button
+                          onClick={addAvailability}
+                          className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors flex items-center gap-1 mt-1"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                          </svg>
+                          Add Location
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ) : selectedProduct ? (
                   <div className="p-6 overflow-auto max-h-[600px]">
                     <h2 className="text-xl font-semibold text-[var(--foreground)] mb-1">{selectedProduct.name}</h2>
-                    <p className="text-sm text-[var(--muted)] mb-6">{selectedProduct.category} · {selectedProduct.price}</p>
+                    <p className="text-sm text-[var(--muted)] mb-1">{selectedProduct.category} · {selectedProduct.price}</p>
+                    {selectedProduct.tagline && (
+                      <p className="text-sm italic text-[var(--muted-dim)] mb-4">&ldquo;{selectedProduct.tagline}&rdquo;</p>
+                    )}
+                    {(selectedProduct.launchTier || selectedProduct.launchDate) && (
+                      <p className="text-xs text-[var(--muted-dim)] mb-6">
+                        {selectedProduct.launchTier && `Tier ${selectedProduct.launchTier}`}
+                        {selectedProduct.launchTier && selectedProduct.launchDate && " · "}
+                        {selectedProduct.launchDate && `Launch: ${selectedProduct.launchDate}`}
+                      </p>
+                    )}
 
                     <div className="space-y-4">
-                      <div>
-                        <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Description</h3>
-                        <p className="text-sm text-[var(--foreground)]">{selectedProduct.description}</p>
+                      {selectedProduct.description && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">What It Is</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.description}</p>
+                        </div>
+                      )}
+
+                      {selectedProduct.whyWeLoveIt && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Why We Love It</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.whyWeLoveIt}</p>
+                        </div>
+                      )}
+
+                      {selectedProduct.howItsDifferent && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">How It&apos;s Different</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.howItsDifferent}</p>
+                        </div>
+                      )}
+
+                      {selectedProduct.whoItsFor && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Who It&apos;s For</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.whoItsFor}</p>
+                        </div>
+                      )}
+
+                      {selectedProduct.keyBenefits && selectedProduct.keyBenefits.filter(b => b).length > 0 && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Key Benefits</h3>
+                          <ul className="list-disc list-inside space-y-1">
+                            {selectedProduct.keyBenefits.filter(b => b).map((benefit, index) => (
+                              <li key={index} className="text-sm text-[var(--foreground)]">{benefit}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {selectedProduct.claims && selectedProduct.claims.filter(c => c).length > 0 && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Product Claims</h3>
+                          <ul className="list-disc list-inside space-y-1">
+                            {selectedProduct.claims.filter(c => c).map((claim, index) => (
+                              <li key={index} className="text-sm text-[var(--foreground)]">{claim}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      <div className="grid grid-cols-2 gap-4">
+                        {selectedProduct.finish && (
+                          <div>
+                            <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Finish</h3>
+                            <p className="text-sm text-[var(--foreground)]">{selectedProduct.finish}</p>
+                          </div>
+                        )}
+                        {selectedProduct.formula && (
+                          <div>
+                            <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Formula</h3>
+                            <p className="text-sm text-[var(--foreground)]">{selectedProduct.formula}</p>
+                          </div>
+                        )}
                       </div>
 
-                      <div>
-                        <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Key Benefits</h3>
-                        <ul className="list-disc list-inside space-y-1">
-                          {selectedProduct.keyBenefits.map((benefit, index) => (
-                            <li key={index} className="text-sm text-[var(--foreground)]">{benefit}</li>
-                          ))}
-                        </ul>
+                      {selectedProduct.keyIngredients && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Key Ingredients</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.keyIngredients}</p>
+                        </div>
+                      )}
+
+                      {selectedProduct.howToUse && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">How To Use</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.howToUse}</p>
+                        </div>
+                      )}
+
+                      {selectedProduct.shades && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Shades</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.shades}</p>
+                        </div>
+                      )}
+
+                      {selectedProduct.bestFor && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Best For</h3>
+                          <p className="text-sm text-[var(--foreground)]">{selectedProduct.bestFor}</p>
+                        </div>
+                      )}
+
+                      <div className="grid grid-cols-2 gap-4">
+                        {selectedProduct.weight && (
+                          <div>
+                            <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Weight / Size</h3>
+                            <p className="text-sm text-[var(--foreground)]">{selectedProduct.weight}</p>
+                          </div>
+                        )}
                       </div>
 
-                      <div>
-                        <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Shades</h3>
-                        <p className="text-sm text-[var(--foreground)]">{selectedProduct.shades}</p>
-                      </div>
-
-                      <div>
-                        <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Best For</h3>
-                        <p className="text-sm text-[var(--foreground)]">{selectedProduct.bestFor}</p>
-                      </div>
+                      {selectedProduct.availability && selectedProduct.availability.filter(a => a).length > 0 && (
+                        <div>
+                          <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider mb-2">Available At</h3>
+                          <ul className="list-disc list-inside space-y-1">
+                            {selectedProduct.availability.filter(a => a).map((loc, index) => (
+                              <li key={index} className="text-sm text-[var(--foreground)]">{loc}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : (

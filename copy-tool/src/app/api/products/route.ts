@@ -11,6 +11,21 @@ interface Product {
   keyBenefits: string[];
   shades: string;
   bestFor: string;
+  // New fields from creative brief
+  launchDate?: string;
+  launchTier?: string;
+  tagline?: string;
+  whyWeLoveIt?: string;
+  howItsDifferent?: string;
+  howToUse?: string;
+  whoItsFor?: string;
+  keyIngredients?: string;
+  finish?: string;
+  formula?: string;
+  application?: string;
+  claims?: string[];
+  weight?: string;
+  availability?: string[];
 }
 
 const PRODUCTS_PATH = path.join(process.cwd(), "training-data/products/products.json");
