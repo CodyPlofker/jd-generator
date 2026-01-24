@@ -3,6 +3,20 @@
 ## Overview
 Listicle landing pages use a numbered "X Reasons Why" format to present benefits in a scannable, persuasive way. This format works exceptionally well for product launches, kits, and converting problem-aware audiences.
 
+**Key Principle: Scannability over completeness.** People skim, not read. Headlines do the heavy lifting.
+
+---
+
+## Copy Length Requirements
+
+| Element | Target | Maximum |
+|---------|--------|---------|
+| **Hero headline** | 5-7 words | 12 words |
+| **Item headlines** | 4-6 words | 8 words |
+| **Supporting copy** | 35-50 words | 60 words |
+
+**Why these limits matter:** Competitor analysis shows high-converting listicle pages (like Grüns) use 3-4 word item headlines. Shorter = more scannable = higher engagement.
+
 ---
 
 ## Headline Variations
@@ -11,58 +25,45 @@ Listicle landing pages use a numbered "X Reasons Why" format to present benefits
 
 ### Style 1: Desire/Benefit-Driven
 Focus on what the customer GETS or BECOMES. Clear, aspirational, direct.
-- "[Number] Reasons Why [Product] Is Your Secret to [Desired Outcome]"
-- "[Number] Ways [Product] Gives You [Benefit] Without [Sacrifice]"
 
-**Examples:**
-- "5 Reasons Why This Pretty Pink Kit Is Your Secret to Effortless Elegance"
-- "6 Ways The Dusty Rose Kit Gives You That Fresh, Put-Together Look in Minutes"
-- "5 Reasons Why This Kit Is Your Shortcut to Looking Polished"
+**Examples (5-7 words):**
+- "5 Reasons This Kit Changes Everything"
+- "Why This Kit Makes Mornings Easy"
+- "5 Ways to Effortless Elegance"
 
 ### Style 2: Curiosity/FOMO (Cosmo-style)
-Create intrigue with an open loop. Think magazine cover energy — make them NEED to know. Leave something unanswered.
-- "The [Number] Things About [Product] That [Intriguing Outcome]"
-- "[Number] Reasons Why [Product] Has Everyone [Talking/Obsessed/Asking]"
-- "What [Number] Women Know About [Product] That You Don't (Yet)"
+Create intrigue with an open loop. Think magazine cover energy — make them NEED to know.
 
-**Examples:**
-- "5 Reasons Why The Dusty Rose Kit Has Everyone Asking 'What Are You Wearing?'"
-- "The 5 Things About This Kit That Have Women Buying Two"
-- "What 5,000 Women Know About Effortless Makeup (Hint: It's Pink)"
-- "5 Reasons Why This Kit Is the Best-Kept Secret in Clean Beauty"
+**Examples (5-7 words):**
+- "Why Everyone's Asking About This Kit"
+- "The Kit Women Keep Buying Twice"
+- "5 Things About Effortless Makeup"
 
 ### Style 3: Identity-Based
-Speak to who they are or want to be. Add sizzle with specific, evocative language.
-- "[Number] Reasons Why [Product] Is Made for Women Who [Identity/Value]"
-- "For Women Who [Evocative Description]: [Number] Reasons Why [Product]"
+Speak to who they are or want to be.
 
-**Examples:**
-- "5 Reasons Why This Kit Is Made for Women Who Make It Look Easy"
-- "For Women Who Want Compliments, Not Questions: 5 Reasons to Try This Kit"
-- "5 Reasons Why The Dusty Rose Kit Is for Women Who Know What They Like"
-- "For the Woman Who Has 5 Minutes and High Standards: This Kit"
+**Examples (5-7 words):**
+- "For Women Who Make It Easy"
+- "5 Reasons Busy Women Love This"
+- "The Kit for High Standards"
 
 ### Style 4: Contrarian/Myth-Busting
 Challenge common beliefs or offer a surprising take. Bold, confident.
-- "Forget [Common Approach]: [Number] Reasons Why [Better Way]"
-- "[Number] Reasons Why [Common Belief] Is Wrong"
 
-**Examples:**
-- "Forget Bold Trends: 5 Reasons Why Soft Pink Is the Ultimate Statement"
-- "5 Reasons Why More Products Won't Give You Better Makeup (And What Will)"
-- "Forget the 10-Step Routine: 5 Reasons Why Three Products Is All You Need"
+**Examples (5-7 words):**
+- "Forget Trends: Try Soft Pink"
+- "Why Less Makeup Looks Better"
+- "3 Products Beat 10 Every Time"
 
 ### Style 5: Problem-Aware (Softer approach)
-Acknowledge the frustration gently, then pivot to solution. Avoid overly negative or aggressive language — stay on-brand.
-- "If [Relatable Situation], Here's [Number] Reasons Why [Product] Helps"
-- "[Number] Reasons Why [Product] Makes [Frustrating Thing] Easier"
+Acknowledge the frustration gently, then pivot to solution. Avoid overly negative language.
 
-**Examples:**
-- "If Your Makeup Never Quite Comes Together, Here's 5 Reasons Why This Kit Helps"
-- "5 Reasons Why The Dusty Rose Kit Makes 'Looking Put-Together' Actually Easy"
-- "Running Late? 5 Reasons Why This 3-Product Kit Has You Covered"
+**Examples (5-7 words):**
+- "Running Late? This Kit Helps"
+- "Finally, Makeup That Works Together"
+- "5 Reasons Mornings Got Easier"
 
-**NOTE:** Avoid "Tired of X?" phrasing — it can feel too salesy/aggressive for Jones Road's voice. Softer acknowledgment works better.
+**NOTE:** Avoid "Tired of X?" phrasing — it can feel too salesy/aggressive for Jones Road's voice.
 
 ---
 
@@ -72,7 +73,7 @@ Acknowledge the frustration gently, then pivot to solution. Avoid overly negativ
 ```
 [Hero Image - Product or Lifestyle]
 
-[HEADLINE: Choose strongest from variations above]
+[HEADLINE: 5-7 words, max 12]
 
 [SHOP NOW Button]
 ```
@@ -94,12 +95,11 @@ Acknowledge the frustration gently, then pivot to solution. Avoid overly negativ
 
 **Each item follows this format:**
 ```
-[Number].
+[CATEGORY LABEL - Optional]                    [Number]
 
-[Benefit Headline]
+[Benefit Headline - 4-6 words]
 
-[Supporting copy - 2-4 sentences that expand on the benefit,
-connect to the customer's needs, and naturally mention the product]
+[Supporting copy - 35-50 words, 2-3 short sentences]
 
 [SHOP NOW]
 
@@ -107,9 +107,10 @@ connect to the customer's needs, and naturally mention the product]
 ```
 
 **Item Structure Rules:**
-- Number displayed prominently (1. 2. 3. etc.)
-- Benefit headline: 5-10 words, action-oriented, scannable
-- Supporting copy: 2-4 sentences, conversational, substantive
+- Number displayed prominently (01, 02, 03 or 1. 2. 3.)
+- Optional category label above headline (e.g., "CONVENIENCE", "QUALITY", "VALUE")
+- Benefit headline: **4-6 words**, action-oriented, scannable
+- Supporting copy: **35-50 words**, conversational, tight
 - "SHOP NOW" link after each item (keeps momentum)
 - Image alternates sides (left/right) for visual interest
 
@@ -124,55 +125,77 @@ connect to the customer's needs, and naturally mention the product]
 
 ---
 
+## Category Labels [OPTIONAL]
+
+Category labels add a second level of scannability. They appear above the item number in small caps.
+
+**When to use:** When you want readers to quickly identify benefit areas at a glance.
+
+**Example categories:**
+- CONVENIENCE / TIME
+- QUALITY / FORMULA
+- VALUE / SAVINGS
+- RESULTS / PROOF
+- EXPERTISE / TRUST
+
+**Format:**
+```
+CONVENIENCE                                    01
+
+Ready in Half the Time
+
+Three products. One look. No guesswork...
+```
+
+---
+
 ## Item Ordering Strategy
 
 The ORDER of your list items matters for persuasion. **Lead with benefits (what's in it for them), build with proof, close with value.**
 
-| Position | Purpose | What to Include | Example |
-|----------|---------|-----------------|---------|
-| **Items 1-2** | Benefits & Desires | The biggest "what's in it for me" - time savings, ease, confidence, looking good | "Get Out the Door in Half the Time" |
-| **Items 3-4** | Features & Mechanism | How/why it works, what makes it different, product details | "One Coordinated Color Story Across Face, Eyes, and Lips" |
-| **Item 5** | Social Proof & Credibility | Loved by customers, created by Bobbi, trusted by many | "Created by Bobbi Brown Herself" |
-| **Item 6** | Objection Handling | Address hesitations - "works for all skin tones," "easy to apply," "not just for experts" | "Designed for Real Life, Not Just Photoshoots" |
-| **Final Item** | Value & Risk Reversal | Savings, guarantee, limited availability, easy returns | "33% Off the Full Price" |
+| Position | Purpose | What to Include | Example Headline |
+|----------|---------|-----------------|------------------|
+| **Items 1-2** | Benefits & Desires | Time savings, ease, confidence | "Ready in Half the Time" |
+| **Items 3-4** | Features & Mechanism | How/why it works, what's different | "Shades That Work Together" |
+| **Item 5** | Social Proof & Credibility | Created by Bobbi, loved by customers | "Created by Bobbi Brown" |
+| **Item 6** | Objection Handling | Works for everyone, easy to use | "Works for All Skin Tones" |
+| **Final Item** | Value & Risk Reversal | Savings, guarantee, returns | "Save 33% on Full Price" |
 
 **Key Principle:** Start with THEM (benefits), move to US (how it works), close with PROOF and VALUE.
 
 ---
 
-## Benefit Headline Formulas
-
-Use these patterns for your numbered items:
+## Benefit Headline Formulas (4-6 words)
 
 **Benefits/Desires (Items 1-2):**
-- "Get [Desired Outcome] in [Timeframe]"
-- "[Benefit] Without [Common Sacrifice]"
-- "Finally, [Something They've Been Wanting]"
-- "Look [Adjective] Without [Effort/Time/Skill]"
+- "Ready in Half the Time"
+- "Effortless, Natural Glow"
+- "Compliments Come Naturally"
+- "Look Polished, Feel Easy"
 
 **Features/Mechanism (Items 3-4):**
-- "One [Product Type] That [Does Multiple Things]"
-- "The [Ingredient/Technology] That Makes It Work"
-- "[Number] Products, One Cohesive [Look/Routine]"
-- "Why [Feature] Makes All the Difference"
+- "Shades That Work Together"
+- "One Kit, Complete Look"
+- "NEW: Exclusive Gel Tint"
+- "Clean, Skin-Loving Formula"
 
 **Social Proof (Item 5):**
-- "Loved by [Number]+ Customers"
-- "Created by [Expert/Founder Name]"
-- "The [Product] Everyone's Talking About"
-- "Why [Target Audience] Keep Coming Back"
+- "Created by Bobbi Brown"
+- "Loved by 50K+ Women"
+- "The Kit Everyone Wants"
+- "Trusted by Real Women"
 
 **Objection Handling (Item 6):**
-- "Works for [All Skin Types/Tones/Ages]"
-- "No [Skill/Experience/Tools] Required"
-- "Even If You [Common Hesitation]"
-- "Designed for [Real Situation], Not [Intimidating Ideal]"
+- "Works for Every Skin Tone"
+- "No Brushes Required"
+- "Easy Enough for Anyone"
+- "Designed for Real Life"
 
 **Value/Risk Reversal (Final):**
-- "[Percentage]% Off the Full Price"
-- "Get [Value Amount] Worth for [Lower Price]"
-- "Everything You Need in One Kit"
+- "Save 33% Today"
+- "Everything You Need, Less"
 - "Try It Risk-Free"
+- "Free Returns, Always"
 
 ---
 
@@ -195,9 +218,10 @@ Use these patterns for your numbered items:
 - Anti-aging, flawless, perfect (not JR voice)
 - Limited time only, act now, hurry (too pushy)
 
-### Copy Length
-- Headlines: 5-10 words
-- Supporting copy: 2-4 sentences (40-80 words per item)
+### Copy Length (Updated)
+- **Hero headlines:** 5-7 words (max 12)
+- **Item headlines:** 4-6 words (max 8)
+- **Supporting copy:** 35-50 words per item (max 60)
 - Keep it scannable - busy readers should get value from headlines alone
 
 ---
@@ -207,17 +231,17 @@ Use these patterns for your numbered items:
 ```
 ### HEADLINE VARIATIONS
 
-1. [Desire/Benefit]: "5 Reasons Why This Pretty Pink Kit Is Your Secret to Effortless Elegance"
-2. [Curiosity/FOMO]: "5 Reasons Why The Dusty Rose Kit Has Everyone Asking 'What Are You Wearing?'"
-3. [Identity]: "5 Reasons Why This Kit Is Made for Women Who Make It Look Easy"
-4. [Contrarian]: "Forget Bold Trends: 5 Reasons Why Soft Pink Is the Ultimate Statement"
-5. [Problem-Aware]: "Running Late? 5 Reasons Why This 3-Product Kit Has You Covered"
+1. [Desire/Benefit]: "5 Reasons This Kit Changes Everything"
+2. [Curiosity/FOMO]: "Why Everyone Wants This Kit"
+3. [Identity]: "For Women Who Make It Easy"
+4. [Contrarian]: "Forget Trends: Try Soft Pink"
+5. [Problem-Aware]: "Finally, Makeup That Works"
 
 ---
 
 ### HERO SECTION
 
-# 5 Reasons Why This Kit Is Your Secret to Effortless Morning Makeup
+# 5 Reasons This Kit Changes Everything
 
 [SHOP NOW]
 
@@ -225,51 +249,51 @@ Use these patterns for your numbered items:
 
 ### LIST ITEMS
 
-1.
+CONVENIENCE                                    01
 
-Get Out the Door in Half the Time
+Ready in Half the Time
 
-Three products. One coordinated look. No guesswork. The Dusty Rose Kit gives you everything you need to look polished and put-together — without the morning scramble or decision fatigue.
-
-[SHOP NOW]
-
----
-
-2.
-
-Look Fresh and Glowing Without the Effort
-
-The sheer, buildable formulas do the work for you. Just swipe, blend with your fingers, and go. No brushes required, no complicated techniques — just that natural, healthy glow that looks like you, only better.
+Three products. One look. No guesswork. The Dusty Rose Kit gives you polished and put-together — no morning scramble.
 
 [SHOP NOW]
 
 ---
 
-3.
+RESULTS                                        02
 
-One Color Story That Works Together
+Compliments Come Naturally
 
-Every shade in this kit was chosen to complement the others. The rosy pink tint on your cheeks, eyes, and lips creates a cohesive, pulled-together look without having to think about what matches what.
-
-[SHOP NOW]
-
----
-
-4.
-
-Introducing the NEW Gel Tint — Exclusive to This Kit
-
-Meet our first-ever Gel Tint: a sheer, lightweight formula that melts into skin for natural luminosity. This exclusive Dusty Rose shade isn't available anywhere else — and it's the hero of this kit.
+Soft, flattering tones that make people notice. Not obvious makeup — just that fresh glow that has friends asking what you did.
 
 [SHOP NOW]
 
 ---
 
-5.
+EXCLUSIVE                                      03
 
-Created by Bobbi Brown for Real Women
+NEW: The Gel Tint
 
-Bobbi designed this kit for women who want to look good without spending forever in front of a mirror. It's not about hiding anything — it's about enhancing what you already have.
+Meet our first Gel Tint: sheer, lightweight, melts into skin. This Dusty Rose shade is only available here.
+
+[SHOP NOW]
+
+---
+
+QUALITY                                        04
+
+Shades That Work Together
+
+Every product chosen to complement the others. Rosy pink across cheeks, eyes, and lips — cohesive without thinking.
+
+[SHOP NOW]
+
+---
+
+TRUST                                          05
+
+Created by Bobbi Brown
+
+Designed for women who want to look good without the mirror marathon. Enhance what you have, don't hide it.
 
 [SHOP NOW]
 
@@ -277,13 +301,11 @@ Bobbi designed this kit for women who want to look good without spending forever
 
 ### FINAL CTA SECTION
 
-## Get Ready for the Compliments
+## Ready for the Compliments?
 
-Three products. One effortless look. Exclusively here for a limited time.
+Three products. One effortless look.
 
-The Dusty Rose Kit - Pretty in Pink
-
-[SHOP THE DUSTY ROSE KIT - $XX]
+[SHOP THE DUSTY ROSE KIT]
 
 *Free shipping on orders $50+*
 ```
@@ -293,14 +315,16 @@ The Dusty Rose Kit - Pretty in Pink
 ## Checklist Before Generating
 
 - [ ] Product/offer clearly defined
-- [ ] 3-5 headline variations in different styles
+- [ ] 3-5 headline variations (5-7 words each, max 12)
 - [ ] 5-7 distinct reasons identified
+- [ ] Item headlines are 4-6 words (max 8)
+- [ ] Supporting copy is 35-50 words per item
 - [ ] Items 1-2 focus on benefits/desires
 - [ ] Items 3-4 explain features/mechanism
 - [ ] Item 5 includes social proof
 - [ ] Item 6 handles objections (if needed)
 - [ ] Final item covers value/risk reversal
-- [ ] Each item has a scannable headline
+- [ ] Category labels added (optional)
 - [ ] "SHOP NOW" after each item
 - [ ] Final CTA section included
 - [ ] Jones Road voice throughout (confident, effortless, never try-hard)
