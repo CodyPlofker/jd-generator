@@ -56,6 +56,7 @@ const smsTypes = [
 const metaAdTypes = [
   { id: "copy", name: "Ad Copy", description: "Primary Text, Headline, and Link Description for Meta ad placements" },
   { id: "static-creative", name: "Static Creative", description: "Copy for text overlays on static image ads - upload a reference to match layout" },
+  { id: "revise", name: "Revise Copy", description: "Upload an existing ad to get better headline alternatives - AI analyzes and rewrites" },
 ];
 
 const emailTypes = [
@@ -111,6 +112,7 @@ export default function Home() {
   const [showNewFormatModal, setShowNewFormatModal] = useState(false);
   const [showFormatChoiceModal, setShowFormatChoiceModal] = useState(false);
   const [pendingImage, setPendingImage] = useState<string | null>(null);
+  const [revisionContext, setRevisionContext] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -336,7 +338,8 @@ export default function Home() {
           awareness: selectedAwareness,
           productInfo,
           angle,
-          referenceImage: selectedChannel === "meta-ads" && selectedMetaAdType === "static-creative" ? referenceImage : null,
+          referenceImage: selectedChannel === "meta-ads" && (selectedMetaAdType === "static-creative" || selectedMetaAdType === "revise") ? referenceImage : null,
+          revisionContext: selectedChannel === "meta-ads" && selectedMetaAdType === "revise" ? revisionContext : null,
         }),
       });
 
@@ -735,6 +738,64 @@ export default function Home() {
                   </label>
                 )}
               </div>
+            )}
+
+            {/* Revise Copy - Upload ad for headline alternatives */}
+            {selectedChannel === "meta-ads" && selectedMetaAdType === "revise" && (
+              <>
+                <div>
+                  <label className="floating-label mb-3 block">Upload Ad to Revise</label>
+                  {referenceImage ? (
+                    <div className="input-dark rounded-lg p-4">
+                      <div className="flex items-start gap-4">
+                        <img
+                          src={referenceImage}
+                          alt="Ad to revise"
+                          className="w-24 h-24 object-cover rounded"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-[var(--foreground)] truncate">{referenceImageName}</p>
+                          <p className="text-xs text-[var(--muted)] mt-0.5">AI will analyze this ad and suggest better headlines</p>
+                          <button
+                            onClick={removeImage}
+                            className="mt-2 text-xs text-red-400 hover:text-red-300 cursor-pointer"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <label className="block input-dark rounded-lg p-6 text-center cursor-pointer hover:border-[var(--muted-dim)] transition-colors">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                      <div className="w-10 h-10 mx-auto mb-3 rounded-lg bg-[var(--card)] flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <p className="text-sm text-[var(--foreground)]">Upload the ad you want to revise</p>
+                      <p className="text-xs text-[var(--muted-dim)] mt-1">AI will detect the headline and generate better alternatives</p>
+                    </label>
+                  )}
+                </div>
+
+                <div>
+                  <label className="floating-label mb-3 block">What&apos;s wrong with it? (Optional)</label>
+                  <textarea
+                    value={revisionContext}
+                    onChange={(e) => setRevisionContext(e.target.value)}
+                    placeholder="E.g., Too generic, not compelling, doesn't speak to the target audience, too long..."
+                    rows={2}
+                    className="input-dark w-full p-3 rounded-lg resize-none"
+                  />
+                </div>
+              </>
             )}
 
             {/* Generate Button */}

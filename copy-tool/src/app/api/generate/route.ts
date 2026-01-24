@@ -231,7 +231,7 @@ function getAdFormatSpecs(formatId: string): { name: string; specs: { copyPlacem
 
 export async function POST(request: NextRequest) {
   try {
-    const { persona, channel, landingPageType, bulletCount, smsType, emailType, metaAdType, adFormatId, awareness, productInfo, angle, referenceImage } = await request.json();
+    const { persona, channel, landingPageType, bulletCount, smsType, emailType, metaAdType, adFormatId, awareness, productInfo, angle, referenceImage, revisionContext } = await request.json();
 
     if (!channel || !productInfo) {
       return NextResponse.json(
@@ -268,7 +268,88 @@ export async function POST(request: NextRequest) {
     const adFormat = adFormatId ? getAdFormatSpecs(adFormatId) : null;
 
     const channelInstructions: Record<string, string> = {
-      "meta-ads": metaAdType === "static-creative" ? `
+      "meta-ads": metaAdType === "revise" ? `
+## HEADLINE REVISION TASK
+
+You are a world-class direct response copywriter for Jones Road Beauty. I've uploaded an existing static ad that needs better headlines.
+
+**YOUR TASK:**
+
+1. **ANALYZE THE AD:**
+   - Identify the current headline text on the image
+   - Count the characters and words in the headline
+   - Describe the visual context (product shown, layout, brand feel, where text appears)
+   - Note any character/length constraints based on the visual space available
+
+2. **GENERATE 8-10 ALTERNATIVE HEADLINES** that:
+   - Fit the same visual space (similar character count to original)
+   - Maintain Jones Road voice (confident, honest, warm, direct - never salesy)
+   - Apply different persuasion angles
+   - Feel specific to the product shown (not generic)
+
+${revisionContext ? `**USER FEEDBACK ON CURRENT HEADLINE:**
+${revisionContext}
+
+Factor this feedback into your alternatives.` : ""}
+
+## OUTPUT FORMAT
+
+### Current Headline Analysis
+
+**Detected headline:** "[The headline text you see on the ad]"
+**Character count:** [X] | **Word count:** [X]
+**Visual context:** [Brief description of the ad - product, layout, where headline appears]
+**Space constraint:** [Approximately X characters or X words to fit the design]
+
+---
+
+### Alternative Headlines
+
+#### BENEFIT-DRIVEN
+Focus on what they GET. Clear, direct, specific benefits.
+
+1. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+2. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+3. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+#### CURIOSITY / FOMO
+Create intrigue. Make them need to know more.
+
+4. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+5. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+#### IDENTITY-BASED
+Speak to who they ARE or want to be.
+
+6. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+7. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+#### CONTRARIAN
+Challenge assumptions. Flip the script.
+
+8. **"[Alternative headline]"**
+   - [X] chars | [X] words
+   - [1 sentence explaining the angle]
+
+Remember: Keep headlines SPECIFIC to the product shown. Generic headlines like "Your Skin Deserves Better" should become specific like "Skip Foundation, Keep the Glow" or "The 5-Minute Face for Real Life."` : metaAdType === "static-creative" ? `
 Generate copy for a STATIC CREATIVE (image ad with text overlays).
 
 ${adFormat ? `## AD FORMAT: ${adFormat.name}
