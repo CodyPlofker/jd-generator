@@ -621,5 +621,109 @@
         "competitor takeout ads"
       ]
     }
+  },
+  {
+    "id": "problem-unaware-simple-static",
+    "name": "Problem Unaware Simple Static",
+    "description": "Problem-focused headline for cold audiences who don't know they have a problem - NO product mention",
+    "createdAt": "2026-01-26T01:00:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "headline-part1",
+          "position": "bottom-left",
+          "style": "bold, black text",
+          "maxChars": 25,
+          "required": true,
+          "description": "First part of shocking problem statement. Pattern: '[Problem cause] can' e.g. 'Dehydration can', 'Skipping SPF can', 'Poor sleep can'. Sets up the shocking consequence. DO NOT mention the product or brand."
+        },
+        {
+          "zone": "headline-part2",
+          "position": "bottom-left",
+          "style": "bold, orange/yellow highlight",
+          "maxChars": 35,
+          "required": true,
+          "description": "Shocking consequence with specific stat or timeframe. Pattern: 'take [X] years off your [thing]'s life' or 'age your skin [X] years' e.g. 'take 2 years off your dog's life', 'make you look 10 years older'. MUST be specific and alarming. NO product mention."
+        }
+      ],
+      "styleNotes": "CRITICAL: This is a PROBLEM-UNAWARE format for COLD audiences. The headline is 100% about the PROBLEM, NOT the product. The goal is to stop scrolling by making the audience realize they have a problem they didn't know about. Use shocking stats, specific numbers, and emotional consequences. The image should be relatable lifestyle (not product-focused). NO product names, NO benefits, NO CTAs. Pure problem education.",
+      "bestFor": [
+        "top of funnel campaigns",
+        "problem-unaware audiences",
+        "cold traffic",
+        "education-first marketing",
+        "products solving problems people don't know they have"
+      ]
+    }
+  },
+  {
+    "id": "product-story-highlight",
+    "name": "Product Story Highlight",
+    "description": "Instagram Story format with mashup headline, subhead, and 3 sensory feature callouts",
+    "createdAt": "2026-01-26T01:30:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "main-headline",
+          "position": "top-center",
+          "style": "bold, large, white text",
+          "maxChars": 25,
+          "required": true,
+          "description": "Mashup headline combining two concepts. Pattern: '[Thing A] Meets [Thing B]' e.g. 'Iced Coffee Meets Candy', 'Skincare Meets Makeup', 'Glow Meets Coverage'. Short and punchy."
+        },
+        {
+          "zone": "sub-headline",
+          "position": "below-headline",
+          "style": "smaller, white text",
+          "maxChars": 30,
+          "required": true,
+          "description": "Supporting line that explains the mashup. Pattern: 'Real [ingredient] You Can [action]' or '[Benefit] in [form]' e.g. 'Real Arabica You Can Eat'. Short and explanatory."
+        },
+        {
+          "zone": "feature-callout-1",
+          "position": "floating-near-product",
+          "style": "pill/badge, light background",
+          "maxChars": 35,
+          "required": true,
+          "description": "Sensory/ingredient callout. Pattern: '[Ingredient] & [ingredient] [feature]' e.g. 'Arabica coffee & cocoa powder coating'. Describes what's IN the product."
+        },
+        {
+          "zone": "feature-callout-2",
+          "position": "floating-near-product",
+          "style": "pill/badge, light background",
+          "maxChars": 25,
+          "required": true,
+          "description": "Sensory experience callout. Pattern: '[Adverb] [ADJECTIVE] [Sensation]' e.g. 'Curiously ICY Sensation'. Describes how it FEELS."
+        },
+        {
+          "zone": "feature-callout-3",
+          "position": "floating-near-product",
+          "style": "pill/badge, light background",
+          "maxChars": 35,
+          "required": true,
+          "description": "Texture/taste callout. Pattern: '[Texture]-[texture] [quality], [quality]' e.g. 'Cocoa-butter smooth, mellow sweetness'. Describes texture and taste."
+        },
+        {
+          "zone": "action-prompt",
+          "position": "below-product",
+          "style": "medium text with arrow",
+          "maxChars": 25,
+          "required": true,
+          "description": "Soft CTA prompt. Pattern: 'Try [Key Benefit] ↓' e.g. 'Try Icy Refreshment ↓'. Invites action without being pushy."
+        }
+      ],
+      "styleNotes": "Instagram Story format (9:16). Mashup headline at top catches attention. 3 floating feature callouts describe sensory experience around the product. Action prompt at bottom leads to swipe. Keep ALL copy SHORT - this is a story format with limited real estate. Feature callouts should be sensory and descriptive, not benefit-focused.",
+      "bestFor": [
+        "Instagram Stories",
+        "food/beverage products",
+        "products with unique sensory experience",
+        "candy/confection",
+        "beauty with texture stories"
+      ]
+    }
   }
 ]
