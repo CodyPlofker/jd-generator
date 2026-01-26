@@ -111,7 +111,7 @@
   {
     "id": "product-benefits-list-with-hero-shot-mkiukjjz",
     "name": "Product Benefits List with Hero Shot",
-    "description": "",
+    "description": "Numbered benefits list with product hero shot - scannable format",
     "createdAt": "2026-01-17T21:56:34.943Z",
     "thumbnail": "/ad-formats/product-benefits-list-with-hero-shot-mkiukjjz/sample-1.jpg",
     "sampleImages": [
@@ -123,17 +123,17 @@
           "zone": "headline",
           "position": "top-left",
           "style": "bold, large",
-          "maxChars": 60,
+          "maxChars": 55,
           "required": true,
-          "description": "Main benefit-focused headline introducing the product"
+          "description": "Intro headline that sets up the list. Pattern: '[X] benefits of [product]'s [quality]:' e.g. '6 benefits of AG1's natural, high-quality ingredients:' - ends with colon to introduce the list."
         },
         {
           "zone": "benefits-list",
           "position": "center-left",
           "style": "numbered, clean sans-serif",
-          "maxChars": 20,
+          "maxChars": 25,
           "required": true,
-          "description": "Numbered list of key product benefits, 6 items max"
+          "description": "Output 6 benefits, EACH ON ITS OWN LINE. Each benefit is 2-4 words max - just the benefit name, NO explanations. Format exactly like this:\\n1. Focus & Energy\\n2. Gut Health\\n3. Nutrient Replenishment\\n4. Stress & Mood Balance\\n5. Immune Health\\n6. Healthy Aging"
         },
         {
           "zone": "product-name",
@@ -141,26 +141,18 @@
           "style": "large, bold, white text on product",
           "maxChars": 10,
           "required": true,
-          "description": "Product brand/name prominently displayed on package"
+          "description": "Brand/product name on packaging"
         },
         {
           "zone": "product-tagline",
           "position": "overlay-bottom-right",
           "style": "smaller, descriptive, white text",
-          "maxChars": 25,
+          "maxChars": 45,
           "required": true,
-          "description": "Brief product description or category"
-        },
-        {
-          "zone": "badge",
-          "position": "bottom-right-corner",
-          "style": "small, subtle",
-          "maxChars": 15,
-          "required": false,
-          "description": "Optional certification or quality badge"
+          "description": "Product descriptor on packaging. Pattern: '[Adjective] + [Adjective] [Category]' e.g. 'Comprehensive + Convenient Daily Nutrition'"
         }
       ],
-      "styleNotes": "Clean, minimalist design with numbered benefits list on left side and hero product shot on right. Uses neutral background with dark green product packaging. Text hierarchy emphasizes benefits over product features.",
+      "styleNotes": "Clean, minimalist design with numbered benefits list on left and product hero shot on right. Benefits must be SHORT (2-4 words each) - just the benefit name, not full sentences or explanations. The headline introduces the list, benefits are scannable bullet points.",
       "bestFor": [
         "health supplements",
         "nutrition products",
@@ -401,6 +393,232 @@
         "products with ingredient stories",
         "digestive health",
         "products targeting specific communities"
+      ]
+    }
+  },
+  {
+    "id": "product-hero-with-benefit-headline",
+    "name": "Product Hero with Benefit Headline",
+    "description": "Simple format with poetic benefit headline and product hero with stats",
+    "createdAt": "2026-01-25T22:00:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "headline",
+          "position": "top-center",
+          "style": "bold, large serif",
+          "maxChars": 45,
+          "required": true,
+          "description": "Poetic benefit headline with parallel structure. Pattern: 'The [Adjective] [Category] for Your [Adjective] [Outcome].' e.g. 'The Optimal Protein for Your Optimal Form.' Use repetition or parallelism for rhythm."
+        },
+        {
+          "zone": "key-stats",
+          "position": "on-product-bottom",
+          "style": "small, separated by pipes",
+          "maxChars": 40,
+          "required": true,
+          "description": "3 key product stats separated by pipes. Pattern: '[Stat] | [Stat] | [Stat]' e.g. '28g Protein | 150 Calories | 0g Sugar'. Use specific numbers."
+        }
+      ],
+      "styleNotes": "Clean, minimal format. Large poetic headline at top with parallel structure for rhythm. Product hero shot below with key stats on the packaging. Only 2 copy zones needed - headline and stats. Keep headline elegant and memorable.",
+      "bestFor": [
+        "protein bars",
+        "nutrition products",
+        "supplements with strong stats",
+        "premium health products",
+        "products with clear numeric benefits"
+      ]
+    }
+  },
+  {
+    "id": "post-it",
+    "name": "Post It",
+    "description": "UGC-style photo with handwritten post-it note callout",
+    "createdAt": "2026-01-25T22:30:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "handwritten-note",
+          "position": "overlay-center",
+          "style": "handwritten on post-it note",
+          "maxChars": 35,
+          "required": true,
+          "description": "Short post-it style callout from creator POV. Should feel like a personal note/recommendation. Pattern: 'Holy Grail [Benefit]' or 'My [Timeframe] Secret' or '[Superlative] [Category]'. e.g. 'Holy Grail Anti-aging Ingredients'. Keep it SHORT and punchy - this is a tiny post-it note."
+        }
+      ],
+      "styleNotes": "UGC-style product photo with a handwritten post-it note overlay. The note should feel like a creator's personal recommendation - casual, authentic, like they're sharing a secret. Only ONE copy zone - the post-it note. Keep it extremely short.",
+      "bestFor": [
+        "UGC-style ads",
+        "skincare",
+        "beauty products",
+        "creator-style content",
+        "products with cult following"
+      ]
+    }
+  },
+  {
+    "id": "premium-product-showcase-with-ingredients",
+    "name": "Premium Product Showcase with Ingredients",
+    "description": "Minimal premium format with simple ingredient list above product hero",
+    "createdAt": "2026-01-25T23:00:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "ingredient-list",
+          "position": "top-center",
+          "style": "elegant, comma-separated, lowercase",
+          "maxChars": 50,
+          "required": true,
+          "description": "Simple comma-separated list of 3-4 key ingredients. Pattern: '[ingredient], [ingredient], [ingredient]' e.g. 'Cardamom, black tang seaweed, sandalwood'. Lowercase, no periods, elegant and minimal. Just the ingredient names - no benefits or explanations."
+        }
+      ],
+      "styleNotes": "Ultra-minimal premium format. Only ONE copy zone - a simple ingredient list at top. Product hero shot below. The ingredient list should feel like a luxury fragrance note list - elegant, simple, evocative. No headlines, no taglines, no product descriptions - just ingredients and product.",
+      "bestFor": [
+        "premium skincare",
+        "luxury beauty",
+        "fragrance",
+        "high-end wellness",
+        "products with hero ingredients",
+        "minimalist brand aesthetics"
+      ]
+    }
+  },
+  {
+    "id": "product-hero-with-background-texture",
+    "name": "Product Hero with Background Texture",
+    "description": "Product hero on textured ingredient/lifestyle background with bold headline and CTA button",
+    "createdAt": "2026-01-25T23:30:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "headline",
+          "position": "top-center",
+          "style": "bold, large, white text",
+          "maxChars": 30,
+          "required": true,
+          "description": "Seasonal or benefit-driven headline. Pattern: '[Action] the [timeframe] [benefit].' or '[Benefit] [statement].' e.g. 'Start the year hydrated.' Short, punchy, ends with period."
+        },
+        {
+          "zone": "cta-button",
+          "position": "below-headline",
+          "style": "pill-shaped button, contrasting color",
+          "maxChars": 20,
+          "required": true,
+          "description": "Product announcement or action CTA. Pattern: '[Product/Flavor] is here' or 'Try [Product] now' e.g. 'Lychee is here'. Can announce new product/flavor or drive action."
+        }
+      ],
+      "styleNotes": "Product packaging on textured background (fruit, ingredients, lifestyle). Bold headline at top, pill-shaped CTA button below. Only 2 copy zones - headline and CTA. Background texture should relate to product flavor/benefit. Clean and appetizing.",
+      "bestFor": [
+        "beverage products",
+        "hydration products",
+        "flavor launches",
+        "seasonal campaigns",
+        "food/drink CPG",
+        "new product announcements"
+      ]
+    }
+  },
+  {
+    "id": "what-its-not-product-hero-with-social-proof",
+    "name": "What It's Not Product Hero with Social Proof",
+    "description": "Contrarian headline calling out what the product ISN'T, with subhead and social proof",
+    "createdAt": "2026-01-25T23:45:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "headline",
+          "position": "top-center",
+          "style": "bold, large, white text",
+          "maxChars": 35,
+          "required": true,
+          "description": "Contrarian headline calling out what the product ISN'T or a negative the product avoids. Pattern: '[Bad thing] isn't [a feature/ingredient]' e.g. 'Gross isn't an active ingredient'. Challenges category norms with wit."
+        },
+        {
+          "zone": "subhead",
+          "position": "below-headline",
+          "style": "smaller, white text",
+          "maxChars": 70,
+          "required": true,
+          "description": "Supporting line that expands on the headline with what the product DOES do. Pattern: '[Product type] that actually [works/tastes good], and [avoids negative]' e.g. 'Greens that actually work, and taste nothing like swamp water.'"
+        },
+        {
+          "zone": "social-proof",
+          "position": "below-product",
+          "style": "inline with stars",
+          "maxChars": 30,
+          "required": true,
+          "description": "Review count with star rating. Pattern: '[Number]+ ★★★★★ reviews' e.g. '50,000+ ★★★★★ reviews'. All on one line."
+        },
+        {
+          "zone": "trust-badge",
+          "position": "bottom-banner",
+          "style": "full-width banner, contrasting color",
+          "maxChars": 35,
+          "required": true,
+          "description": "Trust/credibility statement. Pattern: '[Certification] and [certification] tested.' e.g. 'Clinically and third-party tested.' Short credibility proof point."
+        }
+      ],
+      "styleNotes": "Bold contrarian messaging that calls out category problems. Headline challenges what competitors do wrong. Subhead pivots to positive product benefit. Social proof adds credibility. Trust badge at bottom reinforces quality. Product hero in center.",
+      "bestFor": [
+        "supplements challenging category norms",
+        "products with taste/experience differentiation",
+        "brands with strong POV",
+        "products solving known category problems",
+        "challenger brands"
+      ]
+    }
+  },
+  {
+    "id": "5-reasons-why",
+    "name": "5 Reasons Why",
+    "description": "Listicle format with 5 short reasons and social proof badge",
+    "createdAt": "2026-01-26T00:00:00.000Z",
+    "thumbnail": "",
+    "sampleImages": [],
+    "specs": {
+      "copyPlacements": [
+        {
+          "zone": "headline",
+          "position": "top-left",
+          "style": "mixed script and bold",
+          "maxChars": 55,
+          "required": true,
+          "description": "Listicle headline with '5 reasons' intro. Pattern: '5 reasons to [switch/try/choose] [from X to Y / product]' e.g. '5 reasons to switch from powders to grüns gummies'. The '5 reasons' can be in script style."
+        },
+        {
+          "zone": "reasons-list",
+          "position": "left-side",
+          "style": "numbered circles, short lines",
+          "maxChars": 35,
+          "required": true,
+          "description": "5 SHORT reasons, EACH ON ITS OWN LINE. Each reason is ONE short phrase (4-8 words max). Format exactly like:\\n1. Enjoy taking them\\n2. Easy to stay consistent\\n3. Same (or more) nutrients\\n4. No gummy fillers\\n5. Clinically tested\\n\\nNO long sentences. NO explanations. Just the benefit phrase."
+        },
+        {
+          "zone": "social-proof",
+          "position": "bottom-left",
+          "style": "pill badge with stars",
+          "maxChars": 30,
+          "required": true,
+          "description": "Review count with stars in pill badge. Pattern: '[Number]+ ★★★★★ reviews' e.g. '50,000+ ★★★★★ reviews'. All on one line."
+        }
+      ],
+      "styleNotes": "Listicle format with numbered reasons on left, product hero on right. CRITICAL: Each reason must be SHORT (4-8 words) - just the benefit, not a full sentence or explanation. This is scannable content. Social proof badge at bottom adds credibility.",
+      "bestFor": [
+        "comparison ads",
+        "category switcher campaigns",
+        "products with multiple benefits",
+        "supplements",
+        "competitor takeout ads"
       ]
     }
   }

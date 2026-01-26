@@ -381,6 +381,11 @@ For each zone defined above, output in this exact format:
 - If copy is too long, rewrite it shorter - do not exceed limits
 - Character limits exist because designers need copy that fits the visual layout
 - Shorter, punchier copy is almost always better
+- For any LIST zones (like benefits-list), output EACH ITEM on its own line:
+  1. First item
+  2. Second item
+  3. Third item
+  (NOT as a paragraph - designers need to see each item separately)
 
 Provide 2-3 variations for the main headline/hook zones.` : referenceImage ? `## REFERENCE CREATIVE ANALYSIS
 I've uploaded a reference creative image. Please:
