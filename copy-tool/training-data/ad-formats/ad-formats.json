@@ -355,7 +355,7 @@
   {
     "id": "native-problem-solution",
     "name": "Native Problem-Solution",
-    "description": "Q&A/forum style format with vulnerable problem question and helpful product solution - creator POV",
+    "description": "IG Story native format with bubble text question and helpful product solution - creator POV",
     "createdAt": "2026-01-25T21:30:00.000Z",
     "thumbnail": "",
     "sampleImages": [],
@@ -370,12 +370,12 @@
           "description": "Category/community topic label e.g. 'GLP-1 Q&A', 'Skincare Help', 'Morning Routine'"
         },
         {
-          "zone": "problem-question",
+          "zone": "bubble-question",
           "position": "below-label",
-          "style": "casual, vulnerable, first-person",
+          "style": "IG Story bubble text, casual, first-person",
           "maxChars": 60,
           "required": true,
-          "description": "Vulnerable first-person question from a real person struggling with a problem. MUST be casual/imperfect with ellipses, emoji optional. Pattern: 'I'm having [problem]... how do you manage?' or 'anyone else deal with [problem]??' e.g. 'I'm having trouble in the bathroom... 💩 how do you manage?' Write from CREATOR POV, not brand voice."
+          "description": "MUST BE A QUESTION. Vulnerable first-person question in IG Story bubble text style. Pattern: '[Question about problem]?' e.g. 'how do you manage bloating??' or 'anyone else struggle with [problem]?' ALWAYS ends with a question mark. Casual, imperfect, uses ellipses or emoji optional. Write from CREATOR POV, not brand voice."
         },
         {
           "zone": "solution-callout",
@@ -386,7 +386,7 @@
           "description": "Helpful tip pointing to product as solution. Pattern: '[Amount] of [ingredient] helps [solve problem]' e.g. '6g of fiber helps relieve bloating and constipation.' Should feel like a friend sharing a tip, not brand marketing."
         }
       ],
-      "styleNotes": "Mimics social media Q&A or forum posts. Problem question should feel vulnerable and real - someone admitting a struggle and asking for help. Solution callout feels like a helpful friend sharing what worked for them, with handwritten annotation style pointing to the product. CRITICAL: All copy must be written from creator/user POV, NOT brand voice. Casual, imperfect, human.",
+      "styleNotes": "IG Story native format. The bubble text MUST be phrased as a QUESTION - someone asking for help or advice. Solution callout feels like a helpful friend sharing what worked for them, with handwritten annotation style pointing to the product. CRITICAL: All copy must be written from creator/user POV, NOT brand voice. Casual, imperfect, human. The bubble question is the hook - it must be a question that resonates with the audience's struggles.",
       "bestFor": [
         "supplements solving specific problems",
         "health/wellness products",
