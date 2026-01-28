@@ -231,6 +231,8 @@ This ad uses a specific format with defined copy zones. Generate copy for EACH z
 
 **CRITICAL: You MUST respect the character limits. Count your characters. If your copy exceeds the limit, rewrite it shorter.**
 
+**CRITICAL: Follow the patterns in the format guidelines. If a zone says "Pattern: '[Thing A] Meets [Thing B]'" - use that exact structure.**
+
 ${copyZoneSpecs}
 
 ${format.specs.styleNotes ? `Style notes: ${format.specs.styleNotes}` : ""}
