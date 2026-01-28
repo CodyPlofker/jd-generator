@@ -22,13 +22,47 @@ Each example should include:
 
 ### Question Hooks
 
-<!-- Add examples -->
+**Hook**: "Is traditional foundation making you look worse?"
+- **Framework**: Problem-Aware Question
+- **POV**: Creator
+- **Type**: Paid
+- **Channel**: Meta
+- **Why it works**:
+  - Calls out a specific frustration, not generic
+  - Creates self-doubt that demands resolution
+  - "Traditional" implies there's a better alternative
+  - Makes viewer question their current routine
+  - Ad account winner - outperforms generic product intros
 
 ---
 
 ### Story/Scene Hooks
 
-<!-- Add examples -->
+**Hook**: "I woke up so tired"
+- **Framework**: Vulnerability / Real Moment
+- **POV**: Creator
+- **Type**: Paid
+- **Channel**: Meta/TikTok
+- **Why it works**:
+  - Feels like real content, not an ad
+  - Universally relatable moment
+  - Viewer's guard is down - they think it's organic
+  - Sets up natural transition to product as solution
+  - Ad account winner - stops scroll with authenticity
+
+---
+
+**Hook**: "I am taking off my makeup"
+- **Framework**: Vulnerability / Real Moment
+- **POV**: Creator
+- **Type**: Paid
+- **Channel**: Meta/TikTok
+- **Why it works**:
+  - Intimate moment that feels personal, not produced
+  - Viewer is curious what's underneath
+  - Creates trust through vulnerability
+  - Natural setup for skincare/makeup reveal
+  - Ad account winner - performs because it doesn't feel like an ad
 
 ---
 
@@ -55,6 +89,20 @@ Each example should include:
 ---
 
 ### Pain Point Hooks
+
+**Hook**: [Niche problem callout] "deep set eyes" / "hooded eyes"
+- **Framework**: Identity Signal / Niche Problem
+- **POV**: Creator
+- **Type**: Paid
+- **Channel**: Meta/TikTok
+- **Why it works**:
+  - Names a specific problem that makes viewer feel SEEN
+  - Only people with this issue will engage - but they'll engage hard
+  - Creates "this is for me" moment in first second
+  - Filters for high-intent viewer who has this exact problem
+  - Ad account winner - outperforms generic beauty hooks
+
+---
 
 **Hook**: "things i wish i knew before..."
 - **Framework**: Avoidable Loss / Open Loop

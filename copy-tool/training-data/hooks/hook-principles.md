@@ -140,3 +140,29 @@ Suggest that watching will change something for the viewer - they'll learn, feel
 49. A "write this down" one-liner
 50. A closing punch that makes the reader feel smarter (not scolded)
 
+---
+
+### Jones Road Ad Account Winners - Performance Learnings
+
+Insights from actual ad account data on what's converting:
+
+#### 1. Problem-Aware Openers > Generic Product Intros
+Best-converting hooks either:
+- **Call out a specific frustration**: "Is traditional foundation making you look worse?"
+- **Name a niche problem that makes viewer feel seen**: "deep set eyes," "hooded eyes"
+
+The specificity signals "this is for you" - generic product intros get scrolled past.
+
+#### 2. "I Do This Instead" Framing
+Creates curiosity without promising a miracle. Positions the product as a discovered alternative, not a sales pitch.
+
+Why it works:
+- Feels like advice from a friend, not an ad
+- Implies a journey/comparison without overselling
+- Natural creator POV that doesn't trigger ad-blindness
+
+#### 3. Vulnerability Hooks
+Examples: "I woke up so tired" / "I am taking off my makeup"
+
+Stop the scroll because they feel like real moments, not ads. The viewer thinks they're seeing authentic content, not polished marketing - by the time they realize it's an ad, they're already engaged.
+
