@@ -47,7 +47,7 @@ export interface Brief {
       styleNotes: string;
     };
   };
-  generatedCopy: {
+  generatedCopy: string | {
     [zone: string]: string;
   };
   status: "pending" | "generated" | "edited";

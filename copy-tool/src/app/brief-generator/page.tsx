@@ -31,7 +31,7 @@ export default function BriefGeneratorPage() {
 
   // Editing state
   const [isEditing, setIsEditing] = useState(false);
-  const [editedCopy, setEditedCopy] = useState<{ [zone: string]: string }>({});
+  const [editedCopy, setEditedCopy] = useState<string>("");
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
 
   // Save to board state
@@ -133,7 +133,7 @@ export default function BriefGeneratorPage() {
 
   const [generationProgress, setGenerationProgress] = useState({ current: 0, total: 0 });
 
-  const generateCopyForBrief = async (brief: Brief): Promise<{ [zone: string]: string }> => {
+  const generateCopyForBrief = async (brief: Brief): Promise<string> => {
     try {
       const response = await fetch("/api/generate-brief-copy", {
         method: "POST",
@@ -151,15 +151,15 @@ export default function BriefGeneratorPage() {
 
       if (!response.ok) {
         console.error("API Error:", result.error || "Unknown error");
-        return {};
+        return "";
       }
 
       console.log("Generated copy:", result.copy);
-      return result.copy || {};
+      return result.copy || "";
     } catch (error) {
       console.error("Error generating copy:", error);
     }
-    return {};
+    return "";
   };
 
   const handleGenerate = async () => {
@@ -203,7 +203,7 @@ export default function BriefGeneratorPage() {
       setGenerationProgress({ current: i + 1, total: briefs.length });
       const copy = await generateCopyForBrief(briefs[i]);
       briefs[i].generatedCopy = copy;
-      briefs[i].status = Object.keys(copy).length > 0 ? "generated" : "pending";
+      briefs[i].status = copy ? "generated" : "pending";
     }
 
     setGeneratedBriefs(briefs);
@@ -250,7 +250,10 @@ export default function BriefGeneratorPage() {
   // Start editing a brief
   const startEditing = () => {
     if (selectedBrief) {
-      setEditedCopy({ ...selectedBrief.generatedCopy });
+      const copyText = typeof selectedBrief.generatedCopy === "string"
+        ? selectedBrief.generatedCopy
+        : Object.entries(selectedBrief.generatedCopy).map(([zone, copy]) => `[${zone.toUpperCase()}]\n${copy}`).join("\n\n");
+      setEditedCopy(copyText);
       setIsEditing(true);
     }
   };
@@ -266,13 +269,14 @@ export default function BriefGeneratorPage() {
       setGeneratedBriefs(updatedBriefs);
       setSelectedBrief({ ...selectedBrief, generatedCopy: editedCopy, status: "edited" });
       setIsEditing(false);
+      setEditedCopy("");
     }
   };
 
   // Cancel editing
   const cancelEditing = () => {
     setIsEditing(false);
-    setEditedCopy({});
+    setEditedCopy("");
   };
 
   // Copy single brief to clipboard
@@ -290,11 +294,16 @@ export default function BriefGeneratorPage() {
     text += `PRODUCT: ${brief.product.name} (${brief.product.price})\n`;
     text += `ANGLE: ${brief.angle}\n`;
     text += `FORMAT: ${brief.format.name}\n\n`;
-    text += `--- COPY ---\n`;
-    brief.format.specs.copyPlacements.forEach((zone) => {
-      const copy = brief.generatedCopy[zone.zone] || "[No copy]";
-      text += `\n[${zone.zone.toUpperCase()}]\n${copy}\n`;
-    });
+    text += `--- COPY ---\n\n`;
+    if (typeof brief.generatedCopy === "string") {
+      text += brief.generatedCopy;
+    } else {
+      const copyObj = brief.generatedCopy as { [zone: string]: string };
+      brief.format.specs.copyPlacements.forEach((zone) => {
+        const copy = copyObj[zone.zone] || "[No copy]";
+        text += `\n[${zone.zone.toUpperCase()}]\n${copy}\n`;
+      });
+    }
     return text;
   };
 
@@ -997,7 +1006,9 @@ export default function BriefGeneratorPage() {
                     {/* Brief List */}
                     <div className="divide-y divide-[var(--card-border)]">
                       {angleBriefs.map((brief) => {
-                        const primaryCopy = Object.values(brief.generatedCopy)[0] || "";
+                        const primaryCopy = typeof brief.generatedCopy === "string"
+                          ? brief.generatedCopy.slice(0, 150)
+                          : Object.values(brief.generatedCopy)[0] || "";
                         return (
                           <button
                             key={brief.id}
@@ -1161,28 +1172,103 @@ export default function BriefGeneratorPage() {
               {/* Generated Copy */}
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-[var(--muted)] uppercase tracking-wide">Generated Copy</h3>
-                {selectedBrief.format.specs.copyPlacements.map((zone, i) => (
-                  <div key={i} className="bg-[var(--input-bg)] rounded-lg px-3 py-2">
-                    {isEditing ? (
-                      <div>
-                        <span className="text-xs font-medium text-[var(--accent)] uppercase">{zone.zone}</span>
-                        <textarea
-                          value={editedCopy[zone.zone] || ""}
-                          onChange={(e) => setEditedCopy({ ...editedCopy, [zone.zone]: e.target.value })}
-                          className="w-full text-sm text-[var(--foreground)] bg-[var(--background)] border border-[var(--card-border)] rounded p-2 mt-1 resize-none focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
-                          rows={2}
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex gap-2">
-                        <span className="text-xs font-medium text-[var(--accent)] uppercase whitespace-nowrap">{zone.zone}:</span>
-                        <span className="text-sm text-[var(--foreground)]">
-                          {selectedBrief.generatedCopy[zone.zone] || <span className="text-[var(--muted-dim)] italic">No copy</span>}
-                        </span>
-                      </div>
-                    )}
+                {isEditing ? (
+                  <textarea
+                    value={editedCopy}
+                    onChange={(e) => setEditedCopy(e.target.value)}
+                    className="w-full text-sm text-[var(--foreground)] bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3 resize-none focus:outline-none focus:ring-1 focus:ring-[var(--accent)] font-mono"
+                    rows={16}
+                  />
+                ) : (
+                  <div className="bg-[var(--input-bg)] rounded-lg p-4">
+                    {(() => {
+                      const copyText = typeof selectedBrief.generatedCopy === "string"
+                        ? selectedBrief.generatedCopy
+                        : Object.entries(selectedBrief.generatedCopy).map(([zone, copy]) => `[${zone.toUpperCase()}]\n${copy}`).join("\n\n");
+
+                      if (!copyText) {
+                        return <span className="text-[var(--muted-dim)] italic">No copy generated</span>;
+                      }
+
+                      const cleanText = (text: string) => text
+                        .replace(/\*\*(.+?)\*\*/g, '$1')
+                        .replace(/\*(.+?)\*/g, '$1')
+                        .replace(/^#+\s*/gm, '')
+                        .replace(/\*\*Copy:\*\*\s*/gi, '')
+                        .replace(/^-\s+/gm, '• ');
+
+                      return (
+                        <div className="space-y-4">
+                          {copyText.split(/(?=^#{2,3}\s|\n(?=[A-Z][A-Z-]+\n))/m).map((section, index) => {
+                            const trimmed = section.trim();
+                            if (!trimmed) return null;
+
+                            const h2Match = trimmed.match(/^##\s+(.+?)(?:\n|$)/);
+                            const h3Match = trimmed.match(/^###\s+(.+?)(?:\n|$)/);
+                            const zoneLabelMatch = trimmed.match(/^([A-Z][A-Z0-9-]+)\n([\s\S]*)$/);
+
+                            if (h2Match) {
+                              const title = cleanText(h2Match[1]);
+                              const content = trimmed.slice(h2Match[0].length).trim();
+                              return (
+                                <div key={index} className="mb-4">
+                                  <h2 className="text-base font-semibold text-[var(--accent)] mb-2 pb-1 border-b border-[var(--card-border)]">
+                                    {title}
+                                  </h2>
+                                  {content && (
+                                    <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                      {cleanText(content)}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+
+                            if (h3Match) {
+                              const title = cleanText(h3Match[1]);
+                              const content = trimmed.slice(h3Match[0].length).trim();
+                              return (
+                                <div key={index} className="mb-3">
+                                  <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wide mb-1">
+                                    {title}
+                                  </h3>
+                                  {content && (
+                                    <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                      {cleanText(content)}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+
+                            if (zoneLabelMatch) {
+                              const label = zoneLabelMatch[1];
+                              const content = zoneLabelMatch[2].trim();
+                              return (
+                                <div key={index} className="mb-3">
+                                  <h3 className="text-xs font-medium text-[var(--accent)] uppercase tracking-wide mb-1">
+                                    {label}
+                                  </h3>
+                                  {content && (
+                                    <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                      {cleanText(content)}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+
+                            return (
+                              <div key={index} className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                {cleanText(trimmed)}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
                   </div>
-                ))}
+                )}
               </div>
             </div>
 
