@@ -194,6 +194,9 @@ export default function HooksPage() {
             <a href="/brief-generator" className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors">
               Brief Generator
             </a>
+            <a href="/gtm" className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors">
+              GTM Workflow
+            </a>
             <a href="/boards" className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors">
               Boards
             </a>
