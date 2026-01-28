@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Otherwise, return list of all files
-  const categories = ["brand-voice", "brand", "personas", "frameworks", "channels", "performance", "reviews", "products", "compliance"];
+  const categories = ["brand-voice", "brand", "personas", "frameworks", "channels", "performance", "reviews", "products", "compliance", "hooks"];
   const allFiles: { name: string; path: string; category: string }[] = [];
 
   for (const category of categories) {

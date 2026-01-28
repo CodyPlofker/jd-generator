@@ -2,37 +2,11 @@
 
 import { useState, useEffect } from "react";
 
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-
+// Force dark mode on mount
+const useDarkMode = () => {
   useEffect(() => {
-    const saved = localStorage.getItem("theme") as "light" | "dark" | null;
-    if (saved) {
-      setTheme(saved);
-      document.documentElement.setAttribute("data-theme", saved);
-    }
+    document.documentElement.setAttribute("data-theme", "dark");
   }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
-
-  return (
-    <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-      {theme === "dark" ? (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-      )}
-    </button>
-  );
 };
 
 interface TrainingFile {
@@ -82,6 +56,7 @@ const categories = [
   { id: "reviews", name: "Reviews", description: "Customer reviews and testimonials" },
   { id: "performance", name: "Performance", description: "Winning ads and metrics" },
   { id: "compliance", name: "Compliance", description: "Regulatory claims and callouts" },
+  { id: "hooks", name: "Hooks", description: "Video hook frameworks and examples" },
 ];
 
 const emptyProduct: Product = {
@@ -110,6 +85,7 @@ const emptyProduct: Product = {
 };
 
 export default function TrainingPage() {
+  useDarkMode();
   const [files, setFiles] = useState<TrainingFile[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("brand");
   const [selectedFile, setSelectedFile] = useState<FileContent | null>(null);
@@ -313,7 +289,6 @@ export default function TrainingPage() {
             >
               Back to Generator
             </a>
-            <ThemeToggle />
           </div>
         </div>
       </header>
