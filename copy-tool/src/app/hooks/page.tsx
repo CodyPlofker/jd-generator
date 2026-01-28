@@ -261,17 +261,6 @@ export default function HooksPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Inputs */}
             <div className="space-y-6">
-              {/* Brief / Description */}
-              <div>
-                <label className="floating-label mb-3 block">Brief / Description</label>
-                <textarea
-                  value={brief}
-                  onChange={(e) => setBrief(e.target.value)}
-                  placeholder="e.g., hooks for Miracle Balm targeting busy moms who are skeptical about clean beauty..."
-                  className="input-dark w-full p-4 rounded-lg min-h-[100px] resize-none"
-                />
-              </div>
-
               {/* Product & Persona Row */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -312,6 +301,17 @@ export default function HooksPage() {
                   onChange={(e) => setAngle(e.target.value)}
                   placeholder="e.g., time-saving, natural ingredients, no-makeup makeup..."
                   className="input-dark w-full p-3 rounded-lg"
+                />
+              </div>
+
+              {/* Brief / Description */}
+              <div>
+                <label className="floating-label mb-3 block">Additional Context</label>
+                <textarea
+                  value={brief}
+                  onChange={(e) => setBrief(e.target.value)}
+                  placeholder="Any additional details, notes, or specific direction for the hooks..."
+                  className="input-dark w-full p-4 rounded-lg min-h-[80px] resize-none"
                 />
               </div>
 
