@@ -623,16 +623,44 @@ export default function PersonasPage() {
               </CollapsibleSection>
             )}
 
-            {/* Product Affinities */}
-            {persona.productAffinities.length > 0 && (
+            {/* Product Affinities - Using OuterSignal Data */}
+            {persona.analytics && (persona.analytics.productAffinityHigh.length > 0 || persona.analytics.productAffinityLow.length > 0) && (
               <CollapsibleSection id="products" title="Product Affinities">
-                <div className="space-y-2">
-                  {persona.productAffinities.map((p, i) => (
-                    <div key={i} className="bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-4">
-                      <span className="font-medium text-[var(--foreground)]">{p.product}</span>
-                      <p className="text-sm text-[var(--muted)] mt-1">{p.reason}</p>
+                <div className="space-y-4">
+                  {persona.analytics.productAffinityHigh.length > 0 && (
+                    <div className="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4">
+                      <p className="text-xs text-green-400 font-medium mb-3 uppercase tracking-wide flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                        </svg>
+                        Over-indexes (vs Brand Average)
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {persona.analytics.productAffinityHigh.map((product, i) => (
+                          <span key={i} className="text-sm bg-green-500/10 border border-green-500/30 text-green-400 px-3 py-1.5 rounded-lg">
+                            {product}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  ))}
+                  )}
+                  {persona.analytics.productAffinityLow.length > 0 && (
+                    <div className="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4">
+                      <p className="text-xs text-red-400 font-medium mb-3 uppercase tracking-wide flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                        Under-indexes (vs Brand Average)
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {persona.analytics.productAffinityLow.map((product, i) => (
+                          <span key={i} className="text-sm bg-red-500/10 border border-red-500/30 text-red-400 px-3 py-1.5 rounded-lg">
+                            {product}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CollapsibleSection>
             )}
@@ -968,13 +996,15 @@ export default function PersonasPage() {
                 <p className="text-sm text-[var(--muted)] line-clamp-2">
                   {persona.identitySnapshot.substring(0, 100)}...
                 </p>
-                <div className="mt-4 flex flex-wrap gap-1">
-                  {persona.productAffinities.slice(0, 3).map((p, i) => (
-                    <span key={i} className="text-xs bg-[var(--input-bg)] text-[var(--muted-dim)] px-2 py-0.5 rounded">
-                      {p.product}
-                    </span>
-                  ))}
-                </div>
+                {persona.analytics && persona.analytics.productAffinityHigh.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-1">
+                    {persona.analytics.productAffinityHigh.slice(0, 3).map((product, i) => (
+                      <span key={i} className="text-xs bg-green-500/10 border border-green-500/30 text-green-400 px-2 py-0.5 rounded">
+                        {product}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </button>
             ))}
           </div>
