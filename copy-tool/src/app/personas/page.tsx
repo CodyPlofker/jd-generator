@@ -26,6 +26,7 @@ interface ParsedPersona {
   languageResonates: string[];
   languageAvoid: string[];
   vocQuotes: string[];
+  goldNuggetsByTheme: Array<{ theme: string; quotes: string[] }>;
   productAffinities: Array<{ product: string; reason: string }>;
   copyExamples: {
     adHook: string;
@@ -384,18 +385,39 @@ export default function PersonasPage() {
               </CollapsibleSection>
             )}
 
-            {/* Voice of Customer */}
-            {persona.vocQuotes.length > 0 && (
+            {/* Voice of Customer - organized by theme if available */}
+            {(persona.goldNuggetsByTheme?.length > 0 || persona.vocQuotes.length > 0) && (
               <CollapsibleSection id="voc" title="Voice of Customer">
-                <div className="space-y-3">
-                  {persona.vocQuotes.map((quote, i) => (
-                    <div key={i} className="group bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 border-l-4 border-l-[var(--muted-dim)]">
-                      <div className="flex justify-between gap-2">
-                        <p className="text-sm text-[var(--foreground)] italic leading-relaxed">"{quote}"</p>
-                        <CopyButton text={quote} className="opacity-0 group-hover:opacity-100 flex-shrink-0" />
+                <div className="space-y-6">
+                  {/* Themed Gold Nugget Quotes */}
+                  {persona.goldNuggetsByTheme?.length > 0 ? (
+                    persona.goldNuggetsByTheme.map((themeGroup, i) => (
+                      <div key={i} className="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5">
+                        <p className="text-sm font-medium text-[var(--foreground)] mb-4 flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[var(--muted)]"></span>
+                          {themeGroup.theme}
+                        </p>
+                        <div className="space-y-3">
+                          {themeGroup.quotes.map((quote, j) => (
+                            <div key={j} className="group flex justify-between gap-2 pl-4 border-l-2 border-[var(--card-border)] hover:border-[var(--muted-dim)] transition-colors">
+                              <p className="text-sm text-[var(--muted)] italic leading-relaxed">"{quote}"</p>
+                              <CopyButton text={quote} className="opacity-0 group-hover:opacity-100 flex-shrink-0" />
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    /* Fallback to flat list if no themed quotes */
+                    persona.vocQuotes.map((quote, i) => (
+                      <div key={i} className="group bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 border-l-4 border-l-[var(--muted-dim)]">
+                        <div className="flex justify-between gap-2">
+                          <p className="text-sm text-[var(--foreground)] italic leading-relaxed">"{quote}"</p>
+                          <CopyButton text={quote} className="opacity-0 group-hover:opacity-100 flex-shrink-0" />
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </CollapsibleSection>
             )}

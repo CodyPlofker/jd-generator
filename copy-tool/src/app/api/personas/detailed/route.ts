@@ -31,6 +31,7 @@ interface ParsedPersona {
   languageResonates: string[];
   languageAvoid: string[];
   vocQuotes: string[];
+  goldNuggetsByTheme: Array<{ theme: string; quotes: string[] }>;
   productAffinities: Array<{ product: string; reason: string }>;
   copyExamples: {
     adHook: string;
@@ -181,16 +182,32 @@ function parseMarkdown(content: string, filename: string): ParsedPersona {
     }
   }
 
-  // Also extract from Gold Nugget Quotes section (expanded reviews)
+  // Also extract from Gold Nugget Quotes section (expanded reviews) - both flat and by theme
+  const goldNuggetsByTheme: Array<{ theme: string; quotes: string[] }> = [];
   const goldNuggetSection = content.match(/## Gold Nugget Quotes[\s\S]*?(?=\n## Copy Angles|\n## Deep Persona|---\n\n##)/);
   if (goldNuggetSection) {
-    const quotes = goldNuggetSection[0].match(/> "([^"]+)"/g);
-    if (quotes) {
-      quotes.slice(0, 30).forEach(q => {
-        const clean = q.replace(/^> "/, "").replace(/"$/, "");
-        if (clean.length < 300 && !vocQuotes.includes(clean)) vocQuotes.push(clean);
-      });
-    }
+    // Parse by theme (### headers)
+    const themeBlocks = goldNuggetSection[0].split(/### /).filter(Boolean);
+    themeBlocks.forEach(block => {
+      const lines = block.split("\n");
+      const themeName = lines[0]?.trim();
+      if (themeName && !themeName.startsWith("## Gold Nugget")) {
+        const themeQuotes: string[] = [];
+        lines.forEach(line => {
+          const quoteMatch = line.match(/^> "([^"]+)"/);
+          if (quoteMatch && quoteMatch[1].length < 300) {
+            themeQuotes.push(quoteMatch[1]);
+            // Also add to flat vocQuotes if not duplicate
+            if (!vocQuotes.includes(quoteMatch[1])) {
+              vocQuotes.push(quoteMatch[1]);
+            }
+          }
+        });
+        if (themeQuotes.length > 0) {
+          goldNuggetsByTheme.push({ theme: themeName, quotes: themeQuotes });
+        }
+      }
+    });
   }
 
   // Extract product affinities
@@ -252,6 +269,7 @@ function parseMarkdown(content: string, filename: string): ParsedPersona {
     languageResonates,
     languageAvoid,
     vocQuotes,
+    goldNuggetsByTheme,
     productAffinities,
     copyExamples: { adHook, emailSubjects, ctas }
   };
