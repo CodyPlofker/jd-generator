@@ -52,6 +52,13 @@ Women in their 30s to 50s who are the orchestrators of their households. They're
 **Over-indexes:** The Face Pencil, Mini Miracle Balm Trio, Pinky Bronze Kit, Hero Kit, Party Kit
 **Under-indexes:** Just Enough Tinted Moisturizer, The Mascara
 
+### Persona Profile
+- **Affluence:** 45
+- **Velocity:** 30
+- **Loyalty:** 40
+- **Growth:** 35
+- **Influence:** 55
+
 ---
 
 ## Psychographics: Who She Really Is

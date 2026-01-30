@@ -3,6 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
+interface PersonaProfile {
+  affluence: number;
+  velocity: number;
+  loyalty: number;
+  growth: number;
+  influence: number;
+}
+
 interface OuterSignalAnalytics {
   customerShare: number;
   revenueShare: number;
@@ -23,6 +31,7 @@ interface OuterSignalAnalytics {
   topStates: string[];
   productAffinityHigh: string[];
   productAffinityLow: string[];
+  personaProfile?: PersonaProfile;
 }
 
 interface ParsedPersona {
@@ -59,14 +68,15 @@ interface ParsedPersona {
 }
 
 const TABS = [
-  { id: "analytics", label: "Analytics" },
   { id: "who", label: "Who She Is" },
   { id: "messaging", label: "How to Talk to Her" },
   { id: "copy", label: "Copy Examples" },
+  { id: "analytics", label: "Analytics" },
 ];
 
 const SECTIONS = {
   analytics: [
+    { id: "persona-profile", label: "Persona Profile" },
     { id: "revenue", label: "Revenue Performance" },
     { id: "customer-demo", label: "Customer Demographics" },
     { id: "geography", label: "Geography" },
@@ -177,7 +187,7 @@ export default function PersonasPage() {
   const [personas, setPersonas] = useState<ParsedPersona[]>([]);
   const [selectedPersona, setSelectedPersona] = useState<ParsedPersona | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("analytics");
+  const [activeTab, setActiveTab] = useState("who");
   const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -211,6 +221,86 @@ export default function PersonasPage() {
         {/* Tab Content */}
         {activeTab === "analytics" && persona.analytics && (
           <div className="space-y-2">
+            {/* Persona Profile Radar Chart */}
+            {persona.analytics.personaProfile && (
+              <CollapsibleSection id="persona-profile" title="Persona Profile">
+                <div className="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6">
+                  <div className="flex items-center justify-center">
+                    <svg viewBox="0 0 300 300" className="w-72 h-72">
+                      {/* Background pentagon grid */}
+                      {[100, 75, 50, 25].map((scale, i) => (
+                        <polygon
+                          key={i}
+                          points={[
+                            [150, 150 - scale], // Affluence (top)
+                            [150 + scale * 0.95, 150 - scale * 0.31], // Velocity (top right)
+                            [150 + scale * 0.59, 150 + scale * 0.81], // Loyalty (bottom right)
+                            [150 - scale * 0.59, 150 + scale * 0.81], // Growth (bottom left)
+                            [150 - scale * 0.95, 150 - scale * 0.31], // Influence (top left)
+                          ].map(p => p.join(",")).join(" ")}
+                          fill="none"
+                          stroke="var(--card-border)"
+                          strokeWidth="1"
+                        />
+                      ))}
+                      {/* Axis lines */}
+                      {[
+                        [150, 50], // Affluence
+                        [245, 119], // Velocity
+                        [209, 231], // Loyalty
+                        [91, 231], // Growth
+                        [55, 119], // Influence
+                      ].map((point, i) => (
+                        <line
+                          key={i}
+                          x1="150"
+                          y1="150"
+                          x2={point[0]}
+                          y2={point[1]}
+                          stroke="var(--card-border)"
+                          strokeWidth="1"
+                        />
+                      ))}
+                      {/* Data polygon */}
+                      <polygon
+                        points={[
+                          [150, 150 - persona.analytics.personaProfile!.affluence], // Affluence
+                          [150 + persona.analytics.personaProfile!.velocity * 0.95, 150 - persona.analytics.personaProfile!.velocity * 0.31], // Velocity
+                          [150 + persona.analytics.personaProfile!.loyalty * 0.59, 150 + persona.analytics.personaProfile!.loyalty * 0.81], // Loyalty
+                          [150 - persona.analytics.personaProfile!.growth * 0.59, 150 + persona.analytics.personaProfile!.growth * 0.81], // Growth
+                          [150 - persona.analytics.personaProfile!.influence * 0.95, 150 - persona.analytics.personaProfile!.influence * 0.31], // Influence
+                        ].map(p => p.join(",")).join(" ")}
+                        fill="rgba(250, 204, 21, 0.3)"
+                        stroke="rgb(250, 204, 21)"
+                        strokeWidth="2"
+                      />
+                      {/* Labels */}
+                      <text x="150" y="35" textAnchor="middle" className="fill-[var(--muted)] text-xs">Affluence</text>
+                      <text x="260" y="119" textAnchor="start" className="fill-[var(--muted)] text-xs">Velocity</text>
+                      <text x="220" y="255" textAnchor="middle" className="fill-[var(--muted)] text-xs">Loyalty</text>
+                      <text x="80" y="255" textAnchor="middle" className="fill-[var(--muted)] text-xs">Growth</text>
+                      <text x="40" y="119" textAnchor="end" className="fill-[var(--muted)] text-xs">Influence</text>
+                    </svg>
+                  </div>
+                  {/* Values grid */}
+                  <div className="grid grid-cols-5 gap-2 mt-4">
+                    {[
+                      { label: "Affluence", value: persona.analytics.personaProfile!.affluence },
+                      { label: "Velocity", value: persona.analytics.personaProfile!.velocity },
+                      { label: "Loyalty", value: persona.analytics.personaProfile!.loyalty },
+                      { label: "Growth", value: persona.analytics.personaProfile!.growth },
+                      { label: "Influence", value: persona.analytics.personaProfile!.influence },
+                    ].map((item) => (
+                      <div key={item.label} className="text-center">
+                        <p className="text-lg font-semibold text-[var(--foreground)]">{item.value}</p>
+                        <p className="text-xs text-[var(--muted-dim)]">{item.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CollapsibleSection>
+            )}
+
             {/* Revenue Performance */}
             <CollapsibleSection id="revenue" title="Revenue Performance">
               <div className="space-y-4">

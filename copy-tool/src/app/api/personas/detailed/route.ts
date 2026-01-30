@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+interface PersonaProfile {
+  affluence: number;
+  velocity: number;
+  loyalty: number;
+  growth: number;
+  influence: number;
+}
+
 interface OuterSignalAnalytics {
   customerShare: number;
   revenueShare: number;
@@ -22,6 +30,7 @@ interface OuterSignalAnalytics {
   topStates: string[];
   productAffinityHigh: string[];
   productAffinityLow: string[];
+  personaProfile?: PersonaProfile;
 }
 
 interface ParsedPersona {
@@ -136,6 +145,27 @@ function parseMarkdown(content: string, filename: string): ParsedPersona {
       productAffinityLow.push(...affinityLowMatch[1].split(",").map(p => p.trim()));
     }
 
+    // Parse Persona Profile
+    let personaProfile: PersonaProfile | undefined;
+    const profileMatch = section.match(/### Persona Profile\n([\s\S]*?)(?=\n###|\n---|\n##)/);
+    if (profileMatch) {
+      const affluenceMatch = profileMatch[1].match(/\*\*Affluence:\*\*\s*(\d+)/);
+      const velocityMatch = profileMatch[1].match(/\*\*Velocity:\*\*\s*(\d+)/);
+      const loyaltyMatch = profileMatch[1].match(/\*\*Loyalty:\*\*\s*(\d+)/);
+      const growthMatch = profileMatch[1].match(/\*\*Growth:\*\*\s*(\d+)/);
+      const influenceMatch = profileMatch[1].match(/\*\*Influence:\*\*\s*(\d+)/);
+
+      if (affluenceMatch || velocityMatch || loyaltyMatch || growthMatch || influenceMatch) {
+        personaProfile = {
+          affluence: affluenceMatch ? parseInt(affluenceMatch[1]) : 0,
+          velocity: velocityMatch ? parseInt(velocityMatch[1]) : 0,
+          loyalty: loyaltyMatch ? parseInt(loyaltyMatch[1]) : 0,
+          growth: growthMatch ? parseInt(growthMatch[1]) : 0,
+          influence: influenceMatch ? parseInt(influenceMatch[1]) : 0,
+        };
+      }
+    }
+
     // Determine performance class
     const revenueIndex = revenueIndexMatch ? parseFloat(revenueIndexMatch[1]) : 1;
     let performanceClass: "outperformer" | "underperformer" | "average" = "average";
@@ -162,6 +192,7 @@ function parseMarkdown(content: string, filename: string): ParsedPersona {
       topStates,
       productAffinityHigh,
       productAffinityLow,
+      personaProfile,
     };
   }
 

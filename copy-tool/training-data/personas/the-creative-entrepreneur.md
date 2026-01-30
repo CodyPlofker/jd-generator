@@ -52,6 +52,13 @@ The woman who creates for a living. She's a graphic designer, photographer, inte
 **Over-indexes:** The Face Pencil, Mini Miracle Balm Trio, Hero Kit
 **Under-indexes:** Just Enough Tinted Moisturizer, The Mascara, Pinky Bronze Kit
 
+### Persona Profile
+- **Affluence:** 40
+- **Velocity:** 35
+- **Loyalty:** 45
+- **Growth:** 40
+- **Influence:** 60
+
 ---
 
 ## Psychographics: Who She Really Is

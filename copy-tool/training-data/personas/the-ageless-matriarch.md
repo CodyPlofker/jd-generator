@@ -52,6 +52,13 @@ The sophisticated woman who has earned every line on her face and refuses to apo
 **Over-indexes:** Just Enough Tinted Moisturizer, The Mascara, Pinky Bronze Kit, Mini Miracle Balm Trio
 **Under-indexes:** The Face Pencil, The Hero Kit, The Party Kit
 
+### Persona Profile
+- **Affluence:** 50
+- **Velocity:** 40
+- **Loyalty:** 75
+- **Growth:** 20
+- **Influence:** 35
+
 ---
 
 ## Psychographics: Who She Really Is

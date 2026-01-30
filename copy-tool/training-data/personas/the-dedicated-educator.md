@@ -52,6 +52,13 @@ The woman who shapes the next generation. She's the teacher who stays late to he
 **Over-indexes:** Just Enough Tinted Moisturizer, The Mascara, Pinky Bronze Kit
 **Under-indexes:** The Face Pencil, Hero Kit, Party Kit
 
+### Persona Profile
+- **Affluence:** 35
+- **Velocity:** 40
+- **Loyalty:** 55
+- **Growth:** 30
+- **Influence:** 50
+
 ---
 
 ## Psychographics: Who She Really Is

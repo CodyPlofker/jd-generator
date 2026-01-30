@@ -52,6 +52,13 @@ The woman who's shattered glass ceilings and now sits in the rooms where decisio
 **Over-indexes:** The Face Pencil, Mini Miracle Balm Trio, Hero Kit, Party Kit
 **Under-indexes:** Just Enough Tinted Moisturizer, The Mascara
 
+### Persona Profile
+- **Affluence:** 70
+- **Velocity:** 45
+- **Loyalty:** 55
+- **Growth:** 30
+- **Influence:** 40
+
 ---
 
 ## Psychographics: Who She Really Is

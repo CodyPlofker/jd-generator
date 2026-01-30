@@ -52,6 +52,13 @@ The woman who heals others for a living. She's a doctor, nurse, therapist, nutri
 **Over-indexes:** Just Enough Tinted Moisturizer, The Mascara, Mini Miracle Balm Trio
 **Under-indexes:** The Face Pencil, Hero Kit, Party Kit
 
+### Persona Profile
+- **Affluence:** 55
+- **Velocity:** 35
+- **Loyalty:** 50
+- **Growth:** 25
+- **Influence:** 45
+
 ---
 
 ## Psychographics: Who She Really Is
