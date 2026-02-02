@@ -9,10 +9,31 @@ export async function GET() {
   try {
     const { blobs } = await list({ prefix: BOARDS_PREFIX });
 
+    // Group blobs by board base name (e.g. board-123.json) and pick the newest
+    const latestBlobsMap = new Map<string, typeof blobs[0]>();
+    
+    blobs.forEach(blob => {
+      // Extract base ID part (boards/board-timestamp.json)
+      const parts = blob.pathname.split('-');
+      // Case where it might not have a suffix yet or has multiple hyphens
+      // We assume format "boards/board-ID-RANDOM.json" or "boards/board-ID.json"
+      // More reliably: the board ID is usually board-timestamp-random
+      // Let's use the first two parts of board-XXX-YYY-random.json
+      const match = blob.pathname.match(/(boards\/board-[^\-]+-[^\.\-]+)/);
+      const baseName = match ? match[1] : blob.pathname.split('.')[0];
+      
+      const current = latestBlobsMap.get(baseName);
+      if (!current || blob.uploadedAt > current.uploadedAt) {
+        latestBlobsMap.set(baseName, blob);
+      }
+    });
+
+    const latestBlobs = Array.from(latestBlobsMap.values());
     const boards: BriefBoard[] = [];
-    for (const blob of blobs) {
+    
+    for (const blob of latestBlobs) {
       try {
-        const response = await fetch(blob.url);
+        const response = await fetch(`${blob.url}?t=${Date.now()}`, { cache: "no-store" });
         const board = await response.json();
         boards.push(board);
       } catch (e) {
@@ -57,11 +78,11 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date().toISOString(),
     };
 
-    // Save to blob storage
+    // Save to blob storage with a random suffix for cache invalidation
     const blob = await put(
       `${BOARDS_PREFIX}${board.id}.json`,
       JSON.stringify(board),
-      { access: "public", contentType: "application/json" }
+      { access: "public", contentType: "application/json", addRandomSuffix: true }
     );
 
     return NextResponse.json({ ...board, url: blob.url });

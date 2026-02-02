@@ -20,6 +20,9 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
   const [isEditingCopy, setIsEditingCopy] = useState(false);
   const [editedCopy, setEditedCopy] = useState<string>("");
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState("");
+  const [briefToDelete, setBriefToDelete] = useState<SavedBrief | null>(null);
 
   // Revision state
   const [isRevisingCopy, setIsRevisingCopy] = useState(false);
@@ -45,7 +48,7 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
 
   const loadBoard = async () => {
     try {
-      const response = await fetch(`/api/boards/${id}`);
+      const response = await fetch(`/api/boards/${id}`, { cache: "no-store" });
       if (response.ok) {
         const data = await response.json();
         setBoard(data);
@@ -139,6 +142,28 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
     navigator.clipboard.writeText(shareUrl);
     setCopiedId("share");
     setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleUpdateName = async () => {
+    if (!board || !editedName.trim() || editedName === board.name) {
+      setIsEditingName(false);
+      return;
+    }
+
+    const updatedBoard = { ...board, name: editedName.trim() };
+    setBoard(updatedBoard);
+    setIsEditingName(false);
+    await saveBoard(updatedBoard);
+  };
+
+  const handleDeleteBrief = async () => {
+    if (!board || !briefToDelete) return;
+
+    const updatedBriefs = board.briefs.filter((b) => b.id !== briefToDelete.id);
+    const updatedBoard = { ...board, briefs: updatedBriefs };
+    setBoard(updatedBoard);
+    setBriefToDelete(null);
+    await saveBoard(updatedBoard);
   };
 
   const copyBriefText = (brief: SavedBrief) => {
@@ -248,12 +273,12 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
     const updatedBriefs = board.briefs.map((brief) =>
       brief.id === selectedBrief.id
         ? {
-            ...brief,
-            generatedCopy: variationContent,
-            designedAdImage: reviseImage || undefined,
-            designedAdImageName: reviseImageName || undefined,
-            lastRevisedAt: new Date().toISOString(),
-          }
+          ...brief,
+          generatedCopy: variationContent,
+          designedAdImage: reviseImage || undefined,
+          designedAdImageName: reviseImageName || undefined,
+          lastRevisedAt: new Date().toISOString(),
+        }
         : brief
     );
 
@@ -288,8 +313,8 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
       filterDesigner === "all"
         ? board.briefs
         : filterDesigner === "unassigned"
-        ? board.briefs.filter((b) => !b.assignedTo)
-        : board.briefs.filter((b) => b.assignedTo === filterDesigner);
+          ? board.briefs.filter((b) => !b.assignedTo)
+          : board.briefs.filter((b) => b.assignedTo === filterDesigner);
 
     const groupMap = new Map<string, SavedBrief[]>();
 
@@ -358,8 +383,40 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
             </Link>
-            <div>
-              <h1 className="text-xl font-semibold text-[var(--foreground)]">{board.name}</h1>
+            <div className="flex-1 min-w-0">
+              {isEditingName ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    autoFocus
+                    type="text"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleUpdateName();
+                      if (e.key === "Escape") setIsEditingName(false);
+                    }}
+                    onBlur={handleUpdateName}
+                    className="text-xl font-semibold text-[var(--foreground)] bg-[var(--input-bg)] border border-[var(--accent)] rounded px-2 py-0.5 w-full max-w-md focus:outline-none"
+                  />
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 group">
+                  <h1 className="text-xl font-semibold text-[var(--foreground)] truncate">
+                    {board.name}
+                  </h1>
+                  <button
+                    onClick={() => {
+                      setEditedName(board.name);
+                      setIsEditingName(true);
+                    }}
+                    className="p-1 text-[var(--muted)] hover:text-[var(--foreground)] transition-all cursor-pointer"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </button>
+                </div>
+              )}
               <p className="text-sm text-[var(--muted)]">{board.persona.name} • {board.briefs.length} briefs</p>
             </div>
           </div>
@@ -601,6 +658,15 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
                                     </svg>
                                   )}
                                 </button>
+                                <button
+                                  onClick={() => setBriefToDelete(brief)}
+                                  className="p-1.5 text-[var(--muted)] hover:text-red-500 hover:bg-red-500/10 rounded transition-colors cursor-pointer"
+                                  title="Delete brief"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                  </svg>
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -777,11 +843,10 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
                       <div
                         key={variation.index}
                         onClick={() => setSelectedVariation(variation.index)}
-                        className={`p-4 rounded-lg border cursor-pointer transition-all ${
-                          selectedVariation === variation.index
-                            ? "border-[var(--accent)] bg-[var(--accent)]/10"
-                            : "border-[var(--card-border)] hover:border-[var(--muted)]"
-                        }`}
+                        className={`p-4 rounded-lg border cursor-pointer transition-all ${selectedVariation === variation.index
+                          ? "border-[var(--accent)] bg-[var(--accent)]/10"
+                          : "border-[var(--card-border)] hover:border-[var(--muted)]"
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium text-[var(--foreground)]">
@@ -839,141 +904,141 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
                   </div>
                   {/* Info Grid */}
                   <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-                  <div><span className="text-[var(--muted)]">PERSONA:</span> <span className="text-[var(--foreground)]">{selectedBrief.persona.name}</span></div>
-                  <div><span className="text-[var(--muted)]">PRODUCT:</span> <span className="text-[var(--foreground)]">{selectedBrief.product.name}</span></div>
-                  <div className="col-span-2"><span className="text-[var(--muted)]">ANGLE:</span> <span className="text-[var(--foreground)]">{selectedBrief.angle}</span></div>
-                  <div className="col-span-2"><span className="text-[var(--muted)]">FORMAT:</span> <span className="text-[var(--foreground)]">{selectedBrief.format.name}</span></div>
+                    <div><span className="text-[var(--muted)]">PERSONA:</span> <span className="text-[var(--foreground)]">{selectedBrief.persona.name}</span></div>
+                    <div><span className="text-[var(--muted)]">PRODUCT:</span> <span className="text-[var(--foreground)]">{selectedBrief.product.name}</span></div>
+                    <div className="col-span-2"><span className="text-[var(--muted)]">ANGLE:</span> <span className="text-[var(--foreground)]">{selectedBrief.angle}</span></div>
+                    <div className="col-span-2"><span className="text-[var(--muted)]">FORMAT:</span> <span className="text-[var(--foreground)]">{selectedBrief.format.name}</span></div>
+                  </div>
+                </div>
+
+                {/* Generated Copy */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-[var(--muted)] uppercase tracking-wide">Generated Copy</h3>
+                  {isEditingCopy ? (
+                    <textarea
+                      value={editedCopy}
+                      onChange={(e) => setEditedCopy(e.target.value)}
+                      className="w-full text-sm text-[var(--foreground)] bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3 resize-none focus:outline-none focus:ring-1 focus:ring-[var(--accent)] font-mono"
+                      rows={16}
+                    />
+                  ) : (
+                    <div className="bg-[var(--input-bg)] rounded-lg p-4">
+                      {(() => {
+                        const copyText = typeof selectedBrief.generatedCopy === "string"
+                          ? selectedBrief.generatedCopy
+                          : Object.entries(selectedBrief.generatedCopy).map(([zone, copy]) => `[${zone.toUpperCase()}]\n${copy}`).join("\n\n");
+
+                        if (!copyText) {
+                          return <span className="text-[var(--muted-dim)] italic">No copy generated</span>;
+                        }
+
+                        const cleanText = (text: string) => text
+                          .replace(/\*\*(.+?)\*\*/g, '$1')
+                          .replace(/\*(.+?)\*/g, '$1')
+                          .replace(/^#+\s*/gm, '')
+                          .replace(/\*\*Copy:\*\*\s*/gi, '')
+                          .replace(/^-\s+/gm, '• ');
+
+                        return (
+                          <div className="space-y-4">
+                            {copyText.split(/(?=^#{2,3}\s|\n(?=[A-Z][A-Z-]+\n))/m).map((section, index) => {
+                              const trimmed = section.trim();
+                              if (!trimmed) return null;
+
+                              const h2Match = trimmed.match(/^##\s+(.+?)(?:\n|$)/);
+                              const h3Match = trimmed.match(/^###\s+(.+?)(?:\n|$)/);
+                              const zoneLabelMatch = trimmed.match(/^([A-Z][A-Z0-9-]+)\n([\s\S]*)$/);
+
+                              if (h2Match) {
+                                const title = cleanText(h2Match[1]);
+                                const content = trimmed.slice(h2Match[0].length).trim();
+                                return (
+                                  <div key={index} className="mb-4">
+                                    <h2 className="text-base font-semibold text-[var(--accent)] mb-2 pb-1 border-b border-[var(--card-border)]">
+                                      {title}
+                                    </h2>
+                                    {content && (
+                                      <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                        {cleanText(content)}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              }
+
+                              if (h3Match) {
+                                const title = cleanText(h3Match[1]);
+                                const content = trimmed.slice(h3Match[0].length).trim();
+                                return (
+                                  <div key={index} className="mb-3">
+                                    <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wide mb-1">
+                                      {title}
+                                    </h3>
+                                    {content && (
+                                      <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                        {cleanText(content)}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              }
+
+                              if (zoneLabelMatch) {
+                                const label = zoneLabelMatch[1];
+                                const content = zoneLabelMatch[2].trim();
+                                return (
+                                  <div key={index} className="mb-3">
+                                    <h3 className="text-xs font-medium text-[var(--accent)] uppercase tracking-wide mb-1">
+                                      {label}
+                                    </h3>
+                                    {content && (
+                                      <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                        {cleanText(content)}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              }
+
+                              return (
+                                <div key={index} className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                  {cleanText(trimmed)}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  )}
                 </div>
               </div>
-
-              {/* Generated Copy */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium text-[var(--muted)] uppercase tracking-wide">Generated Copy</h3>
-                {isEditingCopy ? (
-                  <textarea
-                    value={editedCopy}
-                    onChange={(e) => setEditedCopy(e.target.value)}
-                    className="w-full text-sm text-[var(--foreground)] bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3 resize-none focus:outline-none focus:ring-1 focus:ring-[var(--accent)] font-mono"
-                    rows={16}
-                  />
-                ) : (
-                  <div className="bg-[var(--input-bg)] rounded-lg p-4">
-                    {(() => {
-                      const copyText = typeof selectedBrief.generatedCopy === "string"
-                        ? selectedBrief.generatedCopy
-                        : Object.entries(selectedBrief.generatedCopy).map(([zone, copy]) => `[${zone.toUpperCase()}]\n${copy}`).join("\n\n");
-
-                      if (!copyText) {
-                        return <span className="text-[var(--muted-dim)] italic">No copy generated</span>;
-                      }
-
-                      const cleanText = (text: string) => text
-                        .replace(/\*\*(.+?)\*\*/g, '$1')
-                        .replace(/\*(.+?)\*/g, '$1')
-                        .replace(/^#+\s*/gm, '')
-                        .replace(/\*\*Copy:\*\*\s*/gi, '')
-                        .replace(/^-\s+/gm, '• ');
-
-                      return (
-                        <div className="space-y-4">
-                          {copyText.split(/(?=^#{2,3}\s|\n(?=[A-Z][A-Z-]+\n))/m).map((section, index) => {
-                            const trimmed = section.trim();
-                            if (!trimmed) return null;
-
-                            const h2Match = trimmed.match(/^##\s+(.+?)(?:\n|$)/);
-                            const h3Match = trimmed.match(/^###\s+(.+?)(?:\n|$)/);
-                            const zoneLabelMatch = trimmed.match(/^([A-Z][A-Z0-9-]+)\n([\s\S]*)$/);
-
-                            if (h2Match) {
-                              const title = cleanText(h2Match[1]);
-                              const content = trimmed.slice(h2Match[0].length).trim();
-                              return (
-                                <div key={index} className="mb-4">
-                                  <h2 className="text-base font-semibold text-[var(--accent)] mb-2 pb-1 border-b border-[var(--card-border)]">
-                                    {title}
-                                  </h2>
-                                  {content && (
-                                    <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
-                                      {cleanText(content)}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            }
-
-                            if (h3Match) {
-                              const title = cleanText(h3Match[1]);
-                              const content = trimmed.slice(h3Match[0].length).trim();
-                              return (
-                                <div key={index} className="mb-3">
-                                  <h3 className="text-xs font-medium text-[var(--muted)] uppercase tracking-wide mb-1">
-                                    {title}
-                                  </h3>
-                                  {content && (
-                                    <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
-                                      {cleanText(content)}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            }
-
-                            if (zoneLabelMatch) {
-                              const label = zoneLabelMatch[1];
-                              const content = zoneLabelMatch[2].trim();
-                              return (
-                                <div key={index} className="mb-3">
-                                  <h3 className="text-xs font-medium text-[var(--accent)] uppercase tracking-wide mb-1">
-                                    {label}
-                                  </h3>
-                                  {content && (
-                                    <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
-                                      {cleanText(content)}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            }
-
-                            return (
-                              <div key={index} className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
-                                {cleanText(trimmed)}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    })()}
-                  </div>
-                )}
-              </div>
-            </div>
             )}
 
             {/* Modal Footer */}
             {!isRevisingCopy && (
-            <div className="px-5 py-3 border-t border-[var(--card-border)] flex justify-between">
-              {isEditingCopy ? (
-                <>
-                  <button onClick={cancelEditingCopy} className="px-4 py-2 text-sm border border-[var(--card-border)] text-[var(--foreground)] rounded-lg hover:bg-[var(--input-bg)] cursor-pointer">Cancel</button>
-                  <button onClick={saveEditedCopy} className="px-4 py-2 text-sm bg-[var(--accent)] text-white rounded-lg hover:opacity-90 cursor-pointer">Save</button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => copyBriefText(selectedBrief)}
-                    className="px-4 py-2 text-sm border border-[var(--card-border)] text-[var(--foreground)] rounded-lg hover:bg-[var(--input-bg)] cursor-pointer flex items-center gap-2"
-                  >
-                    {copiedId === selectedBrief.id ? (
-                      <><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>Copied!</>
-                    ) : (
-                      <><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>Copy Brief</>
-                    )}
-                  </button>
-                  <button onClick={() => setSelectedBrief(null)} className="px-4 py-2 text-sm bg-[var(--accent)] text-white rounded-lg hover:opacity-90 cursor-pointer">Close</button>
-                </>
-              )}
-            </div>
+              <div className="px-5 py-3 border-t border-[var(--card-border)] flex justify-between">
+                {isEditingCopy ? (
+                  <>
+                    <button onClick={cancelEditingCopy} className="px-4 py-2 text-sm border border-[var(--card-border)] text-[var(--foreground)] rounded-lg hover:bg-[var(--input-bg)] cursor-pointer">Cancel</button>
+                    <button onClick={saveEditedCopy} className="px-4 py-2 text-sm bg-[var(--accent)] text-white rounded-lg hover:opacity-90 cursor-pointer">Save</button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => copyBriefText(selectedBrief)}
+                      className="px-4 py-2 text-sm border border-[var(--card-border)] text-[var(--foreground)] rounded-lg hover:bg-[var(--input-bg)] cursor-pointer flex items-center gap-2"
+                    >
+                      {copiedId === selectedBrief.id ? (
+                        <><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>Copied!</>
+                      ) : (
+                        <><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>Copy Brief</>
+                      )}
+                    </button>
+                    <button onClick={() => setSelectedBrief(null)} className="px-4 py-2 text-sm bg-[var(--accent)] text-white rounded-lg hover:opacity-90 cursor-pointer">Close</button>
+                  </>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -999,6 +1064,33 @@ export default function BoardDetailPage({ params }: { params: Promise<{ id: stri
             className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
             onClick={(e) => e.stopPropagation()}
           />
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {briefToDelete && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/70" onClick={() => setBriefToDelete(null)} />
+          <div className="relative bg-[var(--card)] border border-[var(--card-border)] rounded-xl w-full max-w-md overflow-hidden p-6">
+            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-2">Delete Brief?</h2>
+            <p className="text-sm text-[var(--muted)] mb-6">
+              Are you sure you want to delete this brief? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setBriefToDelete(null)}
+                className="px-4 py-2 text-sm border border-[var(--card-border)] text-[var(--foreground)] rounded-lg hover:bg-[var(--input-bg)] cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteBrief}
+                className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -17,7 +17,7 @@ export async function GET(
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
 
-    const response = await fetch(blobs[0].url);
+    const response = await fetch(blobs[0].url, { cache: "no-store" });
     const board = await response.json();
 
     return NextResponse.json(board);
@@ -43,7 +43,7 @@ export async function PUT(
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
 
-    const response = await fetch(blobs[0].url);
+    const response = await fetch(blobs[0].url, { cache: "no-store" });
     const existingBoard: BriefBoard = await response.json();
 
     // Merge updates
@@ -67,7 +67,7 @@ export async function PUT(
     const blob = await put(
       `${BOARDS_PREFIX}${id}.json`,
       JSON.stringify(updatedBoard),
-      { access: "public", contentType: "application/json", addRandomSuffix: false }
+      { access: "public", contentType: "application/json", addRandomSuffix: false, allowOverwrite: true }
     );
 
     return NextResponse.json({ ...updatedBoard, url: blob.url });
