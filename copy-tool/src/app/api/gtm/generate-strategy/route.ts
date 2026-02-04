@@ -17,6 +17,10 @@ import {
   LaunchTier,
   ChannelId,
   TIER_CONFIG,
+  CreativeResearch,
+  CreativeConcept,
+  PersonaId,
+  PERSONA_CONFIG,
 } from "@/types/gtm";
 
 // Load API key from .env.local file directly as fallback
@@ -164,12 +168,197 @@ Return ONLY the JSON, no explanation or markdown.`;
 // ============================================
 // CREATIVE STRATEGY (Paid Creative Concepts)
 // ============================================
+
+// Generate concepts from approved research (Phase 3)
+async function generateConceptsFromResearch(
+  anthropic: Anthropic,
+  research: CreativeResearch,
+  pmc: PMCDocument,
+  creativeBrief: CreativeBrief,
+  productName: string,
+  tier: LaunchTier
+): Promise<CreativeConcept[]> {
+  const concepts: CreativeConcept[] = [];
+  let conceptIndex = 1;
+
+  // Generate concepts for each persona based on recommended count
+  for (const insight of research.personaInsights) {
+    if (insight.recommendedConceptCount === 0) continue;
+
+    const prompt = `You are a senior creative strategist for Jones Road Beauty.
+
+Generate ${insight.recommendedConceptCount} creative concept(s) specifically for this persona, using the research insights.
+
+## PRODUCT: ${productName}
+- Key Differentiator: ${research.productSummary.keyDifferentiator}
+- Primary Benefit: ${research.productSummary.primaryBenefit}
+
+## TARGET PERSONA: ${insight.personaName}
+- Customer Base: ${insight.customerBasePercentage}%
+- Product Relevance: ${insight.productFit.relevanceScore}
+- Jobs This Product Solves: ${insight.productFit.primaryJobsToBeDone.join(', ')}
+- Emotional Benefits: ${insight.productFit.emotionalBenefits.join(', ')}
+- Functional Benefits: ${insight.productFit.functionalBenefits.join(', ')}
+
+## MESSAGING ANGLES TO USE (from research):
+${insight.messagingAngles.map((a, i) => `${i + 1}. ${a.angle} (${a.hookFormula}) - ${a.whyItWorks}`).join('\n')}
+
+## HOOK OPPORTUNITIES (from research):
+${insight.hookOpportunities.map((h, i) => `${i + 1}. "${h.hook}"${h.voiceOfCustomerSource ? ` (inspired by: ${h.voiceOfCustomerSource})` : ''}`).join('\n')}
+
+## OBJECTIONS TO ADDRESS:
+${insight.objections.join(', ')}
+
+Generate ${insight.recommendedConceptCount} concept(s). Each concept should:
+1. Use one of the messaging angles above
+2. Include a hook from the hook opportunities (or inspired by them)
+3. Assign 1-3 formats (static, video, carousel) based on what works best for the angle
+
+Return ONLY valid JSON array:
+[
+  {
+    "name": "Short memorable concept name (3-5 words)",
+    "hookFormula": "problem-first|identity-first|contrarian|direct-benefit",
+    "angle": "The specific creative angle in 1-2 sentences",
+    "primaryHook": "The actual hook text to use",
+    "formats": ["static", "video"]
+  }
+]
+
+Return ONLY the JSON array, no explanation or markdown.`;
+
+    try {
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 2000,
+        messages: [{ role: "user", content: prompt }],
+      });
+
+      const textContent = response.content.find((c) => c.type === "text");
+      if (!textContent || textContent.type !== "text") continue;
+
+      const jsonMatch = textContent.text.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) continue;
+
+      const personaConcepts = JSON.parse(jsonMatch[0]) as Array<{
+        name: string;
+        hookFormula: 'problem-first' | 'identity-first' | 'contrarian' | 'direct-benefit';
+        angle: string;
+        primaryHook?: string;
+        formats: ('static' | 'video' | 'carousel')[];
+      }>;
+
+      for (const c of personaConcepts) {
+        concepts.push({
+          id: `concept-${conceptIndex++}`,
+          name: c.name,
+          hookFormula: c.hookFormula,
+          angle: c.angle,
+          targetPersona: insight.personaId as PersonaId,
+          personaName: insight.personaName,
+          formats: c.formats,
+          primaryHook: c.primaryHook,
+        });
+      }
+    } catch (error) {
+      console.error(`Error generating concepts for ${insight.personaId}:`, error);
+    }
+  }
+
+  // Generate general audience concepts if there are universal hooks
+  if (research.generalAudienceInsights.broadAppealAngles.length > 0) {
+    const generalCount = Math.max(1, Math.floor(concepts.length / 4)); // ~20% general
+
+    const prompt = `You are a senior creative strategist for Jones Road Beauty.
+
+Generate ${generalCount} creative concept(s) for GENERAL AUDIENCE (not persona-specific).
+
+## PRODUCT: ${productName}
+- Key Differentiator: ${research.productSummary.keyDifferentiator}
+- Primary Benefit: ${research.productSummary.primaryBenefit}
+
+## UNIVERSAL HOOKS:
+${research.generalAudienceInsights.universalHooks.map((h, i) => `${i + 1}. "${h}"`).join('\n')}
+
+## BROAD APPEAL ANGLES:
+${research.generalAudienceInsights.broadAppealAngles.map((a, i) => `${i + 1}. ${a}`).join('\n')}
+
+Generate ${generalCount} concept(s) that appeal to anyone, not tied to a specific persona.
+
+Return ONLY valid JSON array:
+[
+  {
+    "name": "Short memorable concept name (3-5 words)",
+    "hookFormula": "problem-first|identity-first|contrarian|direct-benefit",
+    "angle": "The specific creative angle in 1-2 sentences",
+    "primaryHook": "The actual hook text to use",
+    "formats": ["static", "video"]
+  }
+]
+
+Return ONLY the JSON array, no explanation or markdown.`;
+
+    try {
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1500,
+        messages: [{ role: "user", content: prompt }],
+      });
+
+      const textContent = response.content.find((c) => c.type === "text");
+      if (textContent && textContent.type === "text") {
+        const jsonMatch = textContent.text.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          const generalConcepts = JSON.parse(jsonMatch[0]) as Array<{
+            name: string;
+            hookFormula: 'problem-first' | 'identity-first' | 'contrarian' | 'direct-benefit';
+            angle: string;
+            primaryHook?: string;
+            formats: ('static' | 'video' | 'carousel')[];
+          }>;
+
+          for (const c of generalConcepts) {
+            concepts.push({
+              id: `concept-${conceptIndex++}`,
+              name: c.name,
+              hookFormula: c.hookFormula,
+              angle: c.angle,
+              targetPersona: 'general',
+              personaName: 'General Audience',
+              formats: c.formats,
+              primaryHook: c.primaryHook,
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error generating general audience concepts:", error);
+    }
+  }
+
+  return concepts;
+}
+
+// Calculate format mix counts from concepts
+function calculateFormatMix(concepts: CreativeConcept[]): { static: number; video: number; carousel: number } {
+  const counts = { static: 0, video: 0, carousel: 0 };
+
+  for (const concept of concepts) {
+    for (const format of concept.formats) {
+      counts[format]++;
+    }
+  }
+
+  return counts;
+}
+
 async function generateCreativeStrategy(
   anthropic: Anthropic,
   pmc: PMCDocument,
   creativeBrief: CreativeBrief,
   productName: string,
-  tier: LaunchTier
+  tier: LaunchTier,
+  research?: CreativeResearch
 ): Promise<CreativeStrategy> {
   const tierConfig = TIER_CONFIG[tier];
   const creativeConfig = tierConfig.creative;
@@ -178,6 +367,7 @@ async function generateCreativeStrategy(
   if (creativeConfig.concepts.min === 0 && creativeConfig.concepts.max === 0) {
     return {
       status: "draft",
+      currentPhase: 'concepts',
       strategicSummary: "No dedicated creative concepts required for Tier 4 launches.",
       concepts: [],
       formatMix: { static: 0, video: 0, carousel: 0 },
@@ -186,90 +376,55 @@ async function generateCreativeStrategy(
     };
   }
 
-  const prompt = `You are a senior creative strategist for Jones Road Beauty.
+  // If research is provided and approved, generate concepts from research
+  if (research && research.status === 'approved') {
+    console.log("Generating concepts from approved research...");
 
-Based on the product launch information, create a STRATEGIC PLAN for creative concepts (for paid media).
+    const concepts = await generateConceptsFromResearch(
+      anthropic,
+      research,
+      pmc,
+      creativeBrief,
+      productName,
+      tier
+    );
 
-This is NOT final copy - it's a list of creative concepts that will be developed into full briefs later.
+    // Calculate format mix from actual concepts (counts, not percentages)
+    const formatMix = calculateFormatMix(concepts);
 
-PRODUCT: ${productName}
-
-PMC DOCUMENT:
-- Tagline: ${pmc.tagline}
-- What It Is: ${pmc.whatItIs}
-- Why We Love It: ${pmc.whyWeLoveIt}
-- How It's Different: ${pmc.howItsDifferent}
-- Who It's For: ${pmc.whoItsFor}
-- Bobbi's Quotes: ${pmc.bobbisQuotes.map((q) => `"${q.quote}" (${q.context})`).join("; ")}
-
-CREATIVE BRIEF:
-- Launch Overview: ${creativeBrief.launchOverview}
-- Key Benefits: ${creativeBrief.keyBenefits.join(", ")}
-- Target Demographic: ${creativeBrief.targetDemographic}
-${creativeBrief.consumerInsights ? `- Top Consumer Desires: ${creativeBrief.consumerInsights.topDesires?.join(", ")}` : ""}
-${creativeBrief.keyDifferentiator ? `- Key Differentiator: ${creativeBrief.keyDifferentiator}` : ""}
-${creativeBrief.positioningStatement ? `- Positioning Statement: ${creativeBrief.positioningStatement}` : ""}
-
-TIER: ${tier.replace("tier-", "Tier ")} (${tierConfig.description})
-
-TIER REQUIREMENTS:
-- Concepts: ${creativeConfig.concepts.min}-${creativeConfig.concepts.max}
-- UGC Creators: ${creativeConfig.ugcCreators.min}-${creativeConfig.ugcCreators.max}
-- Partnership Focus: ${creativeConfig.partnershipFocus}
-
-HOOK FORMULAS TO USE (each concept should use one):
-1. problem-first: Lead with the problem the product solves
-2. identity-first: Lead with who the product is for
-3. contrarian: Challenge conventional wisdom
-4. direct-benefit: Lead with the key benefit
-
-Create ${creativeConfig.concepts.min}-${creativeConfig.concepts.max} diverse creative concepts.
-
-Return ONLY valid JSON:
-
-{
-  "status": "draft",
-  "strategicSummary": "2-3 sentences on the overall creative direction and approach",
-  "concepts": [
-    {
-      "id": "concept-1",
-      "name": "Concept Name",
-      "hookFormula": "problem-first",
-      "angle": "The specific creative angle in 1-2 sentences",
-      "targetPersona": "Who this concept speaks to",
-      "formats": ["static", "video"]
-    }
-  ],
-  "formatMix": {
-    "static": 40,
-    "video": 50,
-    "carousel": 10
-  },
-  "ugcCreators": {
-    "count": ${creativeConfig.ugcCreators.min},
-    "tiers": {"micro": 2, "mid": 1, "macro": 0}
-  },
-  "visualDirection": "Notes on overall visual direction, look and feel",
-  "partnershipFocus": "${creativeConfig.partnershipFocus}"
-}
-
-Return ONLY the JSON, no explanation or markdown.`;
-
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 3000,
-    messages: [{ role: "user", content: prompt }],
-  });
-
-  const textContent = response.content.find((c) => c.type === "text");
-  if (!textContent || textContent.type !== "text") {
-    throw new Error("No text response from AI");
+    return {
+      status: "draft",
+      currentPhase: 'concepts',
+      strategicSummary: `Creative strategy based on persona research for ${productName}. ${concepts.length} concepts generated across ${research.personaInsights.filter(p => p.recommendedConceptCount > 0).length} personas.`,
+      research,
+      concepts,
+      formatMix,
+      ugcCreators: creativeConfig.ugcCreators.min > 0 ? {
+        count: creativeConfig.ugcCreators.min,
+        tiers: { micro: Math.ceil(creativeConfig.ugcCreators.min * 0.5), mid: Math.ceil(creativeConfig.ugcCreators.min * 0.3), macro: Math.floor(creativeConfig.ugcCreators.min * 0.2) }
+      } : undefined,
+      visualDirection: creativeBrief.creativeDeliverables?.visualDirection || "Photography-forward, natural lighting, real skin texture. Emphasize the product in action with genuine, effortless application.",
+      partnershipFocus: creativeConfig.partnershipFocus,
+    };
   }
 
-  const jsonMatch = textContent.text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error("No JSON found in creative strategy response");
+  // NEW: If no research provided, return a minimal strategy that starts at research phase
+  // User will need to generate research first, then generate concepts
+  console.log("No research provided - returning initial strategy at research phase");
 
-  return JSON.parse(jsonMatch[0]) as CreativeStrategy;
+  return {
+    status: "draft",
+    currentPhase: 'research',
+    strategicSummary: "",
+    concepts: [],
+    formatMix: { static: 0, video: 0, carousel: 0 },
+    visualDirection: creativeBrief.creativeDeliverables?.visualDirection || "",
+    partnershipFocus: creativeConfig.partnershipFocus,
+    ugcCreators: creativeConfig.ugcCreators.min > 0 ? {
+      count: creativeConfig.ugcCreators.min,
+      tiers: { micro: Math.ceil(creativeConfig.ugcCreators.min * 0.5), mid: Math.ceil(creativeConfig.ugcCreators.min * 0.3), macro: Math.floor(creativeConfig.ugcCreators.min * 0.2) }
+    } : undefined,
+  };
 }
 
 // ============================================
@@ -799,12 +954,13 @@ export async function POST(request: NextRequest) {
     const anthropic = new Anthropic({ apiKey, timeout: 120000 });
 
     const body = await request.json();
-    const { tier, pmc, creativeBrief, productName, channels } = body as {
+    const { tier, pmc, creativeBrief, productName, channels, creativeResearch } = body as {
       tier: LaunchTier;
       pmc: PMCDocument;
       creativeBrief: CreativeBrief;
       productName: string;
       channels: ChannelId[];
+      creativeResearch?: CreativeResearch;
     };
 
     if (!tier || !pmc || !creativeBrief) {
@@ -837,7 +993,8 @@ export async function POST(request: NextRequest) {
               pmc,
               creativeBrief,
               productName,
-              tier
+              tier,
+              creativeResearch
             );
             break;
           case "paid-media":

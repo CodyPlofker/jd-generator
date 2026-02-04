@@ -129,18 +129,83 @@ export interface RetentionSMSItem {
 // CREATIVE STRATEGY (Paid Creative Concepts)
 // ============================================
 
+// Per-persona insight from Phase 1 research
+export interface PersonaInsight {
+  personaId: PersonaId;
+  personaName: string;
+  customerBasePercentage: number;
+
+  // How this product maps to this persona
+  productFit: {
+    relevanceScore: 'high' | 'medium' | 'low';
+    primaryJobsToBeDone: string[];       // Which JTBD this product solves
+    emotionalBenefits: string[];         // How this makes them FEEL
+    functionalBenefits: string[];        // What it DOES for them
+  };
+
+  // Messaging specific to this persona
+  messagingAngles: {
+    angle: string;
+    hookFormula: 'problem-first' | 'identity-first' | 'contrarian' | 'direct-benefit';
+    whyItWorks: string;
+  }[];
+
+  // Hook opportunities
+  hookOpportunities: {
+    hook: string;
+    voiceOfCustomerSource?: string;      // Optional VOC quote that inspired this
+  }[];
+
+  // Potential objections for this persona
+  objections: string[];
+
+  // Recommended concept count for this persona (AI determined)
+  recommendedConceptCount: number;
+}
+
+// Phase 1 output - Creative Research/Insights
+export interface CreativeResearch {
+  status: 'draft' | 'approved';
+  generatedAt: string;
+
+  // Overall product-market analysis
+  productSummary: {
+    keyDifferentiator: string;
+    primaryBenefit: string;
+    categoryPosition: string;
+  };
+
+  // Per-persona insights
+  personaInsights: PersonaInsight[];
+
+  // General audience insights (non-persona-specific)
+  generalAudienceInsights: {
+    universalHooks: string[];
+    broadAppealAngles: string[];
+  };
+
+  // Recommended total concepts by tier
+  recommendedTotalConcepts: number;
+}
+
 export interface CreativeStrategy {
   status: 'draft' | 'approved';
   strategicSummary: string;
 
-  // Concept list
+  // Phase 1 research (NEW - persona insights before concepts)
+  research?: CreativeResearch;
+
+  // Track current phase in 3-phase workflow
+  currentPhase: 'research' | 'strategy' | 'concepts';
+
+  // Concept list (Phase 3)
   concepts: CreativeConcept[];
 
-  // Format mix
+  // Format mix - NOW COUNTS not percentages (calculated from concepts)
   formatMix: {
-    static: number;
-    video: number;
-    carousel: number;
+    static: number;   // Actual count of static assets
+    video: number;    // Actual count of video assets
+    carousel: number; // Actual count of carousel assets
   };
 
   // UGC creators (tier 1-2 only)
@@ -156,13 +221,25 @@ export interface CreativeStrategy {
   partnershipFocus?: 'heavy' | 'moderate' | 'none';
 }
 
+// Persona IDs for creative strategy
+export type PersonaId =
+  | 'dedicated-educator'
+  | 'ageless-matriarch'
+  | 'high-powered-executive'
+  | 'wellness-healthcare-practitioner'
+  | 'busy-suburban-supermom'
+  | 'creative-entrepreneur';
+
 export interface CreativeConcept {
   id: string;
   name: string;
   hookFormula: 'problem-first' | 'identity-first' | 'contrarian' | 'direct-benefit';
   angle: string;
-  targetPersona?: string;
+  targetPersona: PersonaId | 'general';  // Required - which persona this concept targets
+  personaName?: string;                   // Display name for the persona
   formats: ('static' | 'video' | 'carousel')[];
+  primaryHook?: string;                   // Hook text from research
+  sourceInsightId?: string;               // Link to research insight that inspired this
 }
 
 // ============================================
@@ -395,6 +472,9 @@ export interface CreativeDeliverable {
   conceptId: string;
   conceptName: string;
   format: 'static' | 'video' | 'carousel' | 'ugc-brief';
+  // Persona context (carried from concept)
+  targetPersona?: PersonaId | 'general';
+  personaName?: string;
   copy: {
     primaryText: string;
     headline: string;
@@ -839,6 +919,40 @@ export const TIER_CONFIG = {
       tvUpdate: false,
       exclusiveOffer: false,
     },
+  },
+} as const;
+
+// Persona configuration for creative strategy
+export const PERSONA_CONFIG = {
+  'dedicated-educator': {
+    name: 'The Dedicated Educator',
+    percentage: 15,
+    priority: 'medium' as const,
+  },
+  'ageless-matriarch': {
+    name: 'The Ageless Matriarch',
+    percentage: 15,
+    priority: 'high' as const,
+  },
+  'high-powered-executive': {
+    name: 'The High-Powered Executive',
+    percentage: 20,
+    priority: 'high' as const,
+  },
+  'wellness-healthcare-practitioner': {
+    name: 'The Wellness & Healthcare Practitioner',
+    percentage: 15,
+    priority: 'high' as const,
+  },
+  'busy-suburban-supermom': {
+    name: 'The Busy Suburban Super-Mom',
+    percentage: 20,
+    priority: 'high' as const,
+  },
+  'creative-entrepreneur': {
+    name: 'The Creative Entrepreneur',
+    percentage: 10,
+    priority: 'medium' as const,
   },
 } as const;
 

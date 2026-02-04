@@ -579,7 +579,7 @@ function PaidSocialDeliverablesView({
   setFilterConcept,
 }: {
   deliverables: CreativeDeliverable[];
-  concepts: { id: string; name: string }[];
+  concepts: { id: string; name: string; personaName?: string }[];
   onUpdate: (id: string, updates: Partial<CreativeDeliverable>) => void;
   copyToClipboard: (text: string) => void;
   selectedDeliverable: string | null;
@@ -589,11 +589,26 @@ function PaidSocialDeliverablesView({
   filterConcept: string;
   setFilterConcept: (c: string) => void;
 }) {
+  // Get unique personas from deliverables
+  const [filterPersona, setFilterPersona] = useState<string>("all");
+  const uniquePersonas = Array.from(
+    new Set(deliverables.map(d => d.personaName).filter(Boolean))
+  ) as string[];
+
   const filteredDeliverables = deliverables.filter((d) => {
     if (filterFormat !== "all" && d.format !== filterFormat) return false;
     if (filterConcept !== "all" && d.conceptId !== filterConcept) return false;
+    if (filterPersona !== "all" && d.personaName !== filterPersona) return false;
     return true;
   });
+
+  // Group deliverables by persona for stats
+  const personaStats = deliverables.reduce((acc, d) => {
+    const persona = d.personaName || 'General';
+    if (!acc[persona]) acc[persona] = 0;
+    acc[persona]++;
+    return acc;
+  }, {} as Record<string, number>);
 
   const selected = deliverables.find((d) => d.id === selectedDeliverable);
 
@@ -606,37 +621,65 @@ function PaidSocialDeliverablesView({
       {/* Left: Deliverables List */}
       <div className="col-span-5 space-y-4">
         {/* Filters */}
-        <div className="flex gap-2">
-          <select
-            value={filterFormat}
-            onChange={(e) => setFilterFormat(e.target.value)}
-            className="flex-1 p-2 bg-[var(--input-bg)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)]"
-          >
-            <option value="all">All Formats</option>
-            <option value="static">Static</option>
-            <option value="video">Video</option>
-            <option value="carousel">Carousel</option>
-          </select>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <select
+              value={filterFormat}
+              onChange={(e) => setFilterFormat(e.target.value)}
+              className="flex-1 p-2 bg-[var(--input-bg)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)]"
+            >
+              <option value="all">All Formats</option>
+              <option value="static">Static</option>
+              <option value="video">Video</option>
+              <option value="carousel">Carousel</option>
+            </select>
+            <select
+              value={filterPersona}
+              onChange={(e) => setFilterPersona(e.target.value)}
+              className="flex-1 p-2 bg-[var(--input-bg)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)]"
+            >
+              <option value="all">All Personas</option>
+              {uniquePersonas.map((persona) => (
+                <option key={persona} value={persona}>
+                  {persona}
+                </option>
+              ))}
+            </select>
+          </div>
           <select
             value={filterConcept}
             onChange={(e) => setFilterConcept(e.target.value)}
-            className="flex-1 p-2 bg-[var(--input-bg)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)]"
+            className="w-full p-2 bg-[var(--input-bg)] border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)]"
           >
             <option value="all">All Concepts</option>
             {concepts.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.name}
+                {c.name}{c.personaName ? ` (${c.personaName})` : ''}
               </option>
             ))}
           </select>
         </div>
 
         {/* Stats */}
-        <div className="flex gap-4 text-sm">
-          <span className="text-[var(--muted)]">{filteredDeliverables.length} deliverables</span>
-          <span className="text-green-400">
-            {deliverables.filter((d) => d.status === "approved").length} approved
-          </span>
+        <div className="space-y-1">
+          <div className="flex gap-4 text-sm">
+            <span className="text-[var(--muted)]">{filteredDeliverables.length} of {deliverables.length} deliverables</span>
+            <span className="text-green-400">
+              {deliverables.filter((d) => d.status === "approved").length} approved
+            </span>
+          </div>
+          {uniquePersonas.length > 0 && (
+            <div className="flex flex-wrap gap-2 text-xs">
+              {Object.entries(personaStats).map(([persona, count]) => (
+                <span
+                  key={persona}
+                  className="px-2 py-0.5 rounded-full bg-[var(--card)] text-[var(--muted)]"
+                >
+                  {persona}: {count}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* List */}
@@ -666,6 +709,11 @@ function PaidSocialDeliverablesView({
                   )}
                 </div>
               </div>
+              {deliverable.personaName && (
+                <p className="text-xs text-[var(--accent)] mb-1">
+                  {deliverable.personaName}
+                </p>
+              )}
               <p className="text-xs text-[var(--muted)] line-clamp-2">
                 {deliverable.copy.primaryText}
               </p>
@@ -683,7 +731,14 @@ function PaidSocialDeliverablesView({
                 <h3 className="text-lg font-medium text-[var(--foreground)]">
                   {selected.conceptName}
                 </h3>
-                <p className="text-sm text-[var(--muted)]">{selected.format} ad</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-[var(--muted)]">{selected.format} ad</p>
+                  {selected.personaName && (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)]">
+                      {selected.personaName}
+                    </span>
+                  )}
+                </div>
               </div>
               <button
                 onClick={() =>

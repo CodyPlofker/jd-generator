@@ -335,6 +335,9 @@ Return ONLY a JSON object with the copy fields.`;
             conceptId: concept.id,
             conceptName: concept.name,
             format,
+            // Carry persona context from concept to deliverable
+            targetPersona: concept.targetPersona,
+            personaName: concept.personaName,
             copy,
             status: "generated",
           });
